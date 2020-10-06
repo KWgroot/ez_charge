@@ -104,6 +104,15 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Your passwords do not match",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
