@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,10 +9,9 @@ void main() {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-
   @override
   Widget build(BuildContext context) {
+    Firebase.initializeApp();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -55,8 +57,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   void _incrementCounter() {
+    firestore.collection("user").add(
+        {
+          "emailaddress" : "rayray",
+          "password" : "helloworld"
+        }).then((value){
+    });
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -65,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+    
   }
 
   @override
