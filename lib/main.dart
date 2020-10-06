@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  var email;
+  var pswd1;
+  var pswd2;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +25,8 @@ class MyApp extends StatelessWidget {
                 //Registration Form Text
                 Text(
                     'Registration Form',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 36.0),
                     textAlign: TextAlign.center
                 ),
 
@@ -28,7 +34,7 @@ class MyApp extends StatelessWidget {
                 Text(
                     'Fill in the fields below to create an account.',
                     style: TextStyle(fontSize: 20.0),
-                  textAlign: TextAlign.center
+                    textAlign: TextAlign.center
                 ),
 
                 // Edit text field (Email)
@@ -38,7 +44,7 @@ class MyApp extends StatelessWidget {
                     hintText: 'Email'
                 ),
                     onChanged: (val) {
-
+                      email = val;
                     }
                 ),
 
@@ -50,7 +56,7 @@ class MyApp extends StatelessWidget {
                     ),
                     obscureText: true,
                     onChanged: (val) {
-
+                      pswd1 = val;
                     }
                 ),
 
@@ -62,26 +68,24 @@ class MyApp extends StatelessWidget {
                     ),
                     obscureText: true,
                     onChanged: (val) {
-
+                      pswd2 = val;
                     }
                 ),
 
                 // SUBMIT button
                 SizedBox(height: 20.0),
-            ButtonTheme(
-              minWidth: double.infinity,
-               child: RaisedButton(
-                  color: Colors.yellow[400],
-                  child: Text(
-                    'SUBMIT',
-                    style: TextStyle(color: Colors.black),
+                ButtonTheme(
+                    minWidth: double.infinity,
+                    child: RaisedButton(
+                        color: Colors.yellow[400],
+                        child: Text(
+                          'SUBMIT',
+                          style: TextStyle(color: Colors.black),
 
-                  ),
-                  onPressed: () async {
-
-                  },
-                )
-               ),
+                        ),
+                        onPressed: checkPassword
+                    )
+                ),
               ],
             ),
           ),
@@ -89,4 +93,18 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  checkPassword() {
+    if (pswd1 == pswd2) {
+      Fluttertoast.showToast(
+          msg: "Your email is " + email + " and your passwords match",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
 }
