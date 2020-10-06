@@ -95,20 +95,21 @@ class MyApp extends StatelessWidget {
   }
 
   checkPassword() {
-    if (pswd1 == pswd2) {
+    if(pswd1.toString().length >= 8 && pswd1.contains(new RegExp(r'[A-Z]'), 0) && pswd1.contains(new RegExp(r'[a-z]'),0) &&
+        pswd1.contains(new RegExp(r'[0-9]'),0) && pswd1.contains(new RegExp(r"[\$&+,:;=?@#|'<>^*()%!-.]"),0) && pswd1 == pswd2){
       Fluttertoast.showToast(
           msg: "Your email is " + email + " and your passwords match",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
     } else {
       Fluttertoast.showToast(
-          msg: "Your passwords do not match",
+          msg: "Your passwords do not match or are invalid",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
           textColor: Colors.white,
