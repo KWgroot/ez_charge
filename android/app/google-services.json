@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "682781926259",
+    "firebase_url": "https://ezcharge-22de2.firebaseio.com",
+    "project_id": "ezcharge-22de2",
+    "storage_bucket": "ezcharge-22de2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682781926259:android:306fc64cf5bc6855a4db06",
+        "android_client_info": {
+          "package_name": "com.example.ez_charge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682781926259-o5q93b93arqubi5gb9gtaso29but1bcj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ez_charge",
+            "certificate_hash": "fc34aa0ca2066e3dd8c644f35b25e6d4acb7c6f9"
+          }
+        },
+        {
+          "client_id": "682781926259-dtot4a4kv7u6elq3agk8eajcgmkv5jmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSzEfgJ3W1Z8hVp9g999ORvD3fGcc0DGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682781926259-dtot4a4kv7u6elq3agk8eajcgmkv5jmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
