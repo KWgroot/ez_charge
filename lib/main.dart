@@ -88,6 +88,7 @@ class MyApp extends StatelessWidget {
   }
 
   submitForm() {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
     if (formKey.currentState.validate()) {
       if (pswd1 == pswd2) {
         Fluttertoast.showToast(
@@ -98,7 +99,9 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-        
+        firestore.collection("user")
+            .add({"emailaddress": email.toString(), "password": pswd1.toString()}).then(
+                (value) {});
       } else {
         Fluttertoast.showToast(
             msg: "Your passwords do not match",
