@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   var email;
@@ -13,7 +17,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Firebase.initializeApp();
     return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
@@ -99,9 +102,10 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
-        firestore.collection("user")
-            .add({"emailaddress": email.toString(), "password": pswd1.toString()}).then(
-                (value) {});
+        firestore.collection("user").add({
+          "emailaddress": email.toString(),
+          "password": pswd1.toString()
+        }).then((value) {});
       } else {
         Fluttertoast.showToast(
             msg: "Your passwords do not match",
