@@ -81,7 +81,9 @@ class MyApp extends StatelessWidget {
                           'SUBMIT',
                           style: TextStyle(color: Colors.black),
                         ),
-                        onPressed: submitForm)),
+                        onPressed: submitForm
+                    )
+                ),
               ],
             ),
           ),
