@@ -73,7 +73,10 @@ class Homepage extends StatelessWidget{
                       ),
 
                       SizedBox(height: 90),
-                      Text('Requires camera')
+                      Text('Requires camera')   // THIS LINE IS REQUIRED
+                                                // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
+                                                // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS
+                                                // IT WONT SCROLL ALL THE WAY DOWN WITHOUT THIS.
                     ]
                 )
             )
