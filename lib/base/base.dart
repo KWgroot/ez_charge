@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-submitForm(GlobalKey<FormState> formKey, String pswd1, String pswd2, String email) {
+bool submitForm(GlobalKey<FormState> formKey, String pswd1, String pswd2, String email) {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   if (formKey.currentState.validate()) {
     if (pswd1 == pswd2) {
@@ -20,6 +20,7 @@ submitForm(GlobalKey<FormState> formKey, String pswd1, String pswd2, String emai
         "emailaddress": email.toString(),
         "password": pswd1.toString()
       }).then((value) {});
+      return true;
     } else {
       Fluttertoast.showToast(
           msg: "Your passwords do not match",
@@ -29,8 +30,10 @@ submitForm(GlobalKey<FormState> formKey, String pswd1, String pswd2, String emai
           backgroundColor: Colors.black,
           textColor: Colors.white,
           fontSize: 16.0);
+      return false;
     }
   }
+  return false;
 }
 
 String validateEmail(String value) {
