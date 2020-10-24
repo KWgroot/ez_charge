@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'homepage.dart';
+import 'invoices.dart';
+import 'settings.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppPage extends StatefulWidget {
@@ -9,24 +12,13 @@ class AppPage extends StatefulWidget {
   _AppPageState createState() => _AppPageState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
+/// This is the private State class that goes with the AppPage class.
 class _AppPageState extends State<AppPage> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Page 2',
-      style: optionStyle,
-    ),
-    Text(
-      'Page 3',
-      style: optionStyle,
-    ),
+  final List<Widget> _widgetOptions = <Widget>[
+    Homepage(),
+    Invoices(),
+    Settings(),
   ];
 
   void _onItemTapped(int index) {
@@ -48,16 +40,18 @@ class _AppPageState extends State<AppPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Page 2',
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            label: 'Invoices',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Page 3',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.yellow,
+        unselectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),
     );
