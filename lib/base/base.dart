@@ -8,7 +8,7 @@ submitForm(GlobalKey<FormState> formKey, String pswd1, String pswd2, String emai
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   if (formKey.currentState.validate()) {
     if (pswd1 == pswd2) {
-      Fluttertoast.showToast(
+      Fluttertoast.showToast( //This will refer to the coming homepage instead of making a message.
           msg: "Your email is " + email + " and your passwords match",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
@@ -53,7 +53,7 @@ String validatePassword(String value) {
       !value.contains(new RegExp(r'[a-z]'), 0) ||
       !value.contains(new RegExp(r'[0-9]'), 0) ||
       !value.contains(new RegExp(r"[\$&+,:;=?@#|'<>^*()%!-.]"), 0)) {
-    return 'Please enter a vaid password';
+    return 'Please enter a valid password';
   } else {
     return null;
   }
