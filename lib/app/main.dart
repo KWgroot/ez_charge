@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
                 //Registration Form Text
                 Text('Registration Form',
                     style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
                     textAlign: TextAlign.center),
 
                 //Page Description Text
