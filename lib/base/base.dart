@@ -51,12 +51,16 @@ String validateEmail(String value) {
 String validatePassword(String value) {
   if (value.isEmpty) {
     return 'Please enter some text';
-  } else if (value.toString().length < 8 ||
-      !value.contains(new RegExp(r'[A-Z]'), 0) ||
-      !value.contains(new RegExp(r'[a-z]'), 0) ||
-      !value.contains(new RegExp(r'[0-9]'), 0) ||
-      !value.contains(new RegExp(r"[\$&+,:;=?@#|'<>^*()%!-.]"), 0)) {
-    return 'Please enter a valid password';
+  } else if (value.toString().length < 8 ){
+    return "Your password is to short";
+  } else if(!value.contains(new RegExp(r'[A-Z]'))){
+    return "Please put a Capital letter in your password";
+  } else if (!value.contains(new RegExp(r'[a-z]'))) {
+    return "Please put a lowercase letter in your password";
+  } else if (!value.contains(new RegExp(r'[0-9]'))){
+    return "Please put a number in your password";
+  } else if(!value.contains(new RegExp(r"[\$&+,:;=?@#|'<>^*()%!-.]"))) {
+    return 'Please put a special character in your password';
   } else {
     return null;
   }
