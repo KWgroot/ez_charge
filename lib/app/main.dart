@@ -93,6 +93,19 @@ class MyApp extends StatelessWidget {
                         }
                     )
                 ),
+                ButtonTheme(
+                    minWidth: double.infinity,
+                    child: RaisedButton(
+                        color: Colors.yellow[400],
+                        child: Text(
+                          'Skip Regi',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () =>{
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
+                        }
+                    )
+                ),
               ],
             ),
           ),
