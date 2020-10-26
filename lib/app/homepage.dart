@@ -136,6 +136,7 @@ class _QrCodeState extends State<Homepage> {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
+                Navigator.of(context).pop();
                 sessionStarted = true;
               },
             ),
