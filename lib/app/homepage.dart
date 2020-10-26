@@ -1,7 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-class Homepage extends StatelessWidget{
+class Homepage extends StatefulWidget{
+  @override
+  _QrCodeState createState() => _QrCodeState();
+}
+
+class _QrCodeState extends State<Homepage> {
+  String _data = "";
+
+  _scan() async {
+    await FlutterBarcodeScanner.scanBarcode(
+        "#000000", "Cancel", true, ScanMode.BARCODE).then((value) =>
+        setState(() => _data = value));
+
+    //open AlertDialog
+    if(_data != "-1") {
+      _showMyDialog();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +86,8 @@ class Homepage extends StatelessWidget{
                         icon: Icon(Icons.qr_code_scanner_rounded, size: 150),
                         alignment: Alignment.center,
                         padding: EdgeInsets.only(right: 125),
-                        onPressed: () {
+                        onPressed: () => _scan(),
                           //Open QR code scanner
-                        }
                       ),
 
                       SizedBox(height: 90),
@@ -83,4 +101,38 @@ class Homepage extends StatelessWidget{
         )
     );
   }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Start Charging?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Do you wish to start your charging session?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                _data = "";
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
