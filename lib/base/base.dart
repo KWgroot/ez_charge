@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 bool submitForm(GlobalKey<FormState> formKey, String pswd1, String pswd2, String email) {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
