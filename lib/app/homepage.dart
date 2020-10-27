@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+
 
 class Homepage extends StatefulWidget {
   @override
@@ -11,6 +14,8 @@ class Homepage extends StatefulWidget {
 class _QrCodeState extends State<Homepage> {
   String _data = "";
   bool sessionStarted = false;
+  int poleId = Random().nextInt(1000);
+  String docRef = "";
 
   _scan() async {
     await FlutterBarcodeScanner.scanBarcode(
@@ -94,7 +99,7 @@ class _QrCodeState extends State<Homepage> {
         padding: EdgeInsets.only(right: 125),
         onPressed: () {
           if (sessionStarted) {
-            stopSession();
+            stopSession(docRef);
           } else {
             _scan();
           }
@@ -136,8 +141,7 @@ class _QrCodeState extends State<Homepage> {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                Navigator.of(context).pop();
-                sessionStarted = true;
+                docRef = startSession();
               },
             ),
           ],
@@ -146,10 +150,28 @@ class _QrCodeState extends State<Homepage> {
     );
   }
 
-  stopSession() {
+  String startSession() {
+    String docRef = "";
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    firestore.collection("chargingSession").add({
+      "uid": 'test',
+      "poleId": poleId,
+      "startTime": DateTime.now(),
+      "stopTime": "",
+    }).then((value){docRef = value.id;});
+    Navigator.of(context).pop();
+    sessionStarted = true;
+    return docRef;
+  }
+
+  stopSession(docRef) {
     Widget stopSessionBtn = FlatButton(
       child: Text("Stop Session"),
       onPressed: () {
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        firestore.collection("chargingSession").doc(docRef).update({
+          "stopTime": DateTime.now(),
+        });
         Navigator.pop(context);
         sessionStarted = false;
         Fluttertoast.showToast(
