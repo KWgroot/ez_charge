@@ -140,8 +140,8 @@ class _QrCodeState extends State<Homepage> {
             ),
             TextButton(
               child: Text('Yes'),
-              onPressed: () {
-                docRef = startSession();
+              onPressed: () async {
+                docRef = await startSession();
               },
             ),
           ],
@@ -150,8 +150,8 @@ class _QrCodeState extends State<Homepage> {
     );
   }
 
-  String startSession() {
-    String docRef = "";
+  String async; startSession() {
+    String docRef;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     firestore.collection("chargingSession").add({
       "uid": 'test',
@@ -161,6 +161,7 @@ class _QrCodeState extends State<Homepage> {
     }).then((value){docRef = value.id;});
     Navigator.of(context).pop();
     sessionStarted = true;
+    print(docRef);
     return docRef;
   }
 
