@@ -1,3 +1,4 @@
+import 'app_page.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +6,17 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MaterialApp(
+    title: 'EzCharge',
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   var email;
   var pswd1;
   var pswd2;
+  var succes;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -31,7 +36,7 @@ class MyApp extends StatelessWidget {
                 //Registration Form Text
                 Text('Registration Form',
                     style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
                     textAlign: TextAlign.center),
 
                 //Page Description Text
@@ -41,6 +46,7 @@ class MyApp extends StatelessWidget {
 
                 // Edit text field (Email)
                 SizedBox(height: 20.0),
+
                 TextFormField(
                     decoration: new InputDecoration(hintText: 'Email'),
                     keyboardType: TextInputType.emailAddress,
@@ -63,7 +69,7 @@ class MyApp extends StatelessWidget {
                 SizedBox(height: 20.0),
                 TextFormField(
                     decoration:
-                    new InputDecoration(hintText: 'Confirm Password'),
+                        new InputDecoration(hintText: 'Confirm Password'),
                     obscureText: true,
                     validator: validatePassword,
                     onChanged: (val) {
@@ -80,11 +86,33 @@ class MyApp extends StatelessWidget {
                           'SUBMIT',
                           style: TextStyle(color: Colors.black),
                         ),
-                        onPressed: () =>{
-                          submitForm(formKey, pswd1, pswd2, email)
-                        }
-                    ),
-                )
+                        onPressed: () => {
+                              succes = submitForm(formKey, pswd1, pswd2, email),
+                              if (succes)
+                                {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AppPage()))
+                                }
+                            })),
+                ButtonTheme(
+                    minWidth: double.infinity,
+                    child: RaisedButton(
+                        color: Colors.yellow[400],
+                        child: Text(
+                          'Skip Regi',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AppPage()))
+                            })),
+                Text('Download the app for full experience.',
+                    style: TextStyle(fontSize: 20.0),
+                    textAlign: TextAlign.center),
               ],
             ),
           ),

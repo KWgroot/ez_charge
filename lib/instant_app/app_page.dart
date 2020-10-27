@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../base/screen/homepage.dart';
-import 'invoices.dart';
-import 'settings.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppPage extends StatefulWidget {
@@ -16,9 +14,7 @@ class AppPage extends StatefulWidget {
 class _AppPageState extends State<AppPage> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    Homepage(),
-    Invoices(),
-    Settings(),
+    Homepage()
   ];
 
   void _onItemTapped(int index) {
@@ -41,11 +37,11 @@ class _AppPageState extends State<AppPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance_wallet_outlined),
-            label: 'Invoices',
+            label: 'Not available',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: 'Not available',
           ),
         ],
         currentIndex: _selectedIndex,
