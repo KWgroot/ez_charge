@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 
-
 class Homepage extends StatefulWidget {
   @override
   _QrCodeState createState() => _QrCodeState();
@@ -150,18 +149,19 @@ class _QrCodeState extends State<Homepage> {
     );
   }
 
-  String async; startSession() {
+  startSession() async {
     String docRef;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    firestore.collection("chargingSession").add({
+    await firestore.collection("chargingSession").add({
       "uid": 'test',
       "poleId": poleId,
       "startTime": DateTime.now(),
       "stopTime": "",
-    }).then((value){docRef = value.id;});
+    }).then((value) {
+      docRef = value.id;
+    });
     Navigator.of(context).pop();
     sessionStarted = true;
-    print(docRef);
     return docRef;
   }
 
