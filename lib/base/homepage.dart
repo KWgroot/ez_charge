@@ -1,9 +1,11 @@
-import 'file:///C:/Users/arons/Documents/PROJECT%20MOBILE%20DEVELOPMENT/lib/base/charging.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
+
+import 'charging.dart';
 
 class Homepage extends StatefulWidget {
   @override
