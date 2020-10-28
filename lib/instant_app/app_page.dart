@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../base/screen/homepage.dart';
+import '../base/homepage.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppPage extends StatefulWidget {
