@@ -1,4 +1,4 @@
-import 'package:ez_charge/app/charging.dart';
+import 'file:///C:/Users/arons/Documents/PROJECT%20MOBILE%20DEVELOPMENT/lib/base/charging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
