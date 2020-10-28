@@ -1,7 +1,7 @@
+import 'package:ez_charge/app/charging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 
@@ -103,11 +103,7 @@ class _QrCodeState extends State<Homepage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(right: 125),
                     onPressed: () {
-                      if (sessionStarted) {
-                        stopSession(docRef);
-                      } else {
                         _scan();
-                      }
                     },
                     //Open QR code scanner
                   ),
@@ -148,6 +144,9 @@ class _QrCodeState extends State<Homepage> {
               onPressed: () async {
                 docRef = await startSession();
                 print(docRef);
+                Navigator.of(context).push(MaterialPageRoute
+                  (builder: (context) => Charging(docRef : docRef),
+                ));
               },
             ),
           ],
@@ -171,47 +170,5 @@ class _QrCodeState extends State<Homepage> {
     sessionStarted = true;
     return docRef;
 
-  }
-
-  stopSession(docRef) {
-    Widget stopSessionBtn = FlatButton(
-      child: Text("Stop Session"),
-      onPressed: () {
-        FirebaseFirestore firestore = FirebaseFirestore.instance;
-        firestore.collection("chargingSession").doc(docRef).update({
-          "stopTime": DateTime.now(),
-        });
-        Navigator.pop(context);
-        sessionStarted = false;
-        Fluttertoast.showToast(
-            msg: "Your session has stopped",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      },
-    );
-    //
-    Widget continueBtn = FlatButton(
-      child: Text("Continue Charging"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    //
-    AlertDialog alert = AlertDialog(
-      title: Text("Weet je zeker dat je de laadsessie wilt stoppen"),
-      content: Text(
-          "Als je de sessie stopt worden alle kosten die je tot nu toe hebt gemaakt in rekening gebracht"),
-      actions: [continueBtn, stopSessionBtn],
-    );
-    //
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        });
   }
 }
