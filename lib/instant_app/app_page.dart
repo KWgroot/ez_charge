@@ -9,7 +9,7 @@ class AppPage extends StatefulWidget {
   @override
   _AppPageState createState() => _AppPageState();
 }
-
+/// instant app
 /// This is the private State class that goes with the AppPage class.
 class _AppPageState extends State<AppPage> {
   int _selectedIndex = 0;
