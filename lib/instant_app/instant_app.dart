@@ -1,18 +1,24 @@
+import 'package:ez_charge/base/app_page.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MaterialApp(
+    title: 'EzCharge',
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   var email;
   var pswd1;
   var pswd2;
+  var succes;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -82,10 +88,12 @@ class MyApp extends StatelessWidget {
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () =>{
-                          Fluttertoast.showToast(msg: "test"),
-                          submitForm(formKey, pswd1, pswd2, email)
+                          succes = submitForm(formKey, pswd1, pswd2, email),
+                          if (succes) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
+                          }
                         }
-                    ),
+                    )
                 ),
                 ButtonTheme(
                     minWidth: double.infinity,
@@ -96,8 +104,7 @@ class MyApp extends StatelessWidget {
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () =>{
-                          Fluttertoast.showToast(msg: "test"),
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
                         }
                     )
                 ),
