@@ -1,6 +1,7 @@
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,10 +82,25 @@ class MyApp extends StatelessWidget {
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () =>{
+                          Fluttertoast.showToast(msg: "test"),
                           submitForm(formKey, pswd1, pswd2, email)
                         }
                     ),
-                )
+                ),
+                ButtonTheme(
+                    minWidth: double.infinity,
+                    child: RaisedButton(
+                        color: Colors.yellow[400],
+                        child: Text(
+                          'Skip Regi',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () =>{
+                          Fluttertoast.showToast(msg: "test"),
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()))
+                        }
+                    )
+                ),
               ],
             ),
           ),
