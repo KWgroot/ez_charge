@@ -1,4 +1,5 @@
 
+import 'package:ez_charge/instant_app/instant_app.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,27 +46,34 @@ class _QrCodeState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    initDynamicLinks();
+    handleDynamicLinks(context);
   }
 
-  void initDynamicLinks() async {
+  Future handleDynamicLinks(BuildContext context) async {
+    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+
+    _handleDeepLink(data, context);
+
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData dynamicLink) async {
-          final Uri deepLink = dynamicLink?.link;
-
-          if (deepLink != null) {
-            Navigator.pushNamed(context, deepLink.path);
-          }
+          // handle link that has been retrieved
+          _handleDeepLink(dynamicLink, context);
         }, onError: (OnLinkErrorException e) async {
-      print('onLinkError');
-      print(e.message);
+      print('Link Failed: ${e.message}');
     });
+  }
 
-    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+  void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
     final Uri deepLink = data?.link;
-
     if (deepLink != null) {
-      Navigator.pushNamed(context, deepLink.path);
+      print('_handleDeepLink | deeplink: $deepLink');
+      Fluttertoast.showToast(msg: "Chargingstation $deepLink");
+      //var isPost = deepLink.pathSegments.contains('post');
+      // var isInvite = deepLink.pathSegments.contains('invite');
+      // if(isInvite){
+      //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+      //       MyApp()), (Route<dynamic> route) => false);
+      // }
     }
   }
 
@@ -213,4 +221,6 @@ class _QrCodeState extends State<Homepage> {
     return docRef;
 
   }
+
+
 }
