@@ -1,4 +1,5 @@
 
+import 'package:ez_charge/base/base.dart';
 import 'package:ez_charge/instant_app/instant_app.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,34 +50,6 @@ class _QrCodeState extends State<Homepage> {
     handleDynamicLinks(context);
   }
 
-  Future handleDynamicLinks(BuildContext context) async {
-    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
-
-    _handleDeepLink(data, context);
-
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData dynamicLink) async {
-          // handle link that has been retrieved
-          _handleDeepLink(dynamicLink, context);
-        }, onError: (OnLinkErrorException e) async {
-      print('Link Failed: ${e.message}');
-    });
-  }
-
-  void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
-    final Uri deepLink = data?.link;
-    if (deepLink != null) {
-      print('_handleDeepLink | deeplink: $deepLink');
-      var poleId = deepLink.toString().split("=")[1];
-      Fluttertoast.showToast(msg: "Chargingstation $poleId");
-      //var isPost = deepLink.pathSegments.contains('post');
-      // var isInvite = deepLink.pathSegments.contains('invite');
-      // if(isInvite){
-      //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-      //       MyApp()), (Route<dynamic> route) => false);
-      // }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +64,9 @@ class _QrCodeState extends State<Homepage> {
                       textAlign: TextAlign.center),
 
                   SizedBox(height: 20),
+                  Text('ChargingStation:' + chargingStation,
+                      style: TextStyle(fontSize: 20.0),
+                      textAlign: TextAlign.center),
                   Text(
                       'This is a placeholder description.\n'
                           'When we think of a good description it will go here.',

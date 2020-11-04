@@ -103,7 +103,6 @@ class MyApp extends StatelessWidget {
                           style: TextStyle(color: Colors.black),
                         ),
                         onPressed: () =>{
-                          Fluttertoast.showToast(msg: "het werkt"),
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
                         }
                     )

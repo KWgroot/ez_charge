@@ -21,9 +21,11 @@ class MyApp extends StatelessWidget {
   var succes;
   final formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    handleDynamicLinks(context);
+  return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
         appBar: AppBar(
@@ -95,6 +97,7 @@ class MyApp extends StatelessWidget {
                         }
                     )
                 ),
+
                 ButtonTheme(
                     minWidth: double.infinity,
                     child: RaisedButton(

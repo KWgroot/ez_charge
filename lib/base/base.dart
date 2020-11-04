@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+var chargingStation = "";
 
 bool submitForm(GlobalKey<FormState> formKey, String pswd1, String pswd2, String email) {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -62,5 +65,35 @@ String validatePassword(String value) {
     return 'Please put a special character in your password';
   } else {
     return null;
+  }
+}
+
+Future handleDynamicLinks(BuildContext context) async {
+  final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+
+  _handleDeepLink(data, context);
+
+  FirebaseDynamicLinks.instance.onLink(
+      onSuccess: (PendingDynamicLinkData dynamicLink) async {
+        // handle link that has been retrieved
+        _handleDeepLink(dynamicLink, context);
+      }, onError: (OnLinkErrorException e) async {
+    print('Link Failed: ${e.message}');
+  });
+}
+
+void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
+  final Uri deepLink = data?.link;
+  if (deepLink != null) {
+    print('_handleDeepLink | deeplink: $deepLink');
+    var poleId = deepLink.toString().split("=")[1];
+    Fluttertoast.showToast(msg: "Chargingstation $poleId");
+    chargingStation = poleId;
+    //var isPost = deepLink.pathSegments.contains('post');
+    // var isInvite = deepLink.pathSegments.contains('invite');
+    // if(isInvite){
+    //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+    //       MyApp()), (Route<dynamic> route) => false);
+    // }
   }
 }
