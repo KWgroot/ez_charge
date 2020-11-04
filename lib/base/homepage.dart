@@ -67,7 +67,8 @@ class _QrCodeState extends State<Homepage> {
     final Uri deepLink = data?.link;
     if (deepLink != null) {
       print('_handleDeepLink | deeplink: $deepLink');
-      Fluttertoast.showToast(msg: "Chargingstation $deepLink");
+      var poleId = deepLink.toString().split("=")[1];
+      Fluttertoast.showToast(msg: "Chargingstation $poleId");
       //var isPost = deepLink.pathSegments.contains('post');
       // var isInvite = deepLink.pathSegments.contains('invite');
       // if(isInvite){
