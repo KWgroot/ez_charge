@@ -45,25 +45,33 @@ class MyApp extends StatelessWidget {
 
                 //Page Description Text
 
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    child: RaisedButton(
-                        color: Colors.yellow[400],
-                        child: Text(
-                          'Google Pay',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () =>{
-                          Fluttertoast.showToast(msg: "You simulated that you have payed"),
-                        }
-                    )
-                ),
+                SizedBox(height: 420.0),
+                ButtonTheme(child: buttonBottom(), minWidth: double.infinity,)
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class buttonBottom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+          child: RaisedButton(
+              color: Colors.yellow[400],
+              child: Text(
+                'Google Pay',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () =>{
+                Fluttertoast.showToast(msg: "You simulated that you have payed"),
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
+              }
+          )
     );
   }
 }
