@@ -35,7 +35,7 @@ class _InstantApp extends State<MyApp> {
     if(poleId == "") {
       handleDynamicLinks(context);
       poleId = getChargingStation();
-      test();
+      Timer(Duration(seconds: 3), () {setState(() {});});
     }
     return MaterialApp(
       title: 'EZCharge',
@@ -63,14 +63,6 @@ class _InstantApp extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  void test() {
-  Timer.periodic(Duration(seconds: 1),(timer){
-    if(poleId == ""){
-      setState(() {});
-    }
-  }) ;
   }
 }
 
