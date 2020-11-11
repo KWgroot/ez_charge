@@ -99,5 +99,6 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
 }
 
 String getChargingStation() {
+  Fluttertoast.showToast(msg: chargingStation);
   return chargingStation;
 }
