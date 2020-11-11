@@ -47,7 +47,6 @@ class _QrCodeState extends State<Homepage> {
     handleDynamicLinks(context);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
