@@ -1,8 +1,9 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../base/homepage.dart';
-import 'invoices.dart';
-import 'settings.dart';
+import 'homepage.dart';
+import '../app/invoices.dart';
+import '../app/settings.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppPage extends StatefulWidget {
@@ -11,9 +12,9 @@ class AppPage extends StatefulWidget {
   @override
   _AppPageState createState() => _AppPageState();
 }
-
 /// This is the private State class that goes with the AppPage class.
 class _AppPageState extends State<AppPage> {
+
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     Homepage(),

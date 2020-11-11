@@ -1,8 +1,12 @@
 
+import 'package:ez_charge/base/base.dart';
+import 'package:ez_charge/instant_app/instant_app.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:math';
 
 import 'charging.dart';
@@ -25,9 +29,27 @@ class _QrCodeState extends State<Homepage> {
 
     //open AlertDialog
     if (_data != "-1") {
-      _showMyDialog();
+
+      String chargingStationId = _data.split("/")[3];
+
+      _showMyDialog(chargingStationId);
     }
+
   }
+  String _linkMessage;
+  bool _isCreatingLink = false;
+  String _testString =
+      "To test: long press link and then copy and click from a non-browser "
+      "app. Make sure this isn't being tested on iOS simulator and iOS xcode "
+      "is properly setup. Look at firebase_dynamic_links/README.md for more "
+      "details.";
+
+  @override
+  void initState() {
+    super.initState();
+    handleDynamicLinks(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +64,9 @@ class _QrCodeState extends State<Homepage> {
                       textAlign: TextAlign.center),
 
                   SizedBox(height: 20),
+                  Text('ChargingStation:' + chargingStation,
+                      style: TextStyle(fontSize: 20.0),
+                      textAlign: TextAlign.center),
                   Text(
                       'This is a placeholder description.\n'
                           'When we think of a good description it will go here.',
@@ -119,7 +144,7 @@ class _QrCodeState extends State<Homepage> {
                 ]))));
   }
 
-  Future<void> _showMyDialog() async {
+  Future<void> _showMyDialog(String chargingStationId) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -129,7 +154,7 @@ class _QrCodeState extends State<Homepage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Do you wish to start your charging session?'),
+                Text('Do you wish to start your charging session at charging station: $chargingStationId?'),
               ],
             ),
           ),
@@ -173,4 +198,6 @@ class _QrCodeState extends State<Homepage> {
     return docRef;
 
   }
+
+
 }

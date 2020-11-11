@@ -1,7 +1,8 @@
 import 'package:ez_charge/base/registration.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'app_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../base/app_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
