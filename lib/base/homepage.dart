@@ -1,4 +1,3 @@
-
 import 'package:ez_charge/base/base.dart';
 import 'package:ez_charge/instant_app/instant_app.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
