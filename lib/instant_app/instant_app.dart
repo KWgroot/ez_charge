@@ -17,19 +17,26 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget with WidgetsBindingObserver {
-  var email;
-  var pswd1;
-  var pswd2;
-  var succes;
+class MyApp extends StatefulWidget with WidgetsBindingObserver {
+
+
+  @override
+  State<StatefulWidget> createState() {
+    return _InstantApp();
+  }
+}
+
+class _InstantApp extends State<MyApp> {
   final formKey = GlobalKey<FormState>();
   var poleId = "";
 
   @override
   Widget build(BuildContext context) {
-    handleDynamicLinks(context);
-    poleId = getChargingStation();
-    // checkIfAppIsInUse()
+    if(poleId == "") {
+      handleDynamicLinks(context);
+      poleId = getChargingStation();
+      test();
+    }
     return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
@@ -58,15 +65,12 @@ class MyApp extends StatelessWidget with WidgetsBindingObserver {
     );
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    String last = 'run';
-    if(state == AppLifecycleState.paused){
-      last = 'paused';
-  } else if(last == 'paused' && state == AppLifecycleState.resumed){
-      last = 'run';
+  void test() {
+  Timer.periodic(Duration(seconds: 1),(timer){
+    if(poleId == ""){
       setState(() {});
     }
+  }) ;
   }
 }
 
