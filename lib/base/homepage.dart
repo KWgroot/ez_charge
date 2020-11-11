@@ -1,12 +1,10 @@
 import 'package:ez_charge/base/base.dart';
-import 'package:ez_charge/instant_app/instant_app.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:math';
+import '../app/global_variables.dart' as globals;
 
 import 'charging.dart';
 
@@ -185,7 +183,7 @@ class _QrCodeState extends State<Homepage> {
     String docRef;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     await firestore.collection("chargingSession").add({
-      "uid": 'test',
+      "uid": globals.user.uid,
       "poleId": poleId,
       "startTime": DateTime.now(),
       "stopTime": "",
@@ -195,7 +193,6 @@ class _QrCodeState extends State<Homepage> {
     Navigator.of(context).pop();
     sessionStarted = true;
     return docRef;
-
   }
 
 

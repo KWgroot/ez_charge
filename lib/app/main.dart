@@ -1,11 +1,10 @@
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../base/app_page.dart';
+import 'registration.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-//Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
+import 'global_variables.dart' as globals;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -111,7 +110,27 @@ class _LoginPageState extends State<LoginPage> {
                         : 'Sign in failed'),
                     style: TextStyle(color: Colors.red),
                   ),
-                )
+                ),
+
+                SizedBox(height: 60.0),
+                Text('Dont have an account yet? Register here.',
+                    style: TextStyle(fontSize: 20.0),
+                    textAlign: TextAlign.center),
+
+                SizedBox(height: 20.0),
+                ButtonTheme(
+                    minWidth: double.infinity,
+                    child: RaisedButton(
+                        color: Colors.yellow[400],
+                        child: Text(
+                          'Register',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+                        }
+                    )
+                ),
               ],
             ),
           ),
@@ -137,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _success = true;
         _userEmail = user.email;
+        globals.user = user;
         Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
       });
     } else {
@@ -146,106 +166,3 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 }
-
-/*
-var email;
-  var pswd1;
-  var pswd2;
-  var succes;
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'EZCharge',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('EZCharge '),
-        ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: <Widget>[
-                //Registration Form Text
-                Text('Registration Form',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                    textAlign: TextAlign.center),
-
-                //Page Description Text
-                Text('Fill in the fields below to create an account.',
-                    style: TextStyle(fontSize: 20.0),
-                    textAlign: TextAlign.center),
-
-                // Edit text field (Email)
-                SizedBox(height: 20.0),
-                TextFormField(
-                    decoration: new InputDecoration(hintText: 'Email'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: validateEmail,
-                    onChanged: (val) {
-                      email = val;
-                    }),
-
-                // Edit text field (Password)
-                SizedBox(height: 20.0),
-                TextFormField(
-                    decoration: new InputDecoration(hintText: 'Password'),
-                    obscureText: true,
-                    validator: validatePassword,
-                    onChanged: (val) {
-                      pswd1 = val;
-                    }),
-
-                // Edit text field (Confirm Password)
-                SizedBox(height: 20.0),
-                TextFormField(
-                    decoration:
-                        new InputDecoration(hintText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: validatePassword,
-                    onChanged: (val) {
-                      pswd2 = val;
-                    }),
-
-                // SUBMIT button
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    child: RaisedButton(
-                        color: Colors.yellow[400],
-                        child: Text(
-                          'SUBMIT',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () =>{
-                          succes = submitForm(formKey, pswd1, pswd2, email),
-                          if (succes) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
-                          }
-                        }
-                    )
-                ),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    child: RaisedButton(
-                        color: Colors.yellow[400],
-                        child: Text(
-                          'Skip Regi',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () =>{
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
-                        }
-                    )
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
- */
