@@ -97,3 +97,7 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
     // }
   }
 }
+
+String getChargingStation() {
+  return chargingStation;
+}

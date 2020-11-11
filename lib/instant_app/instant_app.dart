@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   var pswd2;
   var succes;
   final formKey = GlobalKey<FormState>();
+  // double height = ;
 
 
   @override
@@ -32,8 +33,9 @@ class MyApp extends StatelessWidget {
           title: Text('EZCharge '),
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
+          padding: EdgeInsets.symmetric(horizontal: 50.0,),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - kToolbarHeight,
             key: formKey,
             child: Column(
               children: <Widget>[
@@ -45,7 +47,9 @@ class MyApp extends StatelessWidget {
 
                 //Page Description Text
 
-                SizedBox(height: 420.0),
+                // SizedBox(height: 420.0),
+                Spacer(),
+                Text('If you push the button below you are paying for a charging session on pole: ' + getChargingStation()),
                 ButtonTheme(child: buttonBottom(), minWidth: double.infinity,)
               ],
             ),
