@@ -9,11 +9,18 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MaterialApp(
     title: 'EzCharge',
-    home: MyApp(),
+    home: Login(),
   ));
 }
 
-class MyApp extends StatelessWidget {
+class Login extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+  }
+}
+
+class MyApp extends StatelessWidget { // For some unknown reason I cannot refractor this to Registration.
   var email;
   var pswd1;
   var pswd2;
