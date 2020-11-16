@@ -1,10 +1,9 @@
-import 'package:ez_charge/base/registration.dart';
-
-import 'app_page.dart';
+import 'package:ez_charge/base/app_page.dart';
+import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-///instant app
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +20,12 @@ class MyApp extends StatelessWidget {
   var pswd2;
   var succes;
   final formKey = GlobalKey<FormState>();
+  // double height = ;
+
 
   @override
   Widget build(BuildContext context) {
+    handleDynamicLinks(context);
     return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
@@ -31,96 +33,49 @@ class MyApp extends StatelessWidget {
           title: Text('EZCharge '),
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
+          padding: EdgeInsets.symmetric(horizontal: 50.0,),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - kToolbarHeight,
             key: formKey,
             child: Column(
               children: <Widget>[
                 //Registration Form Text
-                Text('Registration Form',
+                Text('Charge your car',
                     style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
                     textAlign: TextAlign.center),
 
                 //Page Description Text
-                Text('Fill in the fields below to create an account.',
-                    style: TextStyle(fontSize: 20.0),
-                    textAlign: TextAlign.center),
 
-                // Edit text field (Email)
-                SizedBox(height: 20.0),
-
-                TextFormField(
-                    decoration: new InputDecoration(hintText: 'Email'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: validateEmail,
-                    onChanged: (val) {
-                      email = val;
-                    }),
-
-                // Edit text field (Password)
-                SizedBox(height: 20.0),
-                TextFormField(
-                    decoration: new InputDecoration(hintText: 'Password'),
-                    obscureText: true,
-                    validator: validatePassword,
-                    onChanged: (val) {
-                      pswd1 = val;
-                    }),
-
-                // Edit text field (Confirm Password)
-                SizedBox(height: 20.0),
-                TextFormField(
-                    decoration:
-                    new InputDecoration(hintText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: validatePassword,
-                    onChanged: (val) {
-                      pswd2 = val;
-                    }),
-
-                // SUBMIT button
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    child: RaisedButton(
-                        color: Colors.yellow[400],
-                        child: Text(
-                          'SUBMIT',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () => {
-                          succes = submitForm(formKey, pswd1, pswd2, email),
-                          if (succes)
-                            {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AppPage()))
-                            }
-                        })),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    child: RaisedButton(
-                        color: Colors.yellow[400],
-                        child: Text(
-                          'Skip Regi',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        onPressed: () => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AppPage()))
-                        })),
-                Text('Download the app for full experience.',
-                    style: TextStyle(fontSize: 20.0),
-                    textAlign: TextAlign.center),
+                // SizedBox(height: 420.0),
+                Spacer(),
+                Text('If you push the button below you are paying for a charging session on pole: ' + getChargingStation()),
+                ButtonTheme(child: buttonBottom(), minWidth: double.infinity,)
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class buttonBottom extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+          child: RaisedButton(
+              color: Colors.yellow[400],
+              child: Text(
+                'Google Pay',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () =>{
+                Fluttertoast.showToast(msg: "You simulated that you have payed"),
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()))
+              }
+          )
     );
   }
 }
