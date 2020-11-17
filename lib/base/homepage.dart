@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,19 @@ class _QrCodeState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    handleDynamicLinks(context);
+
+
+    Timer(Duration(seconds: 2), () {
+      setState(() {});
+
+      //check if chargingStation var is empty. if yes, then get chargingStation
+      //id via deeplink.
+      if(chargingStation.isEmpty){
+        handleDynamicLinks(context);
+      }
+
+    });
+
   }
 
   @override
@@ -166,6 +180,7 @@ class _QrCodeState extends State<Homepage> {
               child: Text('Yes'),
               onPressed: () async {
                 docRef = await startSession();
+                chargingStation = chargingStationId.toString();
                 print(docRef);
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),
