@@ -38,9 +38,8 @@ class Charging extends StatelessWidget {
         //server sided function (see firebase cloud functions)
         // set up POST request arguments
         Map<String, String> headers = {"Content-type": "application/json"};
-        String json = '{"title": "Hello", "body": "body text", "userId": 1}';
 
-        http.post('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail?id=' + globals.user.uid.toString(), headers: headers, body: json);
+        http.post('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail?id=' + globals.user.uid.toString(), headers: headers);
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "Your session has stopped",
