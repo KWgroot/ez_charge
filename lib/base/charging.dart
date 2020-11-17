@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +41,8 @@ class Charging extends StatelessWidget {
         // set up POST request arguments
         Map<String, String> headers = {"Content-type": "application/json"};
 
-        http.post('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail?id=' + globals.user.uid.toString(), headers: headers);
+        http.post('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail?id=' + globals.user.uid.toString(), headers: headers,
+            body: jsonEncode(<String, String>{'title' : 'title'}));
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "Your session has stopped",
