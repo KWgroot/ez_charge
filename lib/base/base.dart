@@ -54,7 +54,7 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
   if (deepLink != null) {
     print('_handleDeepLink | deeplink: $deepLink');
     var poleId = deepLink.toString().split("=")[1];
-    Fluttertoast.showToast(msg: "Chargingstation $poleId");
+    // Fluttertoast.showToast(msg: "Chargingstation $poleId");
     chargingStation = poleId;
     //var isPost = deepLink.pathSegments.contains('post');
     // var isInvite = deepLink.pathSegments.contains('invite');
@@ -66,5 +66,6 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
 }
 
 String getChargingStation() {
+  // Fluttertoast.showToast(msg: chargingStation);
   return chargingStation;
 }

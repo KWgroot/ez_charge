@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                         ? ''
                         : (_success
                         ? 'Successfully signed in ' + _userEmail
-                        : 'Sign in failed'),
+                        : 'Incorrect user credentials, try again.'),
                     style: TextStyle(color: Colors.red),
                   ),
                 ),

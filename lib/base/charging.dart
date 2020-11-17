@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
-
 class Charging extends StatelessWidget {
   String docRef;
   Charging({this.docRef});
@@ -30,13 +29,13 @@ class Charging extends StatelessWidget {
   stopSession(docRef, context) {
     Widget stopSessionBtn = FlatButton(
       child: Text("Stop Session"),
-      onPressed: () async{
+      onPressed: () {
         FirebaseFirestore firestore = FirebaseFirestore.instance;
         firestore.collection("chargingSession").doc(docRef).update({
           "stopTime": DateTime.now(),
         });
-          //server sided function (see firebase cloud functions)
-          http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail');
+        //server sided function (see firebase cloud functions)
+        http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail');
         Navigator.pop(context);
         Fluttertoast.showToast(
             msg: "Your session has stopped",
