@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../base/app_page.dart';
 import 'package:http/http.dart' as http;
 import '../app/global_variables.dart' as globals;
 
@@ -38,12 +37,7 @@ class Charging extends StatelessWidget {
           "stopTime": DateTime.now(),
         });
         //server sided function (see firebase cloud functions)
-        // set up POST request arguments
-        Map<String, String> headers = {"Content-type": "application/json"};
-
-        http.post('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail', headers: headers,
-            body: jsonEncode(<String, String>{"id" : globals.user.uid.toString()}));
-        Navigator.pop(context);
+        http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail?id=' + globals.user.uid.toString());
         Fluttertoast.showToast(
             msg: "Your session has stopped",
             toastLength: Toast.LENGTH_SHORT,
@@ -53,6 +47,7 @@ class Charging extends StatelessWidget {
             textColor: Colors.white,
             fontSize: 16.0);
         Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
       },
     );
     //
