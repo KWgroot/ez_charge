@@ -137,13 +137,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
       setState(() {
         _success = true;
         _userEmail = user.email;
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyApp()));
+        sendVerificationEmail();
       });
     } else {
       setState(() {
         _success = true;
       });
+    }
+  }
+
+
+  void sendVerificationEmail() async {
+    User user = FirebaseAuth.instance.currentUser;
+    if (!user.emailVerified) {
+      Fluttertoast.showToast(msg: "Er is een email verificatie link verstuurd naar " + _userEmail + ".");
+      print(_userEmail);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyApp()));
+      await user.sendEmailVerification();
     }
   }
 }
