@@ -75,11 +75,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(height: 20.0),
                 ButtonTheme(
                     minWidth: double.infinity,
+                    height: 40.0,
                     child: RaisedButton(
                         color: Colors.yellow[400],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                        ),
                         child: Text(
                           'Register',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0
+                          ),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {

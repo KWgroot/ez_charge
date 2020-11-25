@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../base/app_page.dart';
+import '../app/app_page.dart';
 import 'package:http/http.dart' as http;
 import '../app/global_variables.dart' as globals;
 

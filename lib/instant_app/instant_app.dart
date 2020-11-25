@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ez_charge/base/app_page.dart';
 import 'package:ez_charge/base/base.dart';
+import 'package:ez_charge/instant_app/app_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
