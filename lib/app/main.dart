@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'file:///D:/Github/ez_charge/lib/app/onboarding/body.dart';
+import 'package:device_info/device_info.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -55,7 +55,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
 
     Timer(Duration(seconds: 1), () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
+      String id = getDeviceId();
+      if(true){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
+      }
+
 
     });
     // Timer(Duration(seconds: 5), () {
@@ -201,4 +205,24 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+}
+
+getDeviceId() {
+  FutureBuilder(
+    future: deviceId(), builder: (BuildContext context, AsyncSnapshot snap){
+      if(snap.hasData){
+
+      }
+      if(snap.hasError){
+        return snap.error;
+      }
+      return snap.data;
+    },
+  );
+}
+
+deviceId() async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  return androidInfo.id;
 }

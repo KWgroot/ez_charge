@@ -52,13 +52,39 @@ class _body extends State<body> {
             ),
             Expanded(
               flex: 2,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: List.generate(onboardingData.length, (index) => buildDot(index: index)),
-                  )
-                ],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    Spacer(flex: 1,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center ,
+                      children: List.generate(onboardingData.length, (index) => buildDot(index: index)),
+                    ),
+                    Spacer(flex: 7,),
+                    ButtonTheme(
+                        minWidth: double.infinity,
+                        height: 40.0,
+                        child: RaisedButton(
+                            color: Colors.yellow[400],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                            child: Text(
+                              'Overslaan',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0
+                              ),
+                            ),
+                            onPressed: () {Navigator.of(context).pop();}
+                        )
+                    ),
+                    Spacer(flex: 4,)
+                  ],
+                ),
               ),
+
             )
           ],
         ),
@@ -71,7 +97,7 @@ class _body extends State<body> {
       duration: ANIMATION_DURATION,
       margin: EdgeInsets.only(right: 5),
       height: 6,
-      width: currentPage == index ? 20 : 6,
+      width: currentPage == index ? 12 : 6,
       decoration: BoxDecoration(
         color: currentPage == index ? SELECTED_DOT : UNSELECTED_DOT,
         borderRadius:  BorderRadius.circular(3)
@@ -94,7 +120,7 @@ class OnboardingContent extends StatelessWidget {
     return Column(
       children: [
         Spacer(
-          flex: 4,
+          flex: 3,
         ),
         Text(
           "EzCharge",
@@ -103,7 +129,7 @@ class OnboardingContent extends StatelessWidget {
           )
         ),
         Spacer(
-          flex: 5,
+          flex: 6,
         ),
         Text(
           text,
@@ -113,7 +139,7 @@ class OnboardingContent extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         Spacer(
-          flex: 5,
+          flex: 1,
         ),
         Image.asset(
           image,
