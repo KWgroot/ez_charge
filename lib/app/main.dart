@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'app_page.dart';
+import 'global_variables.dart';
 import 'registration.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'global_variables.dart' as globals;
@@ -53,14 +54,41 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    Timer(Duration(seconds: 1), () {
-      String id = getDeviceId();
-      if(true){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
-      }
+    Timer(Duration(seconds: 1), () async {
+      String id = await getDeviceId();
+      String deviceIdFromFirestore = "";
+      
+      await firestore.collection(COLLECTION_ONBOARDING).get().then((value) =>
+      {
+
+        if(value.docs.length == 0){
+          print("null"),
+          firestore.collection(COLLECTION_ONBOARDING).add({
+            "device_id": id
+          })
+        },
 
 
+        value.docs.forEach((results) {
+          results.data();
+          if (value.docs.length > 0) {
+            deviceIdFromFirestore = value.docs[0].get("device_id");
+
+            if(deviceIdFromFirestore == id){
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
+            }else{
+              firestore.collection(COLLECTION_ONBOARDING).add({
+              "device_id": id
+            });
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
+            }
+          } else {
+            print("no records");
+          }
+        })
+      });
     });
     // Timer(Duration(seconds: 5), () {
     //   Navigator.pop(context);
@@ -73,108 +101,7 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: Text('EZCharge '),
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                //Registration Form Text
-                Text('Welcome to EzCharge',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                    textAlign: TextAlign.center),
-
-                //Page Description Text
-                Text('Fill in the fields below to login.',
-                    style: TextStyle(fontSize: 20.0),
-                    textAlign: TextAlign.center),
-
-                // Edit text field (Email)
-                SizedBox(height: 20.0),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: validateEmail,
-                ),
-
-                // Edit text field (Password)
-                SizedBox(height: 20.0),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                ),
-
-                // SUBMIT button
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    height: 40.0,
-                    child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        ),
-                        color: Colors.yellow[400],
-                        child: Text(
-                            'Login',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0
-                            )
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            _signInWithEmailAndPassword();
-                          }
-                        }
-                    )
-                ),
-
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    _success == null
-                        ? ''
-                        : (_success
-                        ? 'Successfully signed in ' + _userEmail
-                        : 'Incorrect user credentials, try again.'),
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-
-                SizedBox(height: 60.0),
-                Text('Dont have an account yet? Register here.',
-                    style: TextStyle(fontSize: 20.0),
-                    textAlign: TextAlign.center),
-
-                SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    height: 40.0,
-                    child: RaisedButton(
-                        color: Colors.yellow[400],
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        ),
-                        child: Text(
-                          'Register',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
-                        }
-                    )
-                ),
-              ],
-            ),
-          ),
-        ),
+        body: bodyWidget()
       ),
     );
   }
@@ -205,24 +132,115 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
-}
 
-getDeviceId() {
-  FutureBuilder(
-    future: deviceId(), builder: (BuildContext context, AsyncSnapshot snap){
-      if(snap.hasData){
+  Widget bodyWidget() {
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            //Registration Form Text
+            Text('Welcome to EzCharge',
+                style:
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                textAlign: TextAlign.center),
 
-      }
-      if(snap.hasError){
-        return snap.error;
-      }
-      return snap.data;
-    },
-  );
-}
+            //Page Description Text
+            Text('Fill in the fields below to login.',
+                style: TextStyle(fontSize: 20.0),
+                textAlign: TextAlign.center),
 
-deviceId() async {
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-  return androidInfo.id;
+            // Edit text field (Email)
+            SizedBox(height: 20.0),
+            TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+              validator: validateEmail,
+            ),
+
+            // Edit text field (Password)
+            SizedBox(height: 20.0),
+            TextFormField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+
+            // SUBMIT button
+            SizedBox(height: 20.0),
+            ButtonTheme(
+                minWidth: double.infinity,
+                height: 40.0,
+                child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    color: Colors.yellow[400],
+                    child: Text(
+                        'Login',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.0
+                        )
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        _signInWithEmailAndPassword();
+                      }
+                    }
+                )
+            ),
+
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                _success == null
+                    ? ''
+                    : (_success
+                    ? 'Successfully signed in ' + _userEmail
+                    : 'Incorrect user credentials, try again.'),
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+
+            SizedBox(height: 60.0),
+            Text('Dont have an account yet? Register here.',
+                style: TextStyle(fontSize: 20.0),
+                textAlign: TextAlign.center),
+
+            SizedBox(height: 20.0),
+            ButtonTheme(
+                minWidth: double.infinity,
+                height: 40.0,
+                child: RaisedButton(
+                    color: Colors.yellow[400],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Text(
+                      'Register',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+                    }
+                )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  getDeviceId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    return androidInfo.id;
+  }
 }
