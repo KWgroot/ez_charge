@@ -35,14 +35,15 @@ class _QrCodeState extends State<Homepage> {
     await FlutterBarcodeScanner.scanBarcode(
         "#000000", "Cancel", true, ScanMode.BARCODE)
         .then((value) => setState(() => _data = value));
-
+    await handleDynamicLinks(context);
     //open AlertDialog
     if (_data != "-1") {
-      String chargingStationId = getChargingStation();
+      //add id to global id
+      globals.chargingStation = _data.split("/")[3];
       if(isConnected()){
         _showConnectionDialog();
       }else{
-        _showMyDialog(chargingStationId);
+        _showMyDialog(globals.chargingStation);
       }
 
     }
@@ -75,8 +76,7 @@ class _QrCodeState extends State<Homepage> {
 
       //check if chargingStation var is empty. if yes, then get chargingStation
       //id via deeplink.
-      if(chargingStation.isEmpty){
-        handleDynamicLinks(context);
+      if(globals.chargingStation.isEmpty){
         hasStation = "";
       }else{
         hasStation = "Laad station: ";
@@ -110,6 +110,7 @@ class _QrCodeState extends State<Homepage> {
     }
   }
 
+
   isConnected(){
     int randomNum = Random().nextInt(5);
     bool connected = randomNum>3;
@@ -130,11 +131,6 @@ class _QrCodeState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    if(poleId == "") {
-      handleDynamicLinks(context);
-      Timer(Duration(seconds: 3), () {setState(() {});});
-      getInformation();
-    }
     return Scaffold(
         body: SingleChildScrollView(
             child: Form(
@@ -145,19 +141,18 @@ class _QrCodeState extends State<Homepage> {
                           fontWeight: FontWeight.bold, fontSize: 36.0),
                       textAlign: TextAlign.center),
 
-                    SizedBox(height: 10),
-                    Text(hasStation + chargingStation,
-                        style: TextStyle(fontSize: 20.0),
-                        textAlign: TextAlign.center),
-
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
+                  Text(hasStation + globals.chargingStation,
+                      style: TextStyle(fontSize: 20.0),
+                      textAlign: TextAlign.center),
                   Text(
-                      'Welkom bij EzCharge, \n uw manier om makkelijker op te laden.',
+                      'This is a placeholder description.\n'
+                          'When we think of a good description it will go here.',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center),
 
                   SizedBox(height: 30),
-                  Text('Recente laad sessies',
+                  Text('Most recent sessions',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 24.0),
                       textAlign: TextAlign.center),
@@ -257,7 +252,7 @@ class _QrCodeState extends State<Homepage> {
               child: Text('Yes'),
               onPressed: () async {
                 docRef = await startSession();
-                chargingStation = chargingStationId.toString();
+                globals.chargingStation = chargingStationId.toString();
                 print(docRef);
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),

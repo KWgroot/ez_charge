@@ -1,19 +1,18 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'app_page.dart';
 import 'global_variables.dart';
 import 'registration.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'global_variables.dart' as globals;
-
-const String TITLE = "EzCharge";
-const String WEBSITE_ADDRESS_TO_TEST = "www.google.com";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,48 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    Timer(Duration(seconds: 1), () async {
-      String id = await getDeviceId();
-      String deviceIdFromFirestore = "";
-      bool idExist = false;
-
-      await firestore.collection(COLLECTION_ONBOARDING).get().then((value) =>
-      {
-
-        //Loop
-        value.docs.forEach((results) {
-
-          //check if the list with ids is not empty
-          //else it will create a collection and upload the device id for first time
-          //and redirect user to the onboarding screen.
-          if (value.docs.length > 0) {
-            deviceIdFromFirestore = results.data()["device_id"] ;
-
-            if(deviceIdFromFirestore == id){
-              idExist = true;
-            }
-          } else{
-            firestore.collection(COLLECTION_ONBOARDING).add({
-            "device_id": id
-            });
-
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
-          }
-
-        }),
-          //If list exist, and user doesnt, then run
-          if(!idExist){
-            firestore.collection(COLLECTION_ONBOARDING).add({
-              "device_id": id
-            }),
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding())),
-            idExist = true
-          }
-
-      });
-    });
+    onBoarding();
 
     return MaterialApp(
       title: 'EZCharge',
@@ -105,6 +63,48 @@ class _LoginPageState extends State<LoginPage> {
         body: bodyWidget()
       ),
     );
+  }
+
+  void onBoarding() async{
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String id = await getDeviceId();
+    String deviceIdFromFirestore = "";
+    bool idExist = false;
+
+    await firestore.collection(COLLECTION_ONBOARDING).get().then((value) =>
+    {
+
+      //Loop
+      value.docs.forEach((results) {
+
+        //check if the list with ids is not empty
+        //else it will create a collection and upload the device id for first time
+        //and redirect user to the onboarding screen.
+        if (value.docs.length > 0) {
+          deviceIdFromFirestore = results.data()["device_id"] ;
+
+          if(deviceIdFromFirestore == id){
+            idExist = true;
+          }
+        } else{
+          firestore.collection(COLLECTION_ONBOARDING).add({
+            "device_id": id
+          });
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
+        }
+
+      }),
+      //If list exist, and user doesnt, then run
+      if(!idExist){
+        firestore.collection(COLLECTION_ONBOARDING).add({
+          "device_id": id
+        }),
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding())),
+        idExist = true
+      }
+
+    });
   }
 
   @override
@@ -241,7 +241,17 @@ class _LoginPageState extends State<LoginPage> {
 
   getDeviceId() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    return androidInfo.id;
+
+    if (Platform.isAndroid) {
+      // Android-specific code
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id;
+
+    } else if (Platform.isIOS) {
+      // iOS-specific code
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor;
+    }
+
   }
 }
