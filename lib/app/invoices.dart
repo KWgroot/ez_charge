@@ -35,7 +35,7 @@ class invoiceScreen extends State<Invoices> {
     if(date.length > 1){
       setState(() {});
     } else {
-      Timer(Duration(seconds: 3), () {checkArray();});
+      Timer(Duration(seconds: 2), () {checkArray();});
     }
   }
   getInformation() async{
@@ -43,16 +43,12 @@ class invoiceScreen extends State<Invoices> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     QuerySnapshot docRef = await firestore.collection("chargingSession").orderBy('stopTime', descending: true).where('uid', isEqualTo: globals.user.uid).get();
     docs = docRef.docs;
-    print(docs);
     for(var doc in docs){
-      var endDate = DateTime.fromMillisecondsSinceEpoch(doc.get('stopTime').seconds);
-      // print(doc.get('stopTime').seconds);
-      date.add(DateFormat('yyyy-MM-dd hh:mm').format(endDate));
-      print(DateFormat('yyyy-MM-dd hh:mm').format(endDate));
-      number.add(1);
-      amount.add(doc.get  ('stopTime').seconds - doc.get('startTime').seconds * 0.005);
+      var endDate = DateTime.fromMillisecondsSinceEpoch((doc.get('stopTime').seconds * 1000));
+      date.add(DateFormat('yy-MM-dd HH:mm').format(endDate));
+      number.add(doc.documentID);
+      amount.add(((doc.get('stopTime').seconds - doc.get('startTime').seconds) * 0.0015).toStringAsFixed(2));
     }
-    // await docs.getData().then(DocumentSnapshot snapshot) async{})
   }
 
   @override
