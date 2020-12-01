@@ -30,11 +30,13 @@ class _QrCodeState extends State<Homepage> {
     await handleDynamicLinks(context);
     //open AlertDialog
     if (_data != "-1") {
-      String chargingStationId = _data.split("/")[3];
+
+      //add id to global id
+      globals.chargingStation = _data.split("/")[3];
       if(isConnected()){
         _showConnectionDialog();
       }else{
-        _showMyDialog(chargingStationId);
+        _showMyDialog(globals.chargingStation);
       }
     }
 
@@ -91,7 +93,7 @@ class _QrCodeState extends State<Homepage> {
                       textAlign: TextAlign.center),
 
                   SizedBox(height: 20),
-                  Text('ChargingStation:' + chargingStation,
+                  Text('ChargingStation:' + globals.chargingStation,
                       style: TextStyle(fontSize: 20.0),
                       textAlign: TextAlign.center),
                   Text(
@@ -201,7 +203,7 @@ class _QrCodeState extends State<Homepage> {
               child: Text('Yes'),
               onPressed: () async {
                 docRef = await startSession();
-                chargingStation = chargingStationId.toString();
+                globals.chargingStation = chargingStationId.toString();
                 print(docRef);
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),

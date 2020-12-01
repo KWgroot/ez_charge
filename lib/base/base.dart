@@ -1,9 +1,9 @@
+import '../app/global_variables.dart' as globals;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-var chargingStation = "";
+
 
 String validateEmail(String value) {
   Pattern pattern =
@@ -52,10 +52,10 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
   if (deepLink != null) {
     print('_handleDeepLink | deeplink: $deepLink');
     var poleId = deepLink.toString().split("=")[1];
-    chargingStation = poleId;
+    globals.chargingStation = poleId;
   }
 }
 
 String getChargingStation() {
-  return chargingStation;
+  return globals.chargingStation;
 }
