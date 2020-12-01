@@ -27,11 +27,13 @@ class _QrCodeState extends State<Homepage> {
     await FlutterBarcodeScanner.scanBarcode(
         "#000000", "Cancel", true, ScanMode.BARCODE)
         .then((value) => setState(() => _data = value));
-
+    await handleDynamicLinks(context);
     //open AlertDialog
     if (_data != "-1") {
-      String chargingStationId = getChargingStation();
-      _showMyDialog(chargingStationId);
+
+      //add value to global var
+      chargingStation = _data.split("/")[3];
+      _showMyDialog(chargingStation);
     }
 
   }
@@ -47,23 +49,12 @@ class _QrCodeState extends State<Homepage> {
   void initState() {
     User user = FirebaseAuth.instance.currentUser;
     super.initState();
-
     if (user.emailVerified) {
       _isButtonDisabled = false;
     } else {
       _isButtonDisabled = true;
     }
 
-    Timer(Duration(seconds: 2), () {
-      setState(() {});
-
-      //check if chargingStation var is empty. if yes, then get chargingStation
-      //id via deeplink.
-      if(chargingStation.isEmpty){
-        handleDynamicLinks(context);
-      }
-
-  });
 
   }
 
@@ -81,10 +72,7 @@ class _QrCodeState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    if(poleId == "") {
-      handleDynamicLinks(context);
-      Timer(Duration(seconds: 3), () {setState(() {});});
-    }
+
     return Scaffold(
         body: SingleChildScrollView(
             child: Form(

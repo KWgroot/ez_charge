@@ -36,9 +36,7 @@ String validatePassword(String value) {
 }
 
 Future handleDynamicLinks(BuildContext context) async {
-  final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
-
-  _handleDeepLink(data, context);
+  //final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
 
   FirebaseDynamicLinks.instance.onLink(
       onSuccess: (PendingDynamicLinkData dynamicLink) async {
@@ -54,18 +52,10 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
   if (deepLink != null) {
     print('_handleDeepLink | deeplink: $deepLink');
     var poleId = deepLink.toString().split("=")[1];
-    // Fluttertoast.showToast(msg: "Chargingstation $poleId");
     chargingStation = poleId;
-    //var isPost = deepLink.pathSegments.contains('post');
-    // var isInvite = deepLink.pathSegments.contains('invite');
-    // if(isInvite){
-    //   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-    //       MyApp()), (Route<dynamic> route) => false);
-    // }
   }
 }
 
 String getChargingStation() {
-  // Fluttertoast.showToast(msg: chargingStation);
   return chargingStation;
 }
