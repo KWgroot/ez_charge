@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
@@ -59,41 +60,43 @@ class _LoginPageState extends State<LoginPage> {
     Timer(Duration(seconds: 1), () async {
       String id = await getDeviceId();
       String deviceIdFromFirestore = "";
-      
+      bool idExist = false;
+
       await firestore.collection(COLLECTION_ONBOARDING).get().then((value) =>
       {
-
-        if(value.docs.length == 0){
-          print("null"),
-          firestore.collection(COLLECTION_ONBOARDING).add({
-            "device_id": id
-          })
-        },
-
-
+        //Database collection needs to be created with atleast 1 value or it will
+        //not loop through the list.
         value.docs.forEach((results) {
-          results.data();
+
+          //check if the list with ids is not empty
+          //else it will create a collection and upload the device id for first time
+          //and redirect user to the onboarding screen.
           if (value.docs.length > 0) {
-            deviceIdFromFirestore = value.docs[0].get("device_id");
+            deviceIdFromFirestore = results.data()["device_id"] ;
 
             if(deviceIdFromFirestore == id){
-              //Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
-            }else{
-              firestore.collection(COLLECTION_ONBOARDING).add({
-              "device_id": id
-            });
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
+              idExist = true;
             }
-          } else {
-            print("no records");
+          } else{
+            firestore.collection(COLLECTION_ONBOARDING).add({
+            "device_id": id
+            });
+
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding()));
           }
-        })
+
+        }),
+          //If list exist, and user doesnt, then run
+          if(!idExist){
+            firestore.collection(COLLECTION_ONBOARDING).add({
+              "device_id": id
+            }),
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding())),
+            idExist = true
+          }
+
       });
     });
-    // Timer(Duration(seconds: 5), () {
-    //   Navigator.pop(context);
-    //
-    // });
 
     return MaterialApp(
       title: 'EZCharge',
