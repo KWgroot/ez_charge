@@ -75,11 +75,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(height: 20.0),
                 ButtonTheme(
                     minWidth: double.infinity,
+                    height: 40.0,
                     child: RaisedButton(
                         color: Colors.yellow[400],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                        ),
                         child: Text(
                           'Register',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0
+                          ),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {
@@ -137,13 +144,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
       setState(() {
         _success = true;
         _userEmail = user.email;
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyApp()));
+        sendVerificationEmail();
       });
     } else {
       setState(() {
         _success = true;
       });
+    }
+  }
+
+
+  void sendVerificationEmail() async {
+    User user = FirebaseAuth.instance.currentUser;
+    if (!user.emailVerified) {
+      Fluttertoast.showToast(msg: "Er is een email verificatie link verstuurd naar " + _userEmail + ".");
+      print(_userEmail);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyApp()));
+      await user.sendEmailVerification();
     }
   }
 }
