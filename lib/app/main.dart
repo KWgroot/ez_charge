@@ -62,8 +62,8 @@ class _LoginPageState extends State<LoginPage> {
 
       await firestore.collection(COLLECTION_ONBOARDING).get().then((value) =>
       {
-        //Database collection needs to be created with atleast 1 value or it will
-        //not loop through the list.
+
+        //Loop
         value.docs.forEach((results) {
 
           //check if the list with ids is not empty

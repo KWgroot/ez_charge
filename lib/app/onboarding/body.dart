@@ -71,7 +71,7 @@ class _body extends State<body> {
                                 borderRadius: BorderRadius.circular(20)
                             ),
                             child: Text(
-                              'Overslaan',
+                              'Registreer nu',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 20.0
