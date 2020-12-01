@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'dart:math';
 import '../app/global_variables.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +25,12 @@ class _QrCodeState extends State<Homepage> {
   int poleId = Random().nextInt(1000);
   String docRef = "";
   bool _isButtonDisabled;
+  String hasStation = "";
+
+  var docs;
+  List<String> date = ["\n-\n", "\n-\n", "\n-\n"];
+  List<String> location = ["\n-\n", "\n-\n", "\n-\n"];
+  List<String> timeCharged = ["\n-\n", "\n-\n", "\n-\n"];
 
   _scan() async {
     await FlutterBarcodeScanner.scanBarcode(
@@ -59,6 +68,9 @@ class _QrCodeState extends State<Homepage> {
       _isButtonDisabled = true;
     }
 
+    getInformation();
+    checkArray();
+
     Timer(Duration(seconds: 2), () {
       setState(() {});
 
@@ -66,11 +78,39 @@ class _QrCodeState extends State<Homepage> {
       //id via deeplink.
       if(chargingStation.isEmpty){
         handleDynamicLinks(context);
+        hasStation = "";
+      }else{
+        hasStation = "Laad station: ";
       }
 
   });
 
   }
+
+  checkArray(){
+    if(date.length > 2){
+      setState(() {});
+    } else {
+      Timer(Duration(seconds: 2), () {checkArray();});
+    }
+  }
+
+  getInformation() async{
+    var docs;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    QuerySnapshot docRef = await firestore.collection("chargingSession").orderBy('stopTime', descending: false).where('uid', isEqualTo: globals.user.uid).get();
+    docs = docRef.docs;
+    for(var doc in docs){
+      var endDate = DateTime.fromMillisecondsSinceEpoch((doc.get('stopTime').seconds * 1000));
+      date.insert(0, '\n' + DateFormat('dd-MM-yy HH:mm').format(endDate) + '\n');
+      date.removeAt(3);
+      location.insert(0, '\n' + doc.get('poleId').toString() + '\n');
+      location.removeAt(3);
+      timeCharged.insert(0, '\n' + ((doc.get('stopTime').seconds - doc.get('startTime').seconds) * 0.0015).toStringAsFixed(2) + '\n');
+      timeCharged.removeAt(3);
+    }
+  }
+
   isConnected(){
     int randomNum = Random().nextInt(5);
     bool connected = randomNum>3;
@@ -94,6 +134,7 @@ class _QrCodeState extends State<Homepage> {
     if(poleId == "") {
       handleDynamicLinks(context);
       Timer(Duration(seconds: 3), () {setState(() {});});
+      getInformation();
     }
     return Scaffold(
         body: SingleChildScrollView(
@@ -105,18 +146,19 @@ class _QrCodeState extends State<Homepage> {
                           fontWeight: FontWeight.bold, fontSize: 36.0),
                       textAlign: TextAlign.center),
 
-                  SizedBox(height: 20),
-                  Text('ChargingStation:' + chargingStation,
-                      style: TextStyle(fontSize: 20.0),
-                      textAlign: TextAlign.center),
+                    SizedBox(height: 10),
+                    Text(hasStation + chargingStation,
+                        style: TextStyle(fontSize: 20.0),
+                        textAlign: TextAlign.center),
+
+                  SizedBox(height: 10),
                   Text(
-                      'This is a placeholder description.\n'
-                          'When we think of a good description it will go here.',
+                      'Welkom bij EzCharge, \n uw manier om makkelijker op te laden.',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center),
 
                   SizedBox(height: 30),
-                  Text('Most recent sessions',
+                  Text('Recente laad sessies',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 24.0),
                       textAlign: TextAlign.center),
@@ -126,43 +168,43 @@ class _QrCodeState extends State<Homepage> {
                       TableRow(children: [
                         TableCell(
                             child: Center(
-                                child: Text('\nDate\n',
+                                child: Text('\nDatum\n',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16)))),
                         TableCell(
                             child: Center(
-                                child: Text('\nLocation\n',
+                                child: Text('\nLocatie\n',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16)))),
                         TableCell(
                             child: Center(
-                                child: Text('\nTime Charged\n',
+                                child: Text('\nTijd geladen\n',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16))))
                       ]),
                       TableRow(children: [
-                        TableCell(child: Center(child: Text('\nCell 1\n'))),
-                        TableCell(child: Center(child: Text('\nCell 2\n'))),
-                        TableCell(child: Center(child: Text('\nCell 3\n')))
+                        TableCell(child: Center(child: Text(date[0]))),
+                        TableCell(child: Center(child: Text(location[0]))),
+                        TableCell(child: Center(child: Text(timeCharged[0])))
                       ]),
                       TableRow(children: [
-                        TableCell(child: Center(child: Text('\nCell 4\n'))),
-                        TableCell(child: Center(child: Text('\nCell 5\n'))),
-                        TableCell(child: Center(child: Text('\nCell 6\n')))
+                        TableCell(child: Center(child: Text(date[1]))),
+                        TableCell(child: Center(child: Text(location[1]))),
+                        TableCell(child: Center(child: Text(timeCharged[1])))
                       ]),
                       TableRow(children: [
-                        TableCell(child: Center(child: Text('\nCell 7\n'))),
-                        TableCell(child: Center(child: Text('\nCell 8\n'))),
-                        TableCell(child: Center(child: Text('\nCell 9\n')))
+                        TableCell(child: Center(child: Text(date[2]))),
+                        TableCell(child: Center(child: Text(location[2]))),
+                        TableCell(child: Center(child: Text(timeCharged[2])))
                       ]),
                     ],
                   ),
 
                   SizedBox(height: 20),
-                  Text('Start session',
+                  Text('Start sessie',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 36.0),
                       textAlign: TextAlign.center),

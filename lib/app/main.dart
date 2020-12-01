@@ -201,8 +201,8 @@ class _LoginPageState extends State<LoginPage> {
                 _success == null
                     ? ''
                     : (_success
-                    ? 'Successfully signed in ' + _userEmail
-                    : 'Incorrect user credentials, try again.'),
+                    ? ''
+                    : 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw'),
                 style: TextStyle(color: Colors.red),
               ),
             ),
