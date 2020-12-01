@@ -7,6 +7,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 import '../app/global_variables.dart' as globals;
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'charging.dart';
 
@@ -20,6 +21,7 @@ class _QrCodeState extends State<Homepage> {
   bool sessionStarted = false;
   int poleId = Random().nextInt(1000);
   String docRef = "";
+  bool _isButtonDisabled;
 
   _scan() async {
     await FlutterBarcodeScanner.scanBarcode(
@@ -28,9 +30,7 @@ class _QrCodeState extends State<Homepage> {
 
     //open AlertDialog
     if (_data != "-1") {
-
-      String chargingStationId = _data.split("/")[3];
-
+      String chargingStationId = getChargingStation();
       _showMyDialog(chargingStationId);
     }
 
@@ -45,8 +45,14 @@ class _QrCodeState extends State<Homepage> {
 
   @override
   void initState() {
+    User user = FirebaseAuth.instance.currentUser;
     super.initState();
 
+    if (user.emailVerified) {
+      _isButtonDisabled = false;
+    } else {
+      _isButtonDisabled = true;
+    }
 
     Timer(Duration(seconds: 2), () {
       setState(() {});
@@ -57,12 +63,28 @@ class _QrCodeState extends State<Homepage> {
         handleDynamicLinks(context);
       }
 
-    });
+  });
 
+  }
+
+  isEmailVerified() async {
+    User user = FirebaseAuth.instance.currentUser;
+    await user.reload();
+    user = await FirebaseAuth.instance.currentUser;
+    if(user.emailVerified){
+      setState(() {
+        _isButtonDisabled = false;
+        _scan();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if(poleId == "") {
+      handleDynamicLinks(context);
+      Timer(Duration(seconds: 3), () {setState(() {});});
+    }
     return Scaffold(
         body: SingleChildScrollView(
             child: Form(
@@ -139,14 +161,18 @@ class _QrCodeState extends State<Homepage> {
                     icon: Icon(Icons.qr_code_scanner_rounded, size: 150),
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(right: 125),
-                    onPressed: () {
+                    onPressed: (){
+                      if(_isButtonDisabled){
+                        isEmailVerified();
+                      } else {
                         _scan();
-                    },
+                      }
+                    }
                     //Open QR code scanner
                   ),
 
                   SizedBox(height: 90),
-                  Text('Requires camera')
+                  Text(_isButtonDisabled ? "Verifieer email om te starten" : "Gebruikt camera")
                   // THIS LINE IS REQUIRED
                   // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
                   // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS
