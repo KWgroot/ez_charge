@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
@@ -35,7 +34,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 //try to get device ID, Internet required!
 //ID in DB? Yes > no onboardingscreen
 //NO? > show onboardingscreen
