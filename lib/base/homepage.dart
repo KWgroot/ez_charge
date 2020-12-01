@@ -30,10 +30,12 @@ class _QrCodeState extends State<Homepage> {
     await handleDynamicLinks(context);
     //open AlertDialog
     if (_data != "-1") {
-
-      //add value to global var
-      chargingStation = _data.split("/")[3];
-      _showMyDialog(chargingStation);
+      String chargingStationId = _data.split("/")[3];
+      if(isConnected()){
+        _showConnectionDialog();
+      }else{
+        _showMyDialog(chargingStationId);
+      }
     }
 
   }
@@ -56,6 +58,11 @@ class _QrCodeState extends State<Homepage> {
     }
 
 
+  }
+  isConnected(){
+    int randomNum = Random().nextInt(5);
+    bool connected = randomNum>3;
+    return connected;
   }
 
   isEmailVerified() async {
@@ -199,6 +206,33 @@ class _QrCodeState extends State<Homepage> {
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),
                 ));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Future<void> _showConnectionDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Plug your car in!'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Your car is not plugged in the charging pole.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Oke'),
+              onPressed: () {
+                _data = "";
+                Navigator.of(context).pop();
               },
             ),
           ],
