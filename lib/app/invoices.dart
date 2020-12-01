@@ -1,13 +1,60 @@
+// import 'dart:html';
+
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import '../app/global_variables.dart' as globals;
 
-class Invoices extends StatelessWidget {
+class Invoices extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return invoiceScreen();
+  }
+}
+class invoiceScreen extends State<Invoices> {
+  void initState() {
+    super.initState();
+    initArrays();
+    getInformation();
+    checkArray();
+  }
 
-  var date = ['Date', 'test', 'test2'];
-  var number = ['Number' , 0 , 1];
-  var amount = ['Amount', 10.00, 11.03];
+  var docs;
+  var date = [];
+  var number = [];
+  var amount = [];
+  initArrays(){
+    date.add('Date');
+    number.add('Number');
+    amount.add('Amount');
+  }
+  checkArray(){
+    if(date.length > 1){
+      setState(() {});
+    } else {
+      Timer(Duration(seconds: 3), () {checkArray();});
+    }
+  }
+  getInformation() async{
+    var docs;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    QuerySnapshot docRef = await firestore.collection("chargingSession").orderBy('stopTime', descending: true).where('uid', isEqualTo: globals.user.uid).get();
+    docs = docRef.docs;
+    print(docs);
+    for(var doc in docs){
+      var endDate = DateTime.fromMillisecondsSinceEpoch(doc.get('stopTime').seconds);
+      // print(doc.get('stopTime').seconds);
+      date.add(DateFormat('yyyy-MM-dd hh:mm').format(endDate));
+      print(DateFormat('yyyy-MM-dd hh:mm').format(endDate));
+      number.add(1);
+      amount.add(doc.get  ('stopTime').seconds - doc.get('startTime').seconds * 0.005);
+    }
+    // await docs.getData().then(DocumentSnapshot snapshot) async{})
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +70,8 @@ class Invoices extends StatelessWidget {
                       Container(
                         child: Text(date[position]), alignment: Alignment(0.0, 0.0), height: 50,),
                       Text(number[position].toString()),
-                      Text(amount[position].toString())
+                      Text(amount[position].toString()),
+                      // FlatButton(onPressed: getInformation, child: null)
                     ],
                   )
               ),
@@ -34,13 +82,8 @@ class Invoices extends StatelessWidget {
             ],
           );
         },
-        itemCount: 3,
+        itemCount: date.length,
       ),
     );
   }
-}
-getInformation(){
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  firestore.collection("chargingSession").orderBy('stopTime').orderBy('startTime').orderBy('poleid').startAt(globals.user.uid);
-
 }
