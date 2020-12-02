@@ -14,15 +14,23 @@ class Settings extends StatefulWidget {
 
 class SettingsScreen extends State<Settings> {
   FirebaseAuth auth = FirebaseAuth.instance;
+  var _data;
 
-  @override
-  void initState() {
-    // if(globals.user.uid != ""){
-    //
-    // } else{
-    //   Navigator.of(context).pop();
-    // }
+  // @override
+  // void initState() {
+  //   print(ModalRoute.of(context).settings.name);
+  // }
+
+  Route<dynamic> generateRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+        builder: (BuildContext context) {
+          //some custom code
+          return _data[settings.name](context);
+        },
+        settings: settings
+    );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,6 +102,8 @@ class SettingsScreen extends State<Settings> {
                 await auth.signOut();
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/');
+                // print(_data);
                 },
             ),
           ],
