@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>appclips:com.example.EzCharge.Clip</string>
+		<string>appclips:com.ezChargeApple.App.Clip</string>
 	</array>
 </dict>
 </plist>

@@ -35,7 +35,7 @@ flutter_ios_podfile_setup
 # end
 
 target 'Runner'
-target 'EzCharge'
+target 'ezCharge'
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
