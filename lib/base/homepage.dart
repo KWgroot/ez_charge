@@ -36,17 +36,26 @@ class _QrCodeState extends State<Homepage> {
         "#000000", "Cancel", true, ScanMode.BARCODE)
         .then((value) => setState(() => _data = value));
     await handleDynamicLinks(context);
-    //open AlertDialog
-    if (_data != "-1") {
-      //add id to global id
-      globals.chargingStation = _data.split("/")[3];
-      if(isConnected()){
-        _showConnectionDialog();
-      }else{
-        _showMyDialog(globals.chargingStation);
-      }
 
+    if(_data.split("/")[2] == "ezcharge.page.link"){
+      //open AlertDialog
+      if (_data != "-1") {
+        //add id to global id
+        globals.chargingStation = _data.split("/")[3];
+        if(isConnected()){
+          _showConnectionDialog();
+        }else{
+          _showMyDialog(globals.chargingStation);
+        }
+      }
+    }else{
+      //QR unknown
+      final snackBar = SnackBar(
+          content: Text("QR code onbekend. Probeer opnieuw.")
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
     }
+
 
   }
   String _linkMessage;
