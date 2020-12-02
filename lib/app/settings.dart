@@ -68,7 +68,8 @@ class Settings extends StatelessWidget{
               child: Text('Yes'),
               onPressed: () async {
                 await auth.signOut();
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
                 },
             ),
           ],
