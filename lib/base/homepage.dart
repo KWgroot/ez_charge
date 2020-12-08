@@ -172,7 +172,15 @@ class _QrCodeState extends State<Homepage> {
                   ),
 
                   SizedBox(height: 90),
-                  Text(_isButtonDisabled ? "Verifieer email om te starten" : "Gebruikt camera")
+                  (_isButtonDisabled)
+                      ? Text("Verifieer email om te starten",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      )
+                  )
+                          : Text("Gebruikt camera")
                   // THIS LINE IS REQUIRED
                   // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
                   // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS

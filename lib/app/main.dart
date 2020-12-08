@@ -1,3 +1,4 @@
+import 'package:ez_charge/app/push_notification_service.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             key: _formKey,
             child: Column(
               children: <Widget>[
+                PushNotificationService(),
                 //Registration Form Text
                 Text('Welcome to EzCharge',
                     style:
