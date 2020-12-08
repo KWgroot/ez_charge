@@ -297,7 +297,7 @@ class _QrCodeState extends State<Homepage> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     await firestore.collection("chargingSession").add({
       "uid": globals.user.uid,
-      "poleId": poleId,
+      "poleId": globals.chargingStation,
       "startTime": DateTime.now(),
       "stopTime": "",
     }).then((value) {
