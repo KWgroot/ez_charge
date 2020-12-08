@@ -92,6 +92,7 @@ if(_timer != null){
           _counter --;
         } else {
           _timer.cancel();
+
         }
       });
     });
