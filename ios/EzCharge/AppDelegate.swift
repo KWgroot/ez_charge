@@ -2,13 +2,16 @@ import UIKit
 import Flutter
 
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate {
+class AppDelegate: FlutterAppDelegate {
+    
+  lazy var flutterEngine = FlutterEngine(name:"my flutter engine")
+    
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GeneratedPluginRegistrant.register(with: self)
+    flutterEngine.run(withEntrypoint: "otherEntrypoint", libraryURI: "app_main.dart")
+    GeneratedPluginRegistrant.register(with: self);
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-    return true
   }
 }
