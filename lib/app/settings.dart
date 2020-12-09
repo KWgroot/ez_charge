@@ -1,4 +1,5 @@
 import 'package:ez_charge/app/main.dart';
+import 'package:ez_charge/base/base.dart';
 import 'package:ez_charge/base/homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,42 +38,55 @@ class SettingsScreen extends State<Settings> {
         body: Center(
             child: Form(
                 child: Column(children: <Widget>[
-      SizedBox(height: 20),
-      Text('Settings',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-          textAlign: TextAlign.center),
-      RaisedButton(
-          color: Colors.yellow[400],
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Text(
-            'Change Password',
-            style: TextStyle(color: Colors.black, fontSize: 20.0),
-          ),
-          onPressed: () async {
-            auth.sendPasswordResetEmail(email: globals.user.email);
-            Fluttertoast.showToast(
-                msg: "We have sent you a password reset email",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 16.0);
-          }),
-      ButtonTheme(
-          minWidth: double.infinity,
-          height: 40.0,
-          child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              color: Colors.yellow[400],
-              child: Text('Log out',
-                  style: TextStyle(color: Colors.black, fontSize: 20.0)),
-              onPressed: () async {
-                logOut(context);
-              })),
-    ]))));
+                  SizedBox(height: 20),
+                  Text('Settings',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                      textAlign: TextAlign.center),
+                  RaisedButton(
+                      color: Colors.yellow[400],
+                      shape:
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(color: Colors.black, fontSize: 20.0),
+                      ),
+                      onPressed: () async {
+                        auth.sendPasswordResetEmail(email: globals.user.email);
+                        Fluttertoast.showToast(
+                            msg: "We have sent you a password reset email",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }),
+                  SwitchListTile(
+                    title: Text("Vingerafdrukscanner"),
+                      value: globals.enabledFingerprint,
+                      onChanged: (value){
+                    setState(() {
+                      setFingerPrintEnabled(value);
+                    });
+                  }),
+                  ButtonTheme(
+                      minWidth: double.infinity,
+                      height: 40.0,
+                      child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          color: Colors.yellow[400],
+                          child: Text('Log out',
+                              style: TextStyle(color: Colors.black, fontSize: 20.0)),
+                          onPressed: () async {
+                            logOut(context);
+                          })
+                  ),
+                  ]
+                )
+            )
+        )
+    );
   }
 
   void logOut(context) async {

@@ -1,9 +1,11 @@
+import 'dart:io';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../app/global_variables.dart' as globals;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
 
 String validateEmail(String value) {
   Pattern pattern =
@@ -47,6 +49,18 @@ Future handleDynamicLinks(BuildContext context) async {
   });
 }
 
+Future<bool> getFingerPrintEnabled() async {
+  final storage = await SharedPreferences.getInstance();
+  globals.enabledFingerprint = storage.getBool("fingerprint");
+  return storage.getBool("fingerprint");
+}
+
+Future setFingerPrintEnabled(bool enabled) async{
+  final storage = await SharedPreferences.getInstance();
+  globals.enabledFingerprint = enabled;
+  storage.setBool('fingerprint', enabled);
+}
+
 void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
   final Uri deepLink = data?.link;
   if (deepLink != null) {
@@ -59,3 +73,6 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
 String getChargingStation() {
   return globals.chargingStation;
 }
+
+
+

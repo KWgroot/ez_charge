@@ -8,6 +8,10 @@ import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:local_auth/auth_strings.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app_page.dart';
 import 'global_variables.dart';
 import 'registration.dart';
@@ -44,15 +48,27 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final LocalAuthentication _localAuthentication = LocalAuthentication();
+
   bool _success;
+  bool _canCheckBiometric = false;
+  bool isAuthorized = false;
+
   String _userEmail;
+  String _authorized = "Geen toegang";
+
+  List<BiometricType> _availableBiometricTypes = List<BiometricType>();
 
   @override
   Widget build(BuildContext context) {
     onBoarding();
+    if(!isAuthorized){
+      _authorizeNow();
+    }
 
     return MaterialApp(
       title: 'EZCharge',
@@ -65,6 +81,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+  ///This function will run every time when the app starts.
   void onBoarding() async{
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String id = await getDeviceId();
@@ -73,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
 
     await firestore.collection(COLLECTION_ONBOARDING).get().then((value) =>
     {
-
+      //need to call to update globals.enabledFingerprint variable
+      getFingerPrintEnabled(),
       //Loop
       value.docs.forEach((results) {
 
@@ -103,22 +127,21 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(context, MaterialPageRoute(builder: (context) => Onboarding())),
         idExist = true
       }
-
     });
   }
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  void _signInWithEmailAndPassword() async {
+  void _signInWithEmailAndPassword(bool fingerprintEnabled) async {
     final User user = (await auth.signInWithEmailAndPassword(
       email: _emailController.text,
       password: _passwordController.text,
     )).user;
+
+    //If fingerprint is enabled, then it will fill in the credentials automatically,
+    //in the email and password text boxes. Which is unwanted.
+    if(fingerprintEnabled){
+      _emailController.clear();
+      _passwordController.clear();
+    }
 
     if (user != null) {
       setState(() {
@@ -132,6 +155,115 @@ class _LoginPageState extends State<LoginPage> {
         _success = false;
       });
     }
+  }
+
+  Future<void> _checkBiometric() async {
+    bool canCheckBiometric = false;
+    try{
+      canCheckBiometric = await _localAuthentication.canCheckBiometrics;
+    } on PlatformException catch (error){
+      print(error);
+    }
+
+    if(!mounted){
+      return;
+    }
+
+    setState(() {
+      _canCheckBiometric = canCheckBiometric;
+    });
+  }
+
+  Future<void> _authorizeNow() async {
+    final storage = await SharedPreferences.getInstance();
+
+    try{
+      if(await getFingerPrintEnabled()){
+
+        const iosStrings = const IOSAuthMessages(
+            cancelButton: "annuleer",
+            goToSettingsButton: 'Instellingen',
+            goToSettingsDescription: 'Stel uw Touch ID in',
+            lockOut: "Herstel uw Touch ID"
+        );
+
+        const androidStrings = const AndroidAuthMessages(
+            cancelButton: "annuleer",
+            goToSettingsButton: "instellingen",
+            goToSettingsDescription: "Stel uw vingerafdruk in",
+            signInTitle: "Inloggen"
+        );
+
+        try{
+          isAuthorized = await _localAuthentication.authenticateWithBiometrics(
+              localizedReason: "Log in met uw vingers",
+              useErrorDialogs: false,
+              iOSAuthStrings: iosStrings,
+              androidAuthStrings: androidStrings,
+              stickyAuth: true
+          );
+        } on PlatformException catch (error){
+          print(error);
+        }
+
+        if(!mounted){
+          return;
+        }
+
+        setState(() {
+          if(isAuthorized){
+            _authorized = "Bevoegd, welkom";
+            //TODO WARNING retrieve email and password from local storage
+            _emailController.text = storage.getString("email");
+            _passwordController.text = storage.getString("password");
+
+            _signInWithEmailAndPassword(true);
+          }else{
+            _authorized = "Geen toegang";
+          }
+        });
+      }else{
+        print("fingerprint not enabled");
+      }
+    }catch(e){
+      setFingerPrintEnabled(false);
+      throw Exception("Need to setup fingerprint");
+    }
+  }
+
+  Future<void> _getListOfBiometricTypes() async {
+    List<BiometricType> listOfBiometrics;
+
+    try{
+      listOfBiometrics = await _localAuthentication.getAvailableBiometrics();
+
+    } on PlatformException catch (error){
+      print(error);
+    }
+
+    if(!mounted){
+      return;
+    }
+
+    setState(() {
+      _availableBiometricTypes = listOfBiometrics;
+    });
+  }
+
+  getDeviceId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      // Android-specific code
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id;
+
+    } else if (Platform.isIOS) {
+      // iOS-specific code
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor;
+    }
+
   }
 
   Widget bodyWidget() {
@@ -188,7 +320,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
-                        _signInWithEmailAndPassword();
+                        _signInWithEmailAndPassword(false);
+                        //TODO WARNING Email and password will be saved as plain text in local storage for logging in using fingerprint or face recognition. Firebase requires users to log in with email and password.
+                        final storage = await SharedPreferences.getInstance();
+                        storage.setString("email", _emailController.text);
+                        storage.setString("password", _passwordController.text);
                       }
                     }
                 )
@@ -233,25 +369,61 @@ class _LoginPageState extends State<LoginPage> {
                     }
                 )
             ),
+            Text("Check bio = $_canCheckBiometric"),
+            RaisedButton(
+                    color: Colors.yellow[400],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Text(
+                      'check biometric',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0
+                      ),
+                    ),
+                    onPressed: () {
+                      _checkBiometric();
+                    }
+                ),
+            Text("list of biometricstypes: $_availableBiometricTypes"),
+            Text("Authorized: $_authorized"),
+            RaisedButton(
+                    color: Colors.yellow[400],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Text(
+                      'authorize biometric',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0
+                      ),
+                    ),
+                    onPressed: () {
+                      _authorizeNow();
+                    }
+                ),
+
+            RaisedButton(
+                    color: Colors.yellow[400],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Text(
+                      'getList',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0
+                      ),
+                    ),
+                    onPressed: () {
+                      _getListOfBiometricTypes();
+                    }
+                ),
           ],
         ),
       ),
     );
-  }
-
-  getDeviceId() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
-    if (Platform.isAndroid) {
-      // Android-specific code
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      return androidInfo.id;
-
-    } else if (Platform.isIOS) {
-      // iOS-specific code
-      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-      return iosDeviceInfo.identifierForVendor;
-    }
-
   }
 }
