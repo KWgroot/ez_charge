@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 import '../app/global_variables.dart' as globals;
@@ -49,13 +48,6 @@ class _QrCodeState extends State<Homepage> {
     }
 
   }
-  String _linkMessage;
-  bool _isCreatingLink = false;
-  String _testString =
-      "To test: long press link and then copy and click from a non-browser "
-      "app. Make sure this isn't being tested on iOS simulator and iOS xcode "
-      "is properly setup. Look at firebase_dynamic_links/README.md for more "
-      "details.";
 
   @override
   void initState() {
@@ -146,13 +138,12 @@ class _QrCodeState extends State<Homepage> {
                       style: TextStyle(fontSize: 20.0),
                       textAlign: TextAlign.center),
                   Text(
-                      'This is a placeholder description.\n'
-                          'When we think of a good description it will go here.',
+                      'Welkom bij EzCharge, de slimste manier\n om op te laden.',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center),
 
                   SizedBox(height: 30),
-                  Text('Most recent sessions',
+                  Text('Recente laad sessies',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 24.0),
                       textAlign: TextAlign.center),

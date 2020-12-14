@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -196,10 +195,10 @@ class _LoginPageState extends State<LoginPage> {
 
             Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              //padding: const EdgeInsets.symmetric(horizontal: 36), This just makes the layout worse.
               child: Text(
-                _success == null
-                    ? ''
+                _success != null
+                    ? 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw.'
                     : (_success
                     ? ''
                     : 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw'),
