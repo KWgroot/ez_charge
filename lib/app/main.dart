@@ -115,7 +115,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signInWithEmailAndPassword() async {
-
     try {
       final User user = (await auth.signInWithEmailAndPassword(
         email: _emailController.text,
