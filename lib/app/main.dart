@@ -47,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _success;
+  var errorCode;
   String _userEmail;
 
   @override
@@ -114,22 +115,24 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signInWithEmailAndPassword() async {
-    final User user = (await auth.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    )).user;
 
-    if (user != null) {
+    try {
+      final User user = (await auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      )).user;
       setState(() {
         _success = true;
         _userEmail = user.email;
         globals.user = user;
         Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
       });
-    } else {
-      setState(() {
-        _success = false;
-      });
+    } catch (error) {
+      if (error.code == "wrong-password"){
+        setState(() {
+          _success = false;
+        });
+      }
     }
   }
 
@@ -197,11 +200,11 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.center,
               //padding: const EdgeInsets.symmetric(horizontal: 36), This just makes the layout worse.
               child: Text(
-                _success != null
-                    ? 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw.'
+                _success == null
+                    ? ''
                     : (_success
                     ? ''
-                    : 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw'),
+                    : 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw.'),
                 style: TextStyle(color: Colors.red),
               ),
             ),
