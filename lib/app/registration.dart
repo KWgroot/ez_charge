@@ -153,14 +153,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
-
   void sendVerificationEmail() async {
     User user = FirebaseAuth.instance.currentUser;
     if (!user.emailVerified) {
-      Fluttertoast.showToast(msg: "Er is een email verificatie link verstuurd naar " + _userEmail + ".");
+      Fluttertoast.showToast(
+          msg: "Er is een email verificatie link verstuurd naar " +
+              _userEmail +
+              ".",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0);
       print(_userEmail);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyApp()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
       await user.sendEmailVerification();
     }
   }

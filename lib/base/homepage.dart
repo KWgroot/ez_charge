@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ez_charge/app/push_notification_service.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'dart:math';
 import '../app/global_variables.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 import 'charging.dart';
 
@@ -53,7 +55,7 @@ class _QrCodeState extends State<Homepage> {
   void initState() {
     User user = FirebaseAuth.instance.currentUser;
     super.initState();
-
+    PushNotificationService();
     if (user.emailVerified) {
       _isButtonDisabled = false;
     } else {
@@ -127,6 +129,7 @@ class _QrCodeState extends State<Homepage> {
         body: SingleChildScrollView(
             child: Form(
                 child: Column(children: <Widget>[
+                  PushNotificationService(),
                   SizedBox(height: 20),
                   Text('EzCharge',
                       style: TextStyle(
@@ -209,7 +212,15 @@ class _QrCodeState extends State<Homepage> {
                   ),
 
                   SizedBox(height: 90),
-                  Text(_isButtonDisabled ? "Verifieer email om te starten" : "Gebruikt camera")
+                  (_isButtonDisabled)
+                      ? Text("Verifieer email om te starten",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      )
+                  )
+                          : Text("Gebruikt camera")
                   // THIS LINE IS REQUIRED
                   // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
                   // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS
@@ -245,6 +256,7 @@ class _QrCodeState extends State<Homepage> {
                 docRef = await startSession();
                 globals.chargingStation = chargingStationId.toString();
                 print(docRef);
+                http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendPushNotification?id=' + globals.user.uid.toString());
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),
                 ));
