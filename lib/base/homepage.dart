@@ -1,15 +1,16 @@
 import 'dart:async';
 
+import 'package:ez_charge/app/push_notification_service.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 import '../app/global_variables.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 import 'charging.dart';
 
@@ -49,19 +50,12 @@ class _QrCodeState extends State<Homepage> {
     }
 
   }
-  String _linkMessage;
-  bool _isCreatingLink = false;
-  String _testString =
-      "To test: long press link and then copy and click from a non-browser "
-      "app. Make sure this isn't being tested on iOS simulator and iOS xcode "
-      "is properly setup. Look at firebase_dynamic_links/README.md for more "
-      "details.";
 
   @override
   void initState() {
     User user = FirebaseAuth.instance.currentUser;
     super.initState();
-
+    PushNotificationService();
     if (user.emailVerified) {
       _isButtonDisabled = false;
     } else {
@@ -135,6 +129,7 @@ class _QrCodeState extends State<Homepage> {
         body: SingleChildScrollView(
             child: Form(
                 child: Column(children: <Widget>[
+                  PushNotificationService(),
                   SizedBox(height: 20),
                   Text('EzCharge',
                       style: TextStyle(
@@ -146,13 +141,12 @@ class _QrCodeState extends State<Homepage> {
                       style: TextStyle(fontSize: 20.0),
                       textAlign: TextAlign.center),
                   Text(
-                      'This is a placeholder description.\n'
-                          'When we think of a good description it will go here.',
+                      'Welkom bij EzCharge, de slimste manier\n om op te laden.',
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center),
 
                   SizedBox(height: 30),
-                  Text('Most recent sessions',
+                  Text('Recente laad sessies',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 24.0),
                       textAlign: TextAlign.center),
@@ -218,7 +212,15 @@ class _QrCodeState extends State<Homepage> {
                   ),
 
                   SizedBox(height: 90),
-                  Text(_isButtonDisabled ? "Verifieer email om te starten" : "Gebruikt camera")
+                  (_isButtonDisabled)
+                      ? Text("Verifieer email om te starten",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      )
+                  )
+                          : Text("Gebruikt camera")
                   // THIS LINE IS REQUIRED
                   // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
                   // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS
@@ -254,6 +256,7 @@ class _QrCodeState extends State<Homepage> {
                 docRef = await startSession();
                 globals.chargingStation = chargingStationId.toString();
                 print(docRef);
+                http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendPushNotification?id=' + globals.user.uid.toString());
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),
                 ));
@@ -297,7 +300,7 @@ class _QrCodeState extends State<Homepage> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     await firestore.collection("chargingSession").add({
       "uid": globals.user.uid,
-      "poleId": poleId,
+      "poleId": globals.chargingStation,
       "startTime": DateTime.now(),
       "stopTime": "",
     }).then((value) {
