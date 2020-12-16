@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ez_charge/app/push_notification_service.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 import '../app/global_variables.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 import 'charging.dart';
 
@@ -47,7 +49,7 @@ class _QrCodeState extends State<Homepage> {
   void initState() {
     User user = FirebaseAuth.instance.currentUser;
     super.initState();
-
+    PushNotificationService();
     if (user.emailVerified) {
       _isButtonDisabled = false;
     } else {
@@ -89,6 +91,7 @@ class _QrCodeState extends State<Homepage> {
         body: SingleChildScrollView(
             child: Form(
                 child: Column(children: <Widget>[
+                  PushNotificationService(),
                   SizedBox(height: 20),
                   Text('EzCharge',
                       style: TextStyle(
@@ -216,6 +219,7 @@ class _QrCodeState extends State<Homepage> {
                 docRef = await startSession();
                 chargingStation = chargingStationId.toString();
                 print(docRef);
+                http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendPushNotification?id=' + globals.user.uid.toString());
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),
                 ));

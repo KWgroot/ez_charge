@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                PushNotificationService(),
+                //PushNotificationService(),
                 //Registration Form Text
                 Text('Welcome to EzCharge',
                     style:

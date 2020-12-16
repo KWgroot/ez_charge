@@ -43,7 +43,7 @@ class _ChargingState extends State<Charging> {
         // set up POST request arguments
         Map<String, String> headers = {"Content-type": "application/json"};
 
-        http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendMail?id=' + globals.user.uid.toString());
+        http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendPushNotification?id=' + globals.user.uid.toString());
         Fluttertoast.showToast(
             msg: "Your session has stopped",
             toastLength: Toast.LENGTH_SHORT,
@@ -107,6 +107,7 @@ if(_timer != null){
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text("Laadtijd: "),
             (_counter > 0)
                 ? Text("")
                 : Text(
