@@ -369,58 +369,6 @@ class _LoginPageState extends State<LoginPage> {
                     }
                 )
             ),
-            Text("Check bio = $_canCheckBiometric"),
-            RaisedButton(
-                    color: Colors.yellow[400],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      'check biometric',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.0
-                      ),
-                    ),
-                    onPressed: () {
-                      _checkBiometric();
-                    }
-                ),
-            Text("list of biometricstypes: $_availableBiometricTypes"),
-            Text("Authorized: $_authorized"),
-            RaisedButton(
-                    color: Colors.yellow[400],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      'authorize biometric',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.0
-                      ),
-                    ),
-                    onPressed: () {
-                      _authorizeNow();
-                    }
-                ),
-
-            RaisedButton(
-                    color: Colors.yellow[400],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      'getList',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.0
-                      ),
-                    ),
-                    onPressed: () {
-                      _getListOfBiometricTypes();
-                    }
-                ),
           ],
         ),
       ),
