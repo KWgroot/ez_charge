@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
     await firestore.collection(COLLECTION_ONBOARDING).get().then((value) =>
     {
       //need to call to update globals.enabledFingerprint variable
-      getFingerPrintEnabled(),
+      getEnableBiometric(),
       //Loop
       value.docs.forEach((results) {
 
@@ -178,19 +178,19 @@ class _LoginPageState extends State<LoginPage> {
     final storage = await SharedPreferences.getInstance();
 
     try{
-      if(await getFingerPrintEnabled()){
+      if(await getEnableBiometric()){
 
         const iosStrings = const IOSAuthMessages(
             cancelButton: "annuleer",
             goToSettingsButton: 'Instellingen',
-            goToSettingsDescription: 'Stel uw Touch ID in',
-            lockOut: "Herstel uw Touch ID"
+            goToSettingsDescription: 'Stel uw Touch ID of Face ID in',
+            lockOut: "Herstel uw Touch ID of Face ID"
         );
 
         const androidStrings = const AndroidAuthMessages(
             cancelButton: "annuleer",
             goToSettingsButton: "instellingen",
-            goToSettingsDescription: "Stel uw vingerafdruk in",
+            goToSettingsDescription: "Stel uw vingerafdruk of gezichtsherkenning in",
             signInTitle: "Inloggen"
         );
 
@@ -223,11 +223,11 @@ class _LoginPageState extends State<LoginPage> {
           }
         });
       }else{
-        print("fingerprint not enabled");
+        print("Biometric not enabled");
       }
     }catch(e){
-      setFingerPrintEnabled(false);
-      throw Exception("Need to setup fingerprint");
+      setEnableBiometric(false);
+      throw Exception("Need to setup biometric");
     }
   }
 

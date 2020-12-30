@@ -8,10 +8,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
-import '../app/global_variables.dart' as globals;
+import 'global_variables.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'charging.dart';
+import '../base/charging.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -70,6 +70,9 @@ class _QrCodeState extends State<Homepage> {
   void initState() {
     User user = FirebaseAuth.instance.currentUser;
     super.initState();
+
+    //for asking first time biometric permission
+    getPermission();
 
     if (user.emailVerified) {
       _isButtonDisabled = false;

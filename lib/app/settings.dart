@@ -1,12 +1,11 @@
-import 'package:ez_charge/app/main.dart';
 import 'package:ez_charge/base/base.dart';
-import 'package:ez_charge/base/homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../app/global_variables.dart' as globals;
-import 'package:firebase_core/firebase_core.dart';
+
+import 'global_variables.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -62,12 +61,25 @@ class SettingsScreen extends State<Settings> {
                             fontSize: 16.0);
                       }),
                   SwitchListTile(
-                    title: Text("Vingerafdrukscanner"),
-                      value: globals.enabledFingerprint,
-                      onChanged: (value){
-                    setState(() {
-                      setFingerPrintEnabled(value);
-                    });
+                    title: Text("Inloggen met vingerafdruk of gezicht"),
+                      value: globals.enabledBiometric,
+                      onChanged: (enableBiometric){
+
+                      //Biometrics is never been used before when
+                      //askForPermissionForFirstTime is true.
+                      if(globals.askForPermissionForFirstTime == null){
+
+                        setState(() {
+                          //asking for permission
+                          confirmBiometric(context, enableBiometric);
+
+                        });
+                      }else{
+                        setState(() {
+                          setEnableBiometric(enableBiometric);
+                        });
+                      }
+
                   }),
                   ButtonTheme(
                       minWidth: double.infinity,
@@ -123,6 +135,39 @@ class SettingsScreen extends State<Settings> {
           ],
         );
       },
+    );
+  }
+
+  void confirmBiometric(context, enableBiometric) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Toestemming vereist"),
+          content: Text("Om in te kunnen loggen met je vingerafdruk of gezicht, "
+              "heeft deze app eenmalig toestemming nodig."),
+          actions: [
+            TextButton(
+              child: Text("Afwijzen"),
+              onPressed: () async{
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Akkoord"),
+              onPressed: () async{
+                setState(() {
+                  setEnableBiometric(enableBiometric);
+                  setPermission(false);
+                });
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
     );
   }
 }

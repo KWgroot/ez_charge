@@ -49,16 +49,28 @@ Future handleDynamicLinks(BuildContext context) async {
   });
 }
 
-Future<bool> getFingerPrintEnabled() async {
+Future<bool> getPermission() async {
   final storage = await SharedPreferences.getInstance();
-  globals.enabledFingerprint = storage.getBool("fingerprint");
-  return storage.getBool("fingerprint");
+  globals.askForPermissionForFirstTime = storage.getBool("permission");
+  return storage.getBool("permission");
 }
 
-Future setFingerPrintEnabled(bool enabled) async{
+Future setPermission(bool enabled) async{
   final storage = await SharedPreferences.getInstance();
-  globals.enabledFingerprint = enabled;
-  storage.setBool('fingerprint', enabled);
+  globals.askForPermissionForFirstTime = enabled;
+  storage.setBool('permission', enabled);
+}
+
+Future<bool> getEnableBiometric() async {
+  final storage = await SharedPreferences.getInstance();
+  globals.enabledBiometric = storage.getBool("biometric");
+  return storage.getBool("biometric");
+}
+
+Future setEnableBiometric(bool enabled) async{
+  final storage = await SharedPreferences.getInstance();
+  globals.enabledBiometric = enabled;
+  storage.setBool('biometric', enabled);
 }
 
 void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
