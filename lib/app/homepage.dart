@@ -1,18 +1,18 @@
 import 'dart:async';
 
-import 'package:ez_charge/app/push_notification_service.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
-import '../app/global_variables.dart' as globals;
+import 'global_variables.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
-import 'charging.dart';
+import '../base/charging.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -37,25 +37,38 @@ class _QrCodeState extends State<Homepage> {
         "#000000", "Cancel", true, ScanMode.BARCODE)
         .then((value) => setState(() => _data = value));
     await handleDynamicLinks(context);
-    //open AlertDialog
-    if (_data != "-1") {
-      //add id to global id
-      globals.chargingStation = _data.split("/")[3];
-      if(isConnected()){
-        _showConnectionDialog();
-      }else{
-        _showMyDialog(globals.chargingStation);
+
+    if(_data.split("/")[2] == "ezcharge.page.link"){
+      //open AlertDialog
+      if (_data != "-1") {
+        //add id to global id
+        globals.chargingStation = _data.split("/")[3];
+        if(isConnected()){
+          _showConnectionDialog();
+        }else{
+          _showMyDialog(globals.chargingStation);
+        }
       }
 
     }
 
   }
+  String _linkMessage;
+  bool _isCreatingLink = false;
+  String _testString =
+      "To test: long press link and then copy and click from a non-browser "
+      "app. Make sure this isn't being tested on iOS simulator and iOS xcode "
+      "is properly setup. Look at firebase_dynamic_links/README.md for more "
+      "details.";
 
   @override
   void initState() {
     User user = FirebaseAuth.instance.currentUser;
     super.initState();
-    PushNotificationService();
+
+    //for asking first time biometric permission
+    getPermission();
+
     if (user.emailVerified) {
       _isButtonDisabled = false;
     } else {
@@ -129,7 +142,6 @@ class _QrCodeState extends State<Homepage> {
         body: SingleChildScrollView(
             child: Form(
                 child: Column(children: <Widget>[
-                  PushNotificationService(),
                   SizedBox(height: 20),
                   Text('EzCharge',
                       style: TextStyle(
@@ -256,7 +268,6 @@ class _QrCodeState extends State<Homepage> {
                 docRef = await startSession();
                 globals.chargingStation = chargingStationId.toString();
                 print(docRef);
-                http.get('https://us-central1-ezcharge-22de2.cloudfunctions.net/sendPushNotification?id=' + globals.user.uid.toString());
                 Navigator.of(context).push(MaterialPageRoute
                   (builder: (context) => Charging(docRef : docRef),
                 ));
