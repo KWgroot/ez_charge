@@ -26,8 +26,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            // If want to be notified in your app (via onResume and onLaunch, see below) when the
-            // user clicks on a notification in the system tray include the following:
+            <!-- If want to be notified in your app (via onResume and onLaunch, see below) when the -->
+            <!-- user clicks on a notification in the system tray include the following:-->
             <intent-filter>
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
                 <category android:name="android.intent.category.DEFAULT" />
