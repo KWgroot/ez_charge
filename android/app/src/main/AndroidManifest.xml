@@ -7,6 +7,11 @@
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="ez_charge">
+
+        //Google Maps API Key
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDSzEfgJ3W1Z8hVp9g999ORvD3fGcc0DGs"/>
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
