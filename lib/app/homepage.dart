@@ -34,25 +34,24 @@ class _QrCodeState extends State<Homepage> {
 
   _scan() async {
     await FlutterBarcodeScanner.scanBarcode(
-        "#000000", "Cancel", true, ScanMode.BARCODE)
+            "#000000", "Cancel", true, ScanMode.BARCODE)
         .then((value) => setState(() => _data = value));
     await handleDynamicLinks(context);
 
-    if(_data.split("/")[2] == "ezcharge.page.link"){
+    if (_data.split("/")[2] == "ezcharge.page.link") {
       //open AlertDialog
       if (_data != "-1") {
         //add id to global id
         globals.chargingStation = _data.split("/")[3];
-        if(isConnected()){
+        if (isConnected()) {
           _showConnectionDialog();
-        }else{
+        } else {
           _showMyDialog(globals.chargingStation);
         }
       }
-
     }
-
   }
+
   String _linkMessage;
   bool _isCreatingLink = false;
   String _testString =
@@ -83,44 +82,55 @@ class _QrCodeState extends State<Homepage> {
 
       //check if chargingStation var is empty. if yes, then get chargingStation
       //id via deeplink.
-      if(globals.chargingStation.isEmpty){
+      if (globals.chargingStation.isEmpty) {
         hasStation = "";
-      }else{
+      } else {
         hasStation = "Laad station: ";
       }
-
-  });
-
+    });
   }
 
-  checkArray(){
-    if(date.length > 2){
+  checkArray() {
+    if (date.length > 2) {
       setState(() {});
     } else {
-      Timer(Duration(seconds: 2), () {checkArray();});
+      Timer(Duration(seconds: 2), () {
+        checkArray();
+      });
     }
   }
 
-  getInformation() async{
+  getInformation() async {
     var docs;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    QuerySnapshot docRef = await firestore.collection("chargingSession").orderBy('stopTime', descending: false).where('uid', isEqualTo: globals.user.uid).get();
+    QuerySnapshot docRef = await firestore
+        .collection("chargingSession")
+        .orderBy('stopTime', descending: false)
+        .where('uid', isEqualTo: globals.user.uid)
+        .get();
     docs = docRef.docs;
-    for(var doc in docs){
-      var endDate = DateTime.fromMillisecondsSinceEpoch((doc.get('stopTime').seconds * 1000));
-      date.insert(0, '\n' + DateFormat('dd-MM-yy HH:mm').format(endDate) + '\n');
+    for (var doc in docs) {
+      var endDate = DateTime.fromMillisecondsSinceEpoch(
+          (doc.get('stopTime').seconds * 1000));
+      date.insert(
+          0, '\n' + DateFormat('dd-MM-yy HH:mm').format(endDate) + '\n');
       date.removeAt(3);
       location.insert(0, '\n' + doc.get('poleId').toString() + '\n');
       location.removeAt(3);
-      timeCharged.insert(0, '\n' + ((doc.get('stopTime').seconds - doc.get('startTime').seconds) * 0.0015).toStringAsFixed(2) + '\n');
+      timeCharged.insert(
+          0,
+          '\n' +
+              ((doc.get('stopTime').seconds - doc.get('startTime').seconds) *
+                      0.0015)
+                  .toStringAsFixed(2) +
+              '\n');
       timeCharged.removeAt(3);
     }
   }
 
-
-  isConnected(){
+  isConnected() {
     int randomNum = Random().nextInt(5);
-    bool connected = randomNum>3;
+    bool connected = randomNum > 3;
     return connected;
   }
 
@@ -128,7 +138,7 @@ class _QrCodeState extends State<Homepage> {
     User user = FirebaseAuth.instance.currentUser;
     await user.reload();
     user = await FirebaseAuth.instance.currentUser;
-    if(user.emailVerified){
+    if (user.emailVerified) {
       setState(() {
         _isButtonDisabled = false;
         _scan();
@@ -138,106 +148,108 @@ class _QrCodeState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    double width =
+        MediaQuery.of(context).size.width * MediaQuery.of(context).size.width;
+    print(width);
     return Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: new AppBar(
+          title: Text('Home'),
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
         body: SingleChildScrollView(
             child: Form(
                 child: Column(children: <Widget>[
-                  SizedBox(height: 20),
-                  Text('EzCharge',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 36.0),
-                      textAlign: TextAlign.center),
+          SizedBox(height: 5),
+          Text('EzCharge',
+              style: Theme.of(context).textTheme.headline1,
+              textAlign: TextAlign.center),
 
-                  SizedBox(height: 20),
-                  Text(hasStation + globals.chargingStation,
-                      style: TextStyle(fontSize: 20.0),
-                      textAlign: TextAlign.center),
-                  Text(
-                      'Welkom bij EzCharge, de slimste manier\n om op te laden.',
-                      style: TextStyle(fontSize: 20),
-                      textAlign: TextAlign.center),
+          Text(hasStation + globals.chargingStation,
+              style: Theme.of(context).textTheme.bodyText1,
+              textAlign: TextAlign.center),
 
-                  SizedBox(height: 30),
-                  Text('Recente laad sessies',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 24.0),
-                      textAlign: TextAlign.center),
-                  Table(
-                    border: TableBorder.all(width: 1.0, color: Colors.black),
-                    children: [
-                      TableRow(children: [
-                        TableCell(
-                            child: Center(
-                                child: Text('\nDatum\n',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)))),
-                        TableCell(
-                            child: Center(
-                                child: Text('\nLocatie\n',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)))),
-                        TableCell(
-                            child: Center(
-                                child: Text('\nTijd geladen\n',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16))))
-                      ]),
-                      TableRow(children: [
-                        TableCell(child: Center(child: Text(date[0]))),
-                        TableCell(child: Center(child: Text(location[0]))),
-                        TableCell(child: Center(child: Text(timeCharged[0])))
-                      ]),
-                      TableRow(children: [
-                        TableCell(child: Center(child: Text(date[1]))),
-                        TableCell(child: Center(child: Text(location[1]))),
-                        TableCell(child: Center(child: Text(timeCharged[1])))
-                      ]),
-                      TableRow(children: [
-                        TableCell(child: Center(child: Text(date[2]))),
-                        TableCell(child: Center(child: Text(location[2]))),
-                        TableCell(child: Center(child: Text(timeCharged[2])))
-                      ]),
-                    ],
-                  ),
+          Text('Recente laad sessies',
+              style: Theme.of(context).textTheme.headline2,
+              textAlign: TextAlign.center),
+          SizedBox(
+            child: DataTable(
+              showBottomBorder: true,
+              dividerThickness: 0,
+              columnSpacing: 44.5,
+              columns: <DataColumn>[
+                DataColumn(
+                  label: Text('Datum',
+                      style: Theme.of(context).textTheme.subtitle1),
+                ),
+                DataColumn(
+                  label: Text('\nLocatie\n',
+                      style: Theme.of(context).textTheme.subtitle1),
+                ),
+                DataColumn(
+                  label: Text('\nTijd geladen\n',
+                      style: Theme.of(context).textTheme.subtitle1),
+                ),
+              ],
+              rows: List<DataRow>.generate(
+                3,
+                (index) => DataRow(
+                    color: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                      if (index % 2 == 0) return Colors.grey.withOpacity(0.3);
+                      return null;
+                    }),
+                    cells: [
+                      DataCell(Center(
+                          child: Text(
+                        date[index],
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ))),
+                      DataCell(Center(
+                          child: Text(
+                        location[index],
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ))),
+                      DataCell(Center(
+                          child: Text(
+                        timeCharged[index],
+                        style: Theme.of(context).textTheme.subtitle1,
+                      )))
+                    ]),
+              ),
+            ),
+          ),
 
-                  SizedBox(height: 20),
-                  Text('Start sessie',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 36.0),
-                      textAlign: TextAlign.center),
+          SizedBox(height: 20),
+          Text('Start sessie',
+              style: Theme.of(context).textTheme.headline2,
+              textAlign: TextAlign.center),
 
-                  IconButton(
-                    icon: Icon(Icons.qr_code_scanner_rounded, size: 150),
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(right: 125),
-                    onPressed: (){
-                      if(_isButtonDisabled){
-                        isEmailVerified();
-                      } else {
-                        _scan();
-                      }
-                    }
-                    //Open QR code scanner
-                  ),
+          RaisedButton.icon(
+              icon: Icon(Icons.qr_code_scanner_rounded, size: 150),
+              // alignment: Alignment.center,
+              // padding: EdgeInsets.only(right: 125),
+              onPressed: () {
+                if (_isButtonDisabled) {
+                  isEmailVerified();
+                } else {
+                  _scan();
+                }
+              }, label: Text(''),
+              //Open QR code scanner
+              ),
 
-                  SizedBox(height: 90),
-                  (_isButtonDisabled)
-                      ? Text("Verifieer email om te starten",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      )
-                  )
-                          : Text("Gebruikt camera")
-                  // THIS LINE IS REQUIRED
-                  // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
-                  // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS
-                  // IT WONT SCROLL ALL THE WAY DOWN WITHOUT THIS.
-                ]))));
+          SizedBox(height: 90),
+          (_isButtonDisabled)
+              ? Text("Verifieer email om te starten",
+                  style: Theme.of(context).textTheme.bodyText2)
+              : Text("Gebruikt camera",
+                  style: Theme.of(context).textTheme.subtitle1)
+          // THIS LINE IS REQUIRED
+          // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
+          // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS
+          // IT WONT SCROLL ALL THE WAY DOWN WITHOUT THIS.
+        ]))));
   }
 
   Future<void> _showMyDialog(String chargingStationId) async {
@@ -250,7 +262,8 @@ class _QrCodeState extends State<Homepage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Do you wish to start your charging session at charging station: $chargingStationId?'),
+                Text(
+                    'Do you wish to start your charging session at charging station: $chargingStationId?'),
               ],
             ),
           ),
@@ -268,8 +281,8 @@ class _QrCodeState extends State<Homepage> {
                 docRef = await startSession();
                 globals.chargingStation = chargingStationId.toString();
                 print(docRef);
-                Navigator.of(context).push(MaterialPageRoute
-                  (builder: (context) => Charging(docRef : docRef),
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Charging(docRef: docRef),
                 ));
               },
             ),
@@ -278,6 +291,7 @@ class _QrCodeState extends State<Homepage> {
       },
     );
   }
+
   Future<void> _showConnectionDialog() async {
     return showDialog<void>(
       context: context,
@@ -321,6 +335,4 @@ class _QrCodeState extends State<Homepage> {
     sessionStarted = true;
     return docRef;
   }
-
-
 }

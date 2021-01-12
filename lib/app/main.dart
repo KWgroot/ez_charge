@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/app/reCaptcha.dart';
 import 'package:ez_charge/base/base.dart';
+import './design/design.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: TITLE,
       home: LoginPage(),
+      theme: ThemeData(
+        // brightness: Brightness.dark,
+        primaryColor: Color.fromRGBO(0, 201, 178, 1),
+        buttonColor: Color.fromRGBO(37, 198, 205, 1),
+        backgroundColor: Colors.white70,
+
+        fontFamily: "open Sans",
+
+        textTheme: TextTheme(
+          headline1: TextStyle(fontFamily: 'open Sans', fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black),
+          headline2: TextStyle(fontFamily: 'open Sans', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+          bodyText1: TextStyle(fontFamily: 'open Sans', fontSize: 20, color: Colors.black),
+          bodyText2: TextStyle(fontFamily: 'open Sans', fontSize: 20, color: Colors.red),
+          subtitle1: TextStyle(fontFamily: 'open Sans', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+        )
+
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -76,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('EZCharge '),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: bodyWidget()
       ),
@@ -304,12 +325,13 @@ class _LoginPageState extends State<LoginPage> {
             //Registration Form Text
             Text('Welcome to EzCharge',
                 style:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                textAlign: TextAlign.center),
+                Theme.of(context).textTheme.headline1,
+                textAlign: TextAlign.center
+            ),
 
             //Page Description Text
             Text('Fill in the fields below to login.',
-                style: TextStyle(fontSize: 20.0),
+                style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.center),
 
             // Edit text field (Email)
@@ -338,7 +360,7 @@ class _LoginPageState extends State<LoginPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)
                     ),
-                    color: Colors.yellow[400],
+                    color: Theme.of(context).buttonColor,
                     child: Text(
                         'Login',
                         style: TextStyle(
@@ -371,13 +393,13 @@ class _LoginPageState extends State<LoginPage> {
                     : (_success
                     ? ''
                     : 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw.'),
-                style: TextStyle(color: Colors.red),
+                style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
 
             SizedBox(height: 60.0),
             Text('Dont have an account yet? Register here.',
-                style: TextStyle(fontSize: 20.0),
+                style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.center),
 
             SizedBox(height: 20.0),
@@ -385,16 +407,13 @@ class _LoginPageState extends State<LoginPage> {
                 minWidth: double.infinity,
                 height: 40.0,
                 child: RaisedButton(
-                    color: Colors.yellow[400],
+                    color: Theme.of(context).buttonColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)
                     ),
                     child: Text(
                       'Register',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.0
-                      ),
+                      style: Theme.of(context).textTheme.bodyText1
                     ),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
