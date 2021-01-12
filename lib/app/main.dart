@@ -56,7 +56,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _success;
   var errorCode;
-  bool _canCheckBiometric = false;
   bool isAuthorized = false;
 
   String _userEmail;
@@ -131,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _signInWithEmailAndPassword() async {
+  void _signInWithEmailAndPassword(bool fingerprintEnabled) async {
     try {
       final User user = (await auth.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -376,21 +375,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  getDeviceId() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
-    if (Platform.isAndroid) {
-      // Android-specific code
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      return androidInfo.id;
-
-    } else if (Platform.isIOS) {
-      // iOS-specific code
-      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-      return iosDeviceInfo.identifierForVendor;
-    }
-
   }
 }

@@ -1,13 +1,9 @@
-import 'package:ez_charge/app/change_credentials.dart';
-import 'package:ez_charge/app/main.dart';
-import 'package:ez_charge/base/homepage.dart';
+import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../app/global_variables.dart' as globals;
-
-import 'global_variables.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -17,11 +13,6 @@ class Settings extends StatefulWidget {
 class SettingsScreen extends State<Settings> {
   FirebaseAuth auth = FirebaseAuth.instance;
   var _data;
-
-  // @override
-  // void initState() {
-  //   print(ModalRoute.of(context).settings.name);
-  // }
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
