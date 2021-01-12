@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -19,7 +17,6 @@ class CaptchaState extends State<Captcha>{
   initState(){
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
