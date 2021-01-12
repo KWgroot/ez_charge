@@ -12,3 +12,6 @@ const COLLECTION_ONBOARDING = "deviceIdOnboarding";
 const String TITLE = "EzCharge";
 
 var chargingStation = "";
+
+bool enabledBiometric = false;
+bool askForPermissionForFirstTime = true;

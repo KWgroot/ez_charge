@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../app/global_variables.dart' as globals;
-import 'package:firebase_core/firebase_core.dart';
+
+import 'global_variables.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -37,51 +38,65 @@ class SettingsScreen extends State<Settings> {
     return Scaffold(
         body: Center(
             child: Form(
-                child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 20),
-                      Text('Settings',
-                          style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                          textAlign: TextAlign.center
+                child: Column(children: <Widget>[
+                  SizedBox(height: 20),
+                  Text('Settings',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                      textAlign: TextAlign.center),
+                  RaisedButton(
+                      color: Colors.yellow[400],
+                      shape:
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(color: Colors.black, fontSize: 20.0),
                       ),
-                      ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 40.0,
-                          child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)
-                              ),
-                              color: Colors.yellow[400],
-                              child: Text(
-                                  'Change Password',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.0
-                                  )
-                              ),
-                              onPressed:(){ Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChangeCredentials()));}
-                          )
-                      ),
-                      ButtonTheme(
-                          minWidth: double.infinity,
-                          height: 40.0,
-                          child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)
-                              ),
-                              color: Colors.yellow[400],
-                              child: Text(
-                                  'Log out',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.0
-                                  )
-                              ),
-                              onPressed: () async {logOut(context);}
-                          )
-                      ),
-                    ]
+                      onPressed: () async {
+                        auth.sendPasswordResetEmail(email: globals.user.email);
+                        Fluttertoast.showToast(
+                            msg: "We have sent you a password reset email",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }),
+                  SwitchListTile(
+                    title: Text("Inloggen met vingerafdruk of gezicht"),
+                      value: globals.enabledBiometric,
+                      onChanged: (enableBiometric){
+
+                      //Biometrics is never been used before when
+                      //askForPermissionForFirstTime is true.
+                      if(globals.askForPermissionForFirstTime == null){
+
+                        setState(() {
+                          //asking for permission
+                          confirmBiometric(context, enableBiometric);
+
+                        });
+                      }else{
+                        setState(() {
+                          setEnableBiometric(enableBiometric);
+                        });
+                      }
+
+                  }),
+                  ButtonTheme(
+                      minWidth: double.infinity,
+                      height: 40.0,
+                      child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          color: Colors.yellow[400],
+                          child: Text('Log out',
+                              style: TextStyle(color: Colors.black, fontSize: 20.0)),
+                          onPressed: () async {
+                            logOut(context);
+                          })
+                  ),
+                  ]
                 )
             )
         )
@@ -122,6 +137,39 @@ class SettingsScreen extends State<Settings> {
           ],
         );
       },
+    );
+  }
+
+  void confirmBiometric(context, enableBiometric) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Toestemming vereist"),
+          content: Text("Om in te kunnen loggen met je vingerafdruk of gezicht, "
+              "heeft deze app eenmalig toestemming nodig."),
+          actions: [
+            TextButton(
+              child: Text("Afwijzen"),
+              onPressed: () async{
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Akkoord"),
+              onPressed: () async{
+                setState(() {
+                  setEnableBiometric(enableBiometric);
+                  setPermission(false);
+                });
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
     );
   }
 }
