@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
+import 'package:ez_charge/app/reCaptcha.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -269,6 +269,31 @@ class _LoginPageState extends State<LoginPage> {
 
   }
 
+  //Show reCaptcha after 3 failed login attempts
+  int Attempts = 1;
+  void loginAttempts() {
+    if (Attempts != 0){
+      if (_success == true){
+        Attempts = 2;
+        print("Login succesful, reset totalAttempts: $Attempts");
+      }
+      else if (_success == false){
+        Attempts--;
+        print("Remaining totalAttempts: $Attempts");
+      }
+    }
+    else {
+      print("Maximum number of attempts exceeded");
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context){
+              return Captcha((String code)=>print("Code returned: "+code));
+            }
+        ),
+      );
+    }
+  }
+
   Widget bodyWidget() {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
@@ -328,6 +353,10 @@ class _LoginPageState extends State<LoginPage> {
                         final storage = await SharedPreferences.getInstance();
                         storage.setString("email", _emailController.text);
                         storage.setString("password", _passwordController.text);
+                        loginAttempts();
+                      }
+                      else {
+                        loginAttempts();
                       }
                     }
                 )
