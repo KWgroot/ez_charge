@@ -1,9 +1,11 @@
+import 'dart:io';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../app/global_variables.dart' as globals;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
 
 String validateEmail(String value) {
   Pattern pattern =
@@ -47,6 +49,30 @@ Future handleDynamicLinks(BuildContext context) async {
   });
 }
 
+Future<bool> getPermission() async {
+  final storage = await SharedPreferences.getInstance();
+  globals.askForPermissionForFirstTime = storage.getBool("permission");
+  return storage.getBool("permission");
+}
+
+Future setPermission(bool enabled) async{
+  final storage = await SharedPreferences.getInstance();
+  globals.askForPermissionForFirstTime = enabled;
+  storage.setBool('permission', enabled);
+}
+
+Future<bool> getEnableBiometric() async {
+  final storage = await SharedPreferences.getInstance();
+  globals.enabledBiometric = storage.getBool("biometric");
+  return storage.getBool("biometric");
+}
+
+Future setEnableBiometric(bool enabled) async{
+  final storage = await SharedPreferences.getInstance();
+  globals.enabledBiometric = enabled;
+  storage.setBool('biometric', enabled);
+}
+
 void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
   final Uri deepLink = data?.link;
   if (deepLink != null) {
@@ -59,3 +85,6 @@ void _handleDeepLink(PendingDynamicLinkData data, BuildContext context) {
 String getChargingStation() {
   return globals.chargingStation;
 }
+
+
+

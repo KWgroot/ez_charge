@@ -1,7 +1,6 @@
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../base/homepage.dart';
+import 'homepage.dart';
 import 'invoices.dart';
 import 'settings.dart';
 import 'charging_map.dart';
@@ -37,6 +36,7 @@ class _AppPageState extends State<AppPage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

@@ -1,4 +1,5 @@
 import 'package:ez_charge/app/main.dart';
+import 'package:ez_charge/app/reCaptcha.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context){
+                                    return Captcha((String code)=>print("Code returned: "+code));
+                                  }
+                              ),
+                            );
                             _register();
                           } else if (!(_passwordController1.text == _passwordController2.text)) {
                             Fluttertoast.showToast( //This will refer to the coming homepage instead of making a message.

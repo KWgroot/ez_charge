@@ -3,9 +3,14 @@
     package="com.example.ez_charge"
     android:targetSandboxVersion="2">
     <!-- The following declaration enables this module to be served instantly -->
+    <permission android:name="android.permission.INTERNET"/>
+    <permission android:name="android.permission.USE_FINGERPRINT"/>
+
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
+        android:label="ez_charge"
+        android:usesCleartextTraffic="true">
         android:label="ez_charge">
 
         //Google Maps API Key
@@ -65,18 +70,6 @@
                     android:host="www.ezcharge.page.link/start"
                     android:scheme="https" />
 
-
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="www.ginnychowwingchun.nl"
-                    android:scheme="https" />
 
             </intent-filter>
             <meta-data
