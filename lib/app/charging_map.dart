@@ -26,18 +26,20 @@ class ChargingMapScreen extends State<ChargingMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GoogleMap(
-          initialCameraPosition: _initialPosition,
-          mapType: MapType.normal,
-          onMapCreated: (controller){
-            setState(() {
-              _controller = controller;
-            });
-          },
-          onTap: (cordinate){
-            _controller.animateCamera(CameraUpdate.newLatLng(cordinate));
-          },
-        ),
+        body: Column(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.width,
+              child: GoogleMap(
+                initialCameraPosition:
+                  CameraPosition(target: LatLng(52.370187, 4.897326),
+                  zoom: 10.0),
+                  zoomGesturesEnabled: true,
+              ),
+            )
+          ],
+        )
     );
   }
 }
