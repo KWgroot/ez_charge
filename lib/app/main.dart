@@ -56,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _success;
   var errorCode;
+  bool _canCheckBiometric = false;
   bool isAuthorized = false;
 
   String _userEmail;
