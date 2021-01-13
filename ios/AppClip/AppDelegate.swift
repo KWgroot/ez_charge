@@ -50,7 +50,7 @@ class AppDelegate: FlutterAppDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    flutterEngine.run(withEntrypoint: "otherEntrypoint", libraryURI: "app_main.dart")
+    flutterEngine.run(withEntrypoint: "main", libraryURI: "app_main.dart")
     GeneratedPluginRegistrant.register(with: self.flutterEngine);
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

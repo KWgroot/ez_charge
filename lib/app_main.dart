@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
 @pragma('vm:entry-point')
-void otherEntrypoint() => runApp(MyApp());
+void main() => runApp(MyApp());
 // void otherEntrypoint() async {
 //   WidgetsFlutterBinding.ensureInitialized();
 //   // await Firebase.initializeApp();

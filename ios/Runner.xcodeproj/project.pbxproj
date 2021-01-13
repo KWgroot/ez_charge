@@ -14,7 +14,6 @@
 		1D0669EF257FE1B8005F81D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0669ED257FE1B8005F81D1 /* Main.storyboard */; };
 		1D0669F4257FE1B9005F81D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D0669F2257FE1B9005F81D1 /* LaunchScreen.storyboard */; };
 		1D0669F9257FE1B9005F81D1 /* AppClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 1D0669E5257FE1B7005F81D1 /* AppClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		1D066A42257FE7EC005F81D1 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		1D066A7D257FEADA005F81D1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DF34BFC2577C5DC008C23C3 /* GoogleService-Info.plist */; };
 		1D066A80257FEFB4005F81D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		1DA1B5C12580D1FE00818875 /* Pods_AppClip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FBC18E700A4B761C2C5CBD9 /* Pods_AppClip.framework */; };
@@ -27,6 +26,7 @@
 		1DF34BD02577BFD3008C23C3 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		1DF34BFD2577C5DC008C23C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DF34BFC2577C5DC008C23C3 /* GoogleService-Info.plist */; };
 		1DF34BFE2577C5DC008C23C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DF34BFC2577C5DC008C23C3 /* GoogleService-Info.plist */; };
+		1DF54013258246F60051FB09 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		6E3438C370CF27219702B8BD /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A66662633A185133BF94A1 /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -279,11 +279,9 @@
 			buildConfigurationList = 1D0669FD257FE1B9005F81D1 /* Build configuration list for PBXNativeTarget "AppClip" */;
 			buildPhases = (
 				48EC6F6D1E839C2FE0E17DAD /* [CP] Check Pods Manifest.lock */,
-				1D066A04257FE362005F81D1 /* Run flutter scripts */,
 				1D0669E1257FE1B7005F81D1 /* Sources */,
 				1D0669E2257FE1B7005F81D1 /* Frameworks */,
 				1D0669E3257FE1B7005F81D1 /* Resources */,
-				1D066A05257FE381005F81D1 /* Thin Binary */,
 				DA0A0FF7EED2DB3178D523A6 /* [CP] Embed Pods Frameworks */,
 				1DA1B5C42580D24A00818875 /* Embed Frameworks */,
 			);
@@ -421,42 +419,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1D066A04257FE362005F81D1 /* Run flutter scripts */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run flutter scripts";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
-		};
-		1D066A05257FE381005F81D1 /* Thin Binary */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Thin Binary";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
-		};
 		1DF34BD72577C1A9008C23C3 /* Run flutter Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -607,7 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D0669E8257FE1B8005F81D1 /* AppDelegate.swift in Sources */,
-				1D066A42257FE7EC005F81D1 /* GeneratedPluginRegistrant.m in Sources */,
+				1DF54013258246F60051FB09 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
