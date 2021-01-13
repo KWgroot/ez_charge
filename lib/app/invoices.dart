@@ -54,6 +54,11 @@ class invoiceScreen extends State<Invoices> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: new AppBar(
+        title: Text('Invoices'),
+        backgroundColor: Theme.of(context).primaryColor,
+        automaticallyImplyLeading: false,
+      ),
       body: ListView.builder(
         itemBuilder: (context, position) {
           return Column(
@@ -64,9 +69,9 @@ class invoiceScreen extends State<Invoices> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                        child: Text(date[position]), alignment: Alignment(0.0, 0.0), height: 50,),
-                      Text(number[position].toString()),
-                      Text(amount[position].toString()),
+                        child: Text(date[position], style: Theme.of(context).textTheme.subtitle2), alignment: Alignment(0.0, 0.0), height: 50,),
+                      Text(number[position].toString(), style: Theme.of(context).textTheme.subtitle2,),
+                      Text(amount[position].toString(), style: Theme.of(context).textTheme.subtitle2,),
                       // FlatButton(onPressed: getInformation, child: null)
                     ],
                   )

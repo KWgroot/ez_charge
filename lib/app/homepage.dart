@@ -148,14 +148,16 @@ class _QrCodeState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    double width =
-        MediaQuery.of(context).size.width * MediaQuery.of(context).size.width;
-    print(width);
+    double heigth =
+        MediaQuery.of(context).size.height/3.7;
+    double colWidth =
+        MediaQuery.of(context).size.width/9.7;
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: new AppBar(
           title: Text('Home'),
           backgroundColor: Theme.of(context).primaryColor,
+          automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
             child: Form(
@@ -172,11 +174,14 @@ class _QrCodeState extends State<Homepage> {
           Text('Recente laad sessies',
               style: Theme.of(context).textTheme.headline2,
               textAlign: TextAlign.center),
-          SizedBox(
+          ConstrainedBox(
+            constraints: BoxConstraints.expand(
+                width: MediaQuery.of(context).size.width,
+                height: heigth),
             child: DataTable(
               showBottomBorder: true,
               dividerThickness: 0,
-              columnSpacing: 44.5,
+              columnSpacing: colWidth,
               columns: <DataColumn>[
                 DataColumn(
                   label: Text('Datum',
@@ -225,8 +230,8 @@ class _QrCodeState extends State<Homepage> {
               style: Theme.of(context).textTheme.headline2,
               textAlign: TextAlign.center),
 
-          RaisedButton.icon(
-              icon: Icon(Icons.qr_code_scanner_rounded, size: 150),
+          FlatButton.icon(
+              icon: Icon(Icons.qr_code_scanner_rounded, size: 0),
               // alignment: Alignment.center,
               // padding: EdgeInsets.only(right: 125),
               onPressed: () {
@@ -235,7 +240,7 @@ class _QrCodeState extends State<Homepage> {
                 } else {
                   _scan();
                 }
-              }, label: Text(''),
+              }, label: (Icon(Icons.qr_code_scanner_rounded, size: 150)),
               //Open QR code scanner
               ),
 

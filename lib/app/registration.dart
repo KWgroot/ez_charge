@@ -25,8 +25,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
     return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('EZCharge '),
+        appBar: new AppBar(
+          title: Text('EzCharge'),
+          backgroundColor: Theme.of(context).primaryColor,
+          automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
@@ -37,12 +39,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 //Registration Form Text
                 Text('Register for a new EzCharge account.',
                     style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                    Theme.of(context).textTheme.headline1,
                     textAlign: TextAlign.center),
 
                 //Page Description Text
                 Text('Fill in the fields below to register.',
-                    style: TextStyle(fontSize: 20.0),
+                    style: Theme.of(context).textTheme.bodyText1,
                     textAlign: TextAlign.center),
 
                 // Edit text field (Email)
@@ -78,16 +80,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     minWidth: double.infinity,
                     height: 40.0,
                     child: RaisedButton(
-                        color: Colors.yellow[400],
+                        color: Theme.of(context).buttonColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)
                         ),
                         child: Text(
                           'Register',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0
-                          ),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {
@@ -122,7 +121,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         : (_success
                         ? 'Successfully registered ' + _userEmail
                         : 'Registration failed'),
-                    style: TextStyle(color: Colors.red),
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
               ],
