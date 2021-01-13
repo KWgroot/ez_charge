@@ -1,3 +1,4 @@
+import 'package:ez_charge/app/design/btn.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,28 +37,21 @@ class SettingsScreen extends State<Settings> {
             child: Form(
                 child: Column(children: <Widget>[
           SizedBox(height: 20),
-          ButtonTheme(
-            minWidth: btnWidth,
-            child: RaisedButton(
-                color: Theme.of(context).buttonColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  'Change Password',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                onPressed: () async {
-                  auth.sendPasswordResetEmail(email: globals.user.email);
-                  Fluttertoast.showToast(
-                      msg: "We have sent you a password reset email",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.black,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                }),
-          ),
+          Button(
+              onPressed: () async {
+                auth.sendPasswordResetEmail(email: globals.user.email);
+                Fluttertoast.showToast(
+                    msg: "We have sent you a password reset email",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              },
+              text: 'Change Password',
+              color: Theme.of(context).buttonColor,
+              tStyle: Theme.of(context).textTheme.bodyText1),
           SwitchListTile(
               title: Text(
                 "Inloggen met vingerafdruk of gezicht",
@@ -78,19 +72,13 @@ class SettingsScreen extends State<Settings> {
                   });
                 }
               }),
-          ButtonTheme(
-              minWidth: btnWidth,
-              child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  color: Theme.of(context).buttonColor,
-                  child: Text(
-                    'Log out',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  onPressed: () async {
-                    logOut(context);
-                  })),
+          Button(
+              onPressed: () {
+                logOut(context);
+              },
+              text: 'Log out',
+              color: Theme.of(context).buttonColor,
+              tStyle: Theme.of(context).textTheme.bodyText1)
         ]))));
   }
 

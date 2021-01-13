@@ -7,6 +7,7 @@ import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/app/reCaptcha.dart';
 import 'package:ez_charge/base/base.dart';
 import './design/design.dart';
+import './design/btn.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,25 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: TITLE,
       home: LoginPage(),
-      theme: ThemeData(
-        // brightness: Brightness.dark,
-        primaryColor: Color.fromRGBO(0, 201, 178, 1),
-        buttonColor: Color.fromRGBO(37, 198, 205, 1),
-        backgroundColor: Colors.white70,
-
-        fontFamily: "open Sans",
-
-        textTheme: TextTheme(
-          headline1: TextStyle(fontFamily: 'open Sans', fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black),
-          headline2: TextStyle(fontFamily: 'open Sans', fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
-          bodyText1: TextStyle(fontFamily: 'open Sans', fontSize: 20, color: Colors.black),
-          bodyText2: TextStyle(fontFamily: 'open Sans', fontSize: 20, color: Colors.red),
-          subtitle1: TextStyle(fontFamily: 'open Sans', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
-          subtitle2: TextStyle(fontFamily: 'open Sans', fontSize: 16, color: Colors.black),
-          headline6: TextStyle(fontFamily: 'open Sans', fontSize: 16, color: Colors.red)
-        )
-
-      ),
+      theme: theme,
       debugShowCheckedModeBanner: false,
     );
   }
@@ -355,37 +338,17 @@ class _LoginPageState extends State<LoginPage> {
 
             // SUBMIT button
             SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: double.infinity,
-                height: 40.0,
-                child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    color: Theme.of(context).buttonColor,
-                    child: Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0
-                        )
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        _signInWithEmailAndPassword(false);
-                        //TODO WARNING Email and password will be saved as plain text in local storage for logging in using fingerprint or face recognition. Firebase requires users to log in with email and password.
-                        final storage = await SharedPreferences.getInstance();
-                        storage.setString("email", _emailController.text);
-                        storage.setString("password", _passwordController.text);
-                        loginAttempts();
-                      }
-                      else {
-                        loginAttempts();
-                      }
-                    }
-                )
-            ),
-
+            Button(onPressed: () async {if (_formKey.currentState.validate()) {
+                _signInWithEmailAndPassword(false);
+                //TODO WARNING Email and password will be saved as plain text in local storage for logging in using fingerprint or face recognition. Firebase requires users to log in with email and password.
+                final storage = await SharedPreferences.getInstance();
+                storage.setString("email", _emailController.text);
+                storage.setString("password", _passwordController.text);
+                loginAttempts();
+              }
+              else {
+                loginAttempts();
+              }}, text: 'Login', color: Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
             Container(
               alignment: Alignment.center,
               //padding: const EdgeInsets.symmetric(horizontal: 36), This just makes the layout worse.
@@ -405,24 +368,8 @@ class _LoginPageState extends State<LoginPage> {
                 textAlign: TextAlign.center),
 
             SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: double.infinity,
-                height: 40.0,
-                child: RaisedButton(
-                    color: Theme.of(context).buttonColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      'Register',
-                      style: Theme.of(context).textTheme.bodyText1
-                    ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
-                    }
-                )
-            ),
-          ],
+            Button(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));}, text: 'Register', color: Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
+                      ],
         ),
       ),
     );
