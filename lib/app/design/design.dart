@@ -13,7 +13,7 @@ headline2: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fo
 headline4: TextStyle(fontSize: 22, fontWeight: FontWeight.w600, color: Colors.black),
 bodyText1: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 20, color: Colors.black),
 bodyText2: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 20, color: Colors.red),
-headline3: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 20, color: Colors.black),
+headline3: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 20, fontWeight: FontWeight.w100, color: Colors.black),
 subtitle1: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
 subtitle2: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 16, color: Colors.black),
 headline5: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 16, color: Colors.grey),

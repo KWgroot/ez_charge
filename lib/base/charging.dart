@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ez_charge/app/design/design.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -59,9 +60,13 @@ class Charging extends StatelessWidget {
     );
     //
     AlertDialog alert = AlertDialog(
-      title: Text("Weet je zeker dat je de laadsessie wilt stoppen"),
+      title: Text("Weet je zeker dat je de laadsessie wilt stoppen?",
+        style: theme.textTheme.headline2
+      ),
       content: Text(
-          "Als je de sessie stopt worden alle kosten die je tot nu toe hebt gemaakt in rekening gebracht"),
+          "Als je de sessie stopt worden alle kosten die je tot nu toe hebt gemaakt in rekening gebracht",
+        style: theme.textTheme.headline3
+      ),
       actions: [continueBtn, stopSessionBtn],
     );
     //
