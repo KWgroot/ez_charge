@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
+import 'package:ez_charge/app/charging_map_services/places_service.dart';
+import 'charging_map_models/place.dart';
+import 'file:///C:/Users/arons/Documents/PROJECT%20MOBILE%20DEVELOPMENT/lib/app/charging_map_services/geolocator_service.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/app/reCaptcha.dart';
 import 'package:ez_charge/base/base.dart';
@@ -9,8 +12,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_page.dart';
 import 'global_variables.dart';
@@ -28,12 +33,25 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final locatorService = GeoLocatorService();
+  final placesService = PlacesService();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: TITLE,
-      home: LoginPage(),
+    return MultiProvider(
+      providers: [
+        FutureProvider(create: (context) => locatorService.getLocation()),
+        ProxyProvider<Position,Future<List<Place>>>(
+          update: (context,position,places){
+            return (position !=null) ? placesService.getPlaces(position.latitude, position.longitude) :null;
+          },
+        )
+      ],
+      child: MaterialApp(
+        title: TITLE,
+        home: LoginPage(),
+      ),
     );
   }
 }
