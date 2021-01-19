@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:ez_charge/app/charging_map_services/places_service.dart';
 import 'charging_map_models/place.dart';
-import 'file:///C:/Users/arons/Documents/PROJECT%20MOBILE%20DEVELOPMENT/lib/app/charging_map_services/geolocator_service.dart';
+import 'charging_map_services/geolocator_service.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/app/reCaptcha.dart';
 import 'package:ez_charge/base/base.dart';
