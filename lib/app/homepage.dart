@@ -155,8 +155,19 @@ class _QrCodeState extends State<Homepage> {
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: new AppBar(
-          title: Text('Home'),
-          backgroundColor: Theme.of(context).primaryColor,
+          title: Text('Home', style: Theme.of(context).textTheme.bodyText1),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).buttonColor
+                    ]
+                )
+            ),
+          ),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(

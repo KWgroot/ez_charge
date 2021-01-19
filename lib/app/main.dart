@@ -80,8 +80,19 @@ class _LoginPageState extends State<LoginPage> {
       title: 'EZCharge',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('EZCharge '),
-          backgroundColor: Theme.of(context).primaryColor,
+          title: Text('EzCharge ', style: Theme.of(context).textTheme.bodyText1),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).buttonColor
+                    ]
+                )
+            ),
+          ),
         ),
         body: bodyWidget()
       ),

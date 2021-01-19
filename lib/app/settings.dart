@@ -29,8 +29,19 @@ class SettingsScreen extends State<Settings> {
     double btnWidth = MediaQuery.of(context).size.width / 1.5;
     return Scaffold(
         appBar: new AppBar(
-          title: Text('Settings'),
-          backgroundColor: Theme.of(context).primaryColor,
+          title: Text('Settings', style: Theme.of(context).textTheme.bodyText1),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).buttonColor
+                    ]
+                )
+            ),
+          ),
           automaticallyImplyLeading: false,
         ),
         body: Center(

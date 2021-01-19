@@ -26,8 +26,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
       title: 'EZCharge',
       home: Scaffold(
         appBar: new AppBar(
-          title: Text('EzCharge'),
-          backgroundColor: Theme.of(context).primaryColor,
+          title: Text('EzCharge', style: Theme.of(context).textTheme.bodyText1),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).buttonColor
+                    ]
+                )
+            ),
+          ),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(

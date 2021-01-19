@@ -50,7 +50,7 @@ class _AppPageState extends State<AppPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.grey[850],
+        backgroundColor: Theme.of(context).bottomAppBarColor,
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.white,
         onTap: _onItemTapped,

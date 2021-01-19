@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 final theme = ThemeData(
 // brightness: Brightness.dark,
 primaryColor: Color.fromRGBO(0, 201, 178, 1),
-buttonColor: Color.fromRGBO(37, 198, 205, 1),
+buttonColor: Color.fromRGBO(93, 199, 204, 1),
 backgroundColor: Colors.white70,
+bottomAppBarColor: Colors.grey[850],
+
 
 fontFamily: "open Sans",
 
