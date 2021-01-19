@@ -254,18 +254,15 @@ class _QrCodeState extends State<Homepage> {
               }, label: (Icon(Icons.qr_code_scanner_rounded, size: 150)),
               //Open QR code scanner
               ),
-
-          SizedBox(height: 90),
+          Container(alignment: Alignment.bottomCenter,
+              child:
           (_isButtonDisabled)
               ? Text("Verifieer email om te starten",
                   style: Theme.of(context).textTheme.bodyText2)
               : Text("Gebruikt camera",
                   style: Theme.of(context).textTheme.subtitle1)
-          // THIS LINE IS REQUIRED
-          // FOR SOME REASON ICONS ARE NOT SEEN AS FILLING
-          // MEANING THAT WHEN YOU PUT THE PHONE SIDEWAYS
-          // IT WONT SCROLL ALL THE WAY DOWN WITHOUT THIS.
-        ]))));
+          )
+                ]))));
   }
 
   Future<void> _showMyDialog(String chargingStationId) async {

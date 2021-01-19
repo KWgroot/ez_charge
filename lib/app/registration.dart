@@ -5,6 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'design/btn.dart';
+import 'design/design.dart';
+
 class RegistrationPage extends StatefulWidget {
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
@@ -87,42 +90,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
                 // SUBMIT button
                 SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    height: 40.0,
-                    child: RaisedButton(
-                        color: Theme.of(context).buttonColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        ),
-                        child: Text(
-                          'Register',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context){
-                                    return Captcha((String code)=>print("Code returned: "+code));
-                                  }
-                              ),
-                            );
-                            _register();
-                          } else if (!(_passwordController1.text == _passwordController2.text)) {
-                            Fluttertoast.showToast( //This will refer to the coming homepage instead of making a message.
-                                msg: "Your passwords do not match.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.black,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          }
+                Button(onPressed: () async {if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context){
+                          return Captcha((String code)=>print("Code returned: "+code));
                         }
-                    )
-                ),
-
+                    ),
+                  );
+                  _register();
+                } else if (!(_passwordController1.text == _passwordController2.text)) {
+                  Fluttertoast.showToast( //This will refer to the coming homepage instead of making a message.
+                      msg: "Your passwords do not match.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.black,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }}, text:'Register', color:Theme.of(context).buttonColor, tStyle:Theme.of(context).textTheme.bodyText1),
                 Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 16),

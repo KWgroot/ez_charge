@@ -17,6 +17,7 @@ bodyText1: TextStyle(fontFamily: 'open Sans', fontSize: 20, color: Colors.black)
 bodyText2: TextStyle(fontFamily: 'open Sans', fontSize: 20, color: Colors.red),
 subtitle1: TextStyle(fontFamily: 'open Sans', fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
 subtitle2: TextStyle(fontFamily: 'open Sans', fontSize: 16, color: Colors.black),
+headline5: TextStyle(fontFamily: 'open Sans', fontSize: 16, color: Colors.grey),
 headline6: TextStyle(fontFamily: 'open Sans', fontSize: 16, color: Colors.red)
 )
 

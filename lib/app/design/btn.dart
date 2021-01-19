@@ -12,12 +12,14 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ButtonTheme(
+    return Container(
+      margin: const EdgeInsets.only(right: 10.0,left: 10.0),
+      child:ButtonTheme(
         minWidth: double.infinity,
         height: 40.0,
         child: RaisedButton(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20)
+                borderRadius: BorderRadius.circular(10)
             ),
             color: color,
             child: Text(
@@ -26,6 +28,7 @@ class Button extends StatelessWidget {
             ),
             onPressed: onPressed
         )
+    ),
     );
   }
 }

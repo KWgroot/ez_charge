@@ -56,7 +56,7 @@ class ChargingMap extends StatelessWidget {
                                                   .lng),
                                       child: Card(
                                         child: ListTile(
-                                          title: Text(places[index].name),
+                                          title: Text(places[index].name, style: Theme.of(context).textTheme.subtitle1,),
                                           subtitle: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class ChargingMap extends StatelessWidget {
                                                     (context, meters, widget) {
                                                   return (meters != null)
                                                       ? Text(
-                                                          '${places[index].vicinity} \u00b7 ${(meters / 1000).round()} km')
+                                                          '${places[index].vicinity} \u00b7 ${(meters / 1000).round()} km', style: Theme.of(context).textTheme.headline5)
                                                       : Container();
                                                 },
                                               )
