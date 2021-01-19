@@ -11,6 +11,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="ez_charge"
         android:usesCleartextTraffic="true">
+        android:label="ez_charge">
+
+        //Google Maps API Key
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDyEt6EzTovdkjAw8GVAr8_mV-HUTge1uk"/>
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -85,7 +91,9 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-
+    //Added permission to get users location
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide

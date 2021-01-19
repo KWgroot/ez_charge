@@ -1,9 +1,9 @@
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'invoices.dart';
 import 'settings.dart';
+import 'charging_map.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppPage extends StatefulWidget {
@@ -20,6 +20,7 @@ class _AppPageState extends State<AppPage> {
     Homepage(),
     Invoices(),
     Settings(),
+    ChargingMap(),
   ];
 
   void _onItemTapped(int index) {
@@ -35,6 +36,7 @@ class _AppPageState extends State<AppPage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -47,6 +49,10 @@ class _AppPageState extends State<AppPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Charging Map',
           ),
         ],
         currentIndex: _selectedIndex,
