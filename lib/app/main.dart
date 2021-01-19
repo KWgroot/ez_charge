@@ -8,6 +8,8 @@ import 'charging_map_services/geolocator_service.dart';
 import 'package:ez_charge/app/onboarding/onboarding.dart';
 import 'package:ez_charge/app/reCaptcha.dart';
 import 'package:ez_charge/base/base.dart';
+import './design/design.dart';
+import './design/btn.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,19 +42,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
+        providers: [
         FutureProvider(create: (context) => locatorService.getLocation()),
-        ProxyProvider<Position,Future<List<Place>>>(
-          update: (context,position,places){
-            return (position !=null) ? placesService.getPlaces(position.latitude, position.longitude) :null;
-          },
-        )
-      ],
-      child: MaterialApp(
-        title: TITLE,
-        home: LoginPage(),
-      ),
-    );
+    ProxyProvider<Position,Future<List<Place>>>(
+    update: (context,position,places){
+    return (position !=null) ? placesService.getPlaces(position.latitude, position.longitude) :null;
+    },
+    )
+    ],
+    child: MaterialApp(
+      title: TITLE,
+      home: LoginPage(),
+      theme: theme,
+      debugShowCheckedModeBanner: false,
+    )
   }
 }
 //try to get device ID, Internet required!
@@ -93,7 +96,19 @@ class _LoginPageState extends State<LoginPage> {
       title: 'EZCharge',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('EZCharge '),
+          title: Text('EzCharge ', style: Theme.of(context).textTheme.bodyText1),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).buttonColor
+                    ]
+                )
+            ),
+          ),
         ),
         body: bodyWidget()
       ),
@@ -322,12 +337,13 @@ class _LoginPageState extends State<LoginPage> {
             //Registration Form Text
             Text('Welcome to EzCharge',
                 style:
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
-                textAlign: TextAlign.center),
+                Theme.of(context).textTheme.headline1,
+                textAlign: TextAlign.center
+            ),
 
             //Page Description Text
             Text('Fill in the fields below to login.',
-                style: TextStyle(fontSize: 20.0),
+                style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.center),
 
             // Edit text field (Email)
@@ -349,37 +365,17 @@ class _LoginPageState extends State<LoginPage> {
 
             // SUBMIT button
             SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: double.infinity,
-                height: 40.0,
-                child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    color: Colors.yellow[400],
-                    child: Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0
-                        )
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        _signInWithEmailAndPassword(false);
-                        //TODO WARNING Email and password will be saved as plain text in local storage for logging in using fingerprint or face recognition. Firebase requires users to log in with email and password.
-                        final storage = await SharedPreferences.getInstance();
-                        storage.setString("email", _emailController.text);
-                        storage.setString("password", _passwordController.text);
-                        loginAttempts();
-                      }
-                      else {
-                        loginAttempts();
-                      }
-                    }
-                )
-            ),
-
+            Button(onPressed: () async {if (_formKey.currentState.validate()) {
+                _signInWithEmailAndPassword(false);
+                //TODO WARNING Email and password will be saved as plain text in local storage for logging in using fingerprint or face recognition. Firebase requires users to log in with email and password.
+                final storage = await SharedPreferences.getInstance();
+                storage.setString("email", _emailController.text);
+                storage.setString("password", _passwordController.text);
+                loginAttempts();
+              }
+              else {
+                loginAttempts();
+              }}, text: 'Login', color: Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
             Container(
               alignment: Alignment.center,
               //padding: const EdgeInsets.symmetric(horizontal: 36), This just makes the layout worse.
@@ -389,37 +385,18 @@ class _LoginPageState extends State<LoginPage> {
                     : (_success
                     ? ''
                     : 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw.'),
-                style: TextStyle(color: Colors.red),
+                style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
 
             SizedBox(height: 60.0),
             Text('Dont have an account yet? Register here.',
-                style: TextStyle(fontSize: 20.0),
+                style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.center),
 
             SizedBox(height: 20.0),
-            ButtonTheme(
-                minWidth: double.infinity,
-                height: 40.0,
-                child: RaisedButton(
-                    color: Colors.yellow[400],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Text(
-                      'Register',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.0
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
-                    }
-                )
-            ),
-          ],
+            Button(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));}, text: 'Register', color: Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
+                      ],
         ),
       ),
     );
