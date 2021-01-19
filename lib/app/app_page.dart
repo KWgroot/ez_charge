@@ -19,8 +19,8 @@ class _AppPageState extends State<AppPage> {
   final List<Widget> _widgetOptions = <Widget>[
     Homepage(),
     Invoices(),
-    Settings(),
     ChargingMap(),
+    Settings(),
   ];
 
   void _onItemTapped(int index) {
@@ -47,12 +47,12 @@ class _AppPageState extends State<AppPage> {
             label: 'Invoices',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Charging Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,

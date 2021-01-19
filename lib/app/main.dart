@@ -43,19 +43,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-        FutureProvider(create: (context) => locatorService.getLocation()),
-    ProxyProvider<Position,Future<List<Place>>>(
-    update: (context,position,places){
-    return (position !=null) ? placesService.getPlaces(position.latitude, position.longitude) :null;
-    },
-    )
-    ],
-    child: MaterialApp(
-      title: TITLE,
-      home: LoginPage(),
-      theme: theme,
-      debugShowCheckedModeBanner: false,
-    )
+          FutureProvider(create: (context) => locatorService.getLocation()),
+          ProxyProvider<Position, Future<List<Place>>>(
+            update: (context, position, places) {
+              return (position != null)
+                  ? placesService.getPlaces(
+                      position.latitude, position.longitude)
+                  : null;
+            },
+          )
+        ],
+        child: MaterialApp(
+          title: TITLE,
+          home: LoginPage(),
+          theme: theme,
+          debugShowCheckedModeBanner: false,
+        ));
   }
 }
 //try to get device ID, Internet required!
