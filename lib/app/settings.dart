@@ -1,10 +1,12 @@
 import 'package:ez_charge/app/design/btn.dart';
+import 'package:ez_charge/app/design/design.dart';
 import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../app/global_variables.dart' as globals;
+import 'change_credentials.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -26,18 +28,18 @@ class SettingsScreen extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    double btnWidth = MediaQuery.of(context).size.width / 1.5;
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
         appBar: new AppBar(
-          title: Text('Settings', style: Theme.of(context).textTheme.bodyText1),
+          title: Text('Settings', style: theme.textTheme.bodyText1),
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: <Color>[
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).buttonColor
+                      theme.primaryColor,
+                      theme.buttonColor
                     ]
                 )
             ),
@@ -50,23 +52,15 @@ class SettingsScreen extends State<Settings> {
           SizedBox(height: 20),
           Button(
               onPressed: () async {
-                auth.sendPasswordResetEmail(email: globals.user.email);
-                Fluttertoast.showToast(
-                    msg: "We have sent you a password reset email",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeCredentials()));
               },
               text: 'Change Password',
-              color: Theme.of(context).buttonColor,
-              tStyle: Theme.of(context).textTheme.bodyText1),
+              color: theme.buttonColor,
+              tStyle: theme.textTheme.bodyText1),
           SwitchListTile(
               title: Text(
                 "Inloggen met vingerafdruk of gezicht",
-                style: Theme.of(context).textTheme.subtitle1,
+                style: theme.textTheme.subtitle1,
               ),
               value: globals.enabledBiometric,
               onChanged: (enableBiometric) {
@@ -88,8 +82,8 @@ class SettingsScreen extends State<Settings> {
                 logOut(context);
               },
               text: 'Log out',
-              color: Theme.of(context).buttonColor,
-              tStyle: Theme.of(context).textTheme.bodyText1)
+              color: theme.buttonColor,
+              tStyle: theme.textTheme.bodyText1)
         ]))));
   }
 
@@ -99,23 +93,23 @@ class SettingsScreen extends State<Settings> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Log out', style:  Theme.of(context).textTheme.headline4,),
+          title: Text('Log out', style:  theme.textTheme.headline4,),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Do you want to log out?', style: Theme.of(context).textTheme.bodyText1,),
+                Text('Do you want to log out?', style: theme.textTheme.bodyText1,),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('No', style: Theme.of(context).textTheme.bodyText1,),
+              child: Text('No', style: theme.textTheme.bodyText1,),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Yes', style: Theme.of(context).textTheme.bodyText1,),
+              child: Text('Yes', style: theme.textTheme.bodyText1,),
               onPressed: () async {
                 await auth.signOut();
                 Navigator.of(context).pop();
@@ -139,16 +133,16 @@ class SettingsScreen extends State<Settings> {
             title: Text("Toestemming vereist"),
             content:
                 Text("Om in te kunnen loggen met je vingerafdruk of gezicht, "
-                    "heeft deze app eenmalig toestemming nodig.", style: Theme.of(context).textTheme.bodyText1,),
+                    "heeft deze app eenmalig toestemming nodig.", style: theme.textTheme.bodyText1,),
             actions: [
               TextButton(
-                child: Text("Afwijzen", style: Theme.of(context).textTheme.bodyText1,),
+                child: Text("Afwijzen", style: theme.textTheme.bodyText1,),
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text("Akkoord", style: Theme.of(context).textTheme.bodyText1,),
+                child: Text("Akkoord", style: theme.textTheme.bodyText1,),
                 onPressed: () async {
                   setState(() {
                     setEnableBiometric(enableBiometric);

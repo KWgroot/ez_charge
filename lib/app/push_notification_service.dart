@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:ez_charge/app/design/design.dart';
 import 'package:ez_charge/base/charging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,7 +46,7 @@ class _PushNotificationServiceState extends State<PushNotificationService> {
         print("onMessage: $message");
 
         final snackbar = SnackBar(
-          content: Text(message['notification']['title']),
+          content: Text(message['notification']['title'], style: theme.textTheme.bodyText1,),
           action: SnackBarAction(
             label: 'Ga',
             onPressed: (){

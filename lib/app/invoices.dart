@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import '../app/global_variables.dart' as globals;
+import 'design/design.dart';
 
 class Invoices extends StatefulWidget {
   @override
@@ -67,9 +68,10 @@ class invoiceScreen extends State<Invoices> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       appBar: new AppBar(
-        title: Text('Invoices', style: Theme.of(context).textTheme.bodyText1),
-        // backgroundColor: Theme.of(context).primaryColor,
+        title: Text('Invoices', style: theme.textTheme.bodyText1),
+        // backgroundColor: theme.primaryColor,
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -77,8 +79,8 @@ class invoiceScreen extends State<Invoices> {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: <Color>[
-                Theme.of(context).primaryColor,
-                Theme.of(context).buttonColor
+                theme.primaryColor,
+                theme.buttonColor
               ])),
         ),
       ),
@@ -96,17 +98,17 @@ class invoiceScreen extends State<Invoices> {
                     children: <Widget>[
                       Container(
                         child: Text(date[position],
-                            style: Theme.of(context).textTheme.subtitle2),
+                            style: theme.textTheme.subtitle2),
                         alignment: Alignment(0.0, 0.0),
                         height: 50,
                       ),
                       Text(
                         number[position].toString(),
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: theme.textTheme.subtitle2,
                       ),
                       Text(
                         amount[position].toString(),
-                        style: Theme.of(context).textTheme.subtitle2,
+                        style: theme.textTheme.subtitle2,
                       ),
 
                       // FlatButton(onPressed: getInformation, child: null)

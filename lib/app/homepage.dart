@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
+import 'design/design.dart';
 import 'global_variables.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -28,9 +29,9 @@ class _QrCodeState extends State<Homepage> {
   String hasStation = "";
 
   var docs;
-  List<String> date = ["\n-\n", "\n-\n", "\n-\n"];
-  List<String> location = ["\n-\n", "\n-\n", "\n-\n"];
-  List<String> timeCharged = ["\n-\n", "\n-\n", "\n-\n"];
+  List<String> date = ["-", "-", "-"];
+  List<String> location = ["-", "-", "-"];
+  List<String> timeCharged = ["-", "-", "-"];
 
   _scan() async {
     await FlutterBarcodeScanner.scanBarcode(
@@ -113,17 +114,17 @@ class _QrCodeState extends State<Homepage> {
       var endDate = DateTime.fromMillisecondsSinceEpoch(
           (doc.get('stopTime').seconds * 1000));
       date.insert(
-          0, '\n' + DateFormat('dd-MM-yy HH:mm').format(endDate) + '\n');
+          0, '' + DateFormat('dd-MM-yy HH:mm').format(endDate) + '');
       date.removeAt(3);
-      location.insert(0, '\n' + doc.get('poleId').toString() + '\n');
+      location.insert(0, '' + doc.get('poleId').toString() + '');
       location.removeAt(3);
       timeCharged.insert(
           0,
-          '\n' +
+          '' +
               ((doc.get('stopTime').seconds - doc.get('startTime').seconds) *
                       0.0015)
                   .toStringAsFixed(2) +
-              '\n');
+              '');
       timeCharged.removeAt(3);
     }
   }
@@ -153,17 +154,17 @@ class _QrCodeState extends State<Homepage> {
     double colWidth =
         MediaQuery.of(context).size.width/9.7;
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: theme.backgroundColor,
         appBar: new AppBar(
-          title: Text('Home', style: Theme.of(context).textTheme.bodyText1),
+          title: Text('Home', style: theme.textTheme.bodyText1),
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: <Color>[
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).buttonColor
+                      theme.primaryColor,
+                      theme.buttonColor
                     ]
                 )
             ),
@@ -175,15 +176,15 @@ class _QrCodeState extends State<Homepage> {
                 child: Column(children: <Widget>[
           SizedBox(height: 5),
           Text('EzCharge',
-              style: Theme.of(context).textTheme.headline1,
+              style: theme.textTheme.headline1,
               textAlign: TextAlign.center),
 
           Text(hasStation + globals.chargingStation,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: theme.textTheme.bodyText1,
               textAlign: TextAlign.center),
 
           Text('Recente laad sessies',
-              style: Theme.of(context).textTheme.headline2,
+              style: theme.textTheme.headline2,
               textAlign: TextAlign.center),
           ConstrainedBox(
             constraints: BoxConstraints.expand(
@@ -195,16 +196,16 @@ class _QrCodeState extends State<Homepage> {
               columnSpacing: colWidth,
               columns: <DataColumn>[
                 DataColumn(
-                  label: Text('Datum',
-                      style: Theme.of(context).textTheme.subtitle1),
+                  label: Text('\nDatum\n',
+                      style: theme.textTheme.subtitle1),
                 ),
                 DataColumn(
                   label: Text('\nLocatie\n',
-                      style: Theme.of(context).textTheme.subtitle1),
+                      style: theme.textTheme.subtitle1),
                 ),
                 DataColumn(
                   label: Text('\nTijd geladen\n',
-                      style: Theme.of(context).textTheme.subtitle1),
+                      style: theme.textTheme.subtitle1),
                 ),
               ],
               rows: List<DataRow>.generate(
@@ -219,17 +220,17 @@ class _QrCodeState extends State<Homepage> {
                       DataCell(Center(
                           child: Text(
                         date[index],
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: theme.textTheme.subtitle1,
                       ))),
                       DataCell(Center(
                           child: Text(
                         location[index],
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: theme.textTheme.subtitle1,
                       ))),
                       DataCell(Center(
                           child: Text(
                         timeCharged[index],
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: theme.textTheme.subtitle1,
                       )))
                     ]),
               ),
@@ -238,7 +239,7 @@ class _QrCodeState extends State<Homepage> {
 
           SizedBox(height: 20),
           Text('Start sessie',
-              style: Theme.of(context).textTheme.headline2,
+              style: theme.textTheme.headline2,
               textAlign: TextAlign.center),
 
           FlatButton.icon(
@@ -258,9 +259,9 @@ class _QrCodeState extends State<Homepage> {
               child:
           (_isButtonDisabled)
               ? Text("Verifieer email om te starten",
-                  style: Theme.of(context).textTheme.bodyText2)
+                  style: theme.textTheme.bodyText2)
               : Text("Gebruikt camera",
-                  style: Theme.of(context).textTheme.subtitle1)
+                  style: theme.textTheme.subtitle1)
           )
                 ]))));
   }
@@ -311,17 +312,17 @@ class _QrCodeState extends State<Homepage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Plug your car in!', style:  Theme.of(context).textTheme.subtitle1),
+          title: Text('Plug your car in!', style:  theme.textTheme.subtitle1),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Your car is not plugged in the charging pole.', style: Theme.of(context).textTheme.subtitle1),
+                Text('Your car is not plugged in the charging pole.', style: theme.textTheme.subtitle1),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Oke', style:  Theme.of(context).textTheme.subtitle1),
+              child: Text('Oke', style:  theme.textTheme.subtitle1),
               onPressed: () {
                 _data = "";
                 Navigator.of(context).pop();

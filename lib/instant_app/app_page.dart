@@ -1,3 +1,5 @@
+import 'package:ez_charge/app/design/design.dart';
+import 'package:ez_charge/app/design/design.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../app/homepage.dart';
@@ -45,8 +47,8 @@ class _AppPageState extends State<AppPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        backgroundColor: Theme.of(context).bottomAppBarColor,
-        selectedItemColor: Theme.of(context).primaryColor,
+        backgroundColor: theme.bottomAppBarColor,
+        selectedItemColor: theme.primaryColor,
         unselectedItemColor: Colors.white,
         onTap: _onItemTapped,
       ),

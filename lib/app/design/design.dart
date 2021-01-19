@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(
-// brightness: Brightness.dark,
 primaryColor: Color.fromRGBO(0, 201, 178, 1),
 buttonColor: Color.fromRGBO(93, 199, 204, 1),
+backgroundColor:  Color.fromRGBO(235, 235, 235, 1),
 bottomAppBarColor: Colors.grey[850],
 
 textTheme: TextTheme(
@@ -19,5 +19,4 @@ subtitle2: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fo
 headline5: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 16, color: Colors.grey),
 headline6: TextStyle(fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily, fontSize: 16, color: Colors.red)
 )
-
 );

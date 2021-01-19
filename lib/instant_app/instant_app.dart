@@ -46,8 +46,7 @@ class _InstantApp extends State<MyApp> {
       theme: theme,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('EzCharge ', style: Theme
-              .of(context)
+          title: Text('EzCharge ', style: theme
               .textTheme
               .bodyText1),
         ),
@@ -65,13 +64,12 @@ class _InstantApp extends State<MyApp> {
             child: Column(
               children: <Widget>[
                 Text('Charge your car',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 36.0),
+                    style: theme.textTheme.headline1,
                     textAlign: TextAlign.center),
                 Spacer(),
                 Text(
                     'If you push the button below you are paying for a charging session on pole: ' +
-                        poleId),
+                        poleId, style: theme.textTheme.subtitle2,),
                 ButtonTheme(child: buttonBottom(), minWidth: double.infinity,)
               ],
             ),
@@ -91,7 +89,7 @@ class buttonBottom extends StatelessWidget {
         Fluttertoast.showToast(msg: "You simulated that you have payed");
         Navigator.push(
         context, MaterialPageRoute(builder: (context) => AppPage()));
-        }, text: "Google Pay", tStyle: Theme.of(context).textTheme.button, color: Theme.of(context).buttonColor,),
+        }, text: "Google Pay", tStyle: theme.textTheme.button, color: theme.buttonColor,),
     );
   }
 }

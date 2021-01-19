@@ -29,16 +29,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
     return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: new AppBar(
-          title: Text('EzCharge', style: Theme.of(context).textTheme.bodyText1),
+          title: Text('EzCharge', style: theme.textTheme.bodyText1),
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: <Color>[
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).buttonColor
+                      theme.primaryColor,
+                      theme.buttonColor
                     ]
                 )
             ),
@@ -53,12 +54,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
               children: <Widget>[
                 //Registration Form Text
                 Text('Register for a new EzCharge account.',
-                    style: Theme.of(context).textTheme.headline1,
+                    style: theme.textTheme.headline1,
                     textAlign: TextAlign.center),
 
                 //Page Description Text
                 Text('Fill in the fields below to register.',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: theme.textTheme.bodyText1,
                     textAlign: TextAlign.center),
 
                 // Edit text field (Email)
@@ -68,7 +69,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   decoration: const InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
                   validator: validateEmail,
-                  style:  Theme.of(context).textTheme.subtitle2,
+                  style:  theme.textTheme.subtitle2,
                 ),
 
                 // Edit text field (Password)
@@ -78,7 +79,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   decoration: const InputDecoration(labelText: 'Password'),
                   validator: validatePassword,
                   obscureText: true,
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: theme.textTheme.subtitle2,
                 ),
 
                 SizedBox(height: 20.0),
@@ -88,7 +89,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       labelText: 'Repeat password'),
                   validator: validatePassword,
                   obscureText: true,
-                  style: Theme.of(context).textTheme.subtitle2
+                  style: theme.textTheme.subtitle2
                 ),
 
                 // SUBMIT button
@@ -111,7 +112,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       backgroundColor: Colors.black,
                       textColor: Colors.white,
                       fontSize: 16.0);
-                }}, text:'Register', color:Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
+                }}, text:'Register', color:theme.buttonColor, tStyle: theme.textTheme.bodyText1),
                 Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -121,7 +122,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         : (_success
                         ? 'Successfully registered ' + _userEmail
                         : 'Registration failed'),
-                    style: Theme.of(context).textTheme.headline6,
+                    style: theme.textTheme.headline6,
                   ),
                 ),
               ],
