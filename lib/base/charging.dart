@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ez_charge/app/design/btn.dart';
+import 'package:ez_charge/app/design/design.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,24 +15,24 @@ class Charging extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       body: Center(
-        child: RaisedButton(
-          color: Colors.yellow[400],
+        child: Button(
+          color: theme.buttonColor,
           onPressed: () {
             stopSession(docRef, context);
           },
-          child: Text(
+          text:
             'STOP CHARGING',
-            style: TextStyle(color: Colors.black),
+            tStyle: theme.textTheme.bodyText1,
           ),
         ),
-      ),
     );
   }
 
   stopSession (docRef, context) {
-    Widget stopSessionBtn = FlatButton(
-      child: Text("Stop Session"),
+    Widget stopSessionBtn = Button(
+      text: "Stop Session",
       onPressed: () async {
         FirebaseFirestore firestore = FirebaseFirestore.instance;
         firestore.collection("chargingSession").doc(docRef).update({
@@ -49,13 +51,17 @@ class Charging extends StatelessWidget {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
       },
+      color: theme.buttonColor,
+      tStyle: theme.textTheme.bodyText1,
     );
     //
-    Widget continueBtn = FlatButton(
-      child: Text("Continue Charging"),
+    Widget continueBtn = Button(
+      text: "Continue Charging",
       onPressed: () {
         Navigator.pop(context);
       },
+      color: theme.buttonColor,
+      tStyle: theme.textTheme.bodyText1,
     );
     //
     AlertDialog alert = AlertDialog(

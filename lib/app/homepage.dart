@@ -277,7 +277,7 @@ class _QrCodeState extends State<Homepage> {
             child: ListBody(
               children: <Widget>[
                 Text(
-                    'Do you wish to start your charging session at charging station: $chargingStationId?'),
+                    'Do you wish to start your charging session at charging station: $chargingStationId?',),
               ],
             ),
           ),
