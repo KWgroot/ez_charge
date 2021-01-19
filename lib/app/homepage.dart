@@ -272,12 +272,12 @@ class _QrCodeState extends State<Homepage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Start Charging?'),
+          title: Text('Start Charging?', style: theme.textTheme.headline2,),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
-                    'Do you wish to start your charging session at charging station: $chargingStationId?',),
+                    'Do you wish to start your charging session at charging station: $chargingStationId?', style: theme.textTheme.headline3),
               ],
             ),
           ),
