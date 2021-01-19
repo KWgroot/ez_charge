@@ -4,6 +4,7 @@ import 'package:ez_charge/base/base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'design/btn.dart';
 import 'design/design.dart';
@@ -52,8 +53,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               children: <Widget>[
                 //Registration Form Text
                 Text('Register for a new EzCharge account.',
-                    style:
-                    Theme.of(context).textTheme.headline1,
+                    style: Theme.of(context).textTheme.headline1,
                     textAlign: TextAlign.center),
 
                 //Page Description Text
@@ -68,6 +68,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   decoration: const InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
                   validator: validateEmail,
+                  style:  Theme.of(context).textTheme.subtitle2,
                 ),
 
                 // Edit text field (Password)
@@ -77,6 +78,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   decoration: const InputDecoration(labelText: 'Password'),
                   validator: validatePassword,
                   obscureText: true,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
 
                 SizedBox(height: 20.0),
@@ -86,6 +88,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       labelText: 'Repeat password'),
                   validator: validatePassword,
                   obscureText: true,
+                  style: Theme.of(context).textTheme.subtitle2
                 ),
 
                 // SUBMIT button
@@ -108,7 +111,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       backgroundColor: Colors.black,
                       textColor: Colors.white,
                       fontSize: 16.0);
-                }}, text:'Register', color:Theme.of(context).buttonColor, tStyle:Theme.of(context).textTheme.bodyText1),
+                }}, text:'Register', color:Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
                 Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -356,6 +356,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: const InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
               validator: validateEmail,
+              style: Theme.of(context).textTheme.subtitle2,
             ),
 
             // Edit text field (Password)
@@ -364,6 +365,7 @@ class _LoginPageState extends State<LoginPage> {
               controller: _passwordController,
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
+              style: Theme.of(context).textTheme.subtitle2,
             ),
 
             // SUBMIT button

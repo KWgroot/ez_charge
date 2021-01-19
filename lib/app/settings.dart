@@ -99,23 +99,23 @@ class SettingsScreen extends State<Settings> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Log out'),
+          title: Text('Log out', style:  Theme.of(context).textTheme.headline4,),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Do you want to log out?'),
+                Text('Do you want to log out?', style: Theme.of(context).textTheme.bodyText1,),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              child: Text('No', style: Theme.of(context).textTheme.bodyText1,),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Yes'),
+              child: Text('Yes', style: Theme.of(context).textTheme.bodyText1,),
               onPressed: () async {
                 await auth.signOut();
                 Navigator.of(context).pop();
@@ -139,16 +139,16 @@ class SettingsScreen extends State<Settings> {
             title: Text("Toestemming vereist"),
             content:
                 Text("Om in te kunnen loggen met je vingerafdruk of gezicht, "
-                    "heeft deze app eenmalig toestemming nodig."),
+                    "heeft deze app eenmalig toestemming nodig.", style: Theme.of(context).textTheme.bodyText1,),
             actions: [
               TextButton(
-                child: Text("Afwijzen"),
+                child: Text("Afwijzen", style: Theme.of(context).textTheme.bodyText1,),
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text("Akkoord"),
+                child: Text("Akkoord", style: Theme.of(context).textTheme.bodyText1,),
                 onPressed: () async {
                   setState(() {
                     setEnableBiometric(enableBiometric);

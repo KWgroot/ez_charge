@@ -311,17 +311,17 @@ class _QrCodeState extends State<Homepage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Plug your car in!'),
+          title: Text('Plug your car in!', style:  Theme.of(context).textTheme.subtitle1),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Your car is not plugged in the charging pole.'),
+                Text('Your car is not plugged in the charging pole.', style: Theme.of(context).textTheme.subtitle1),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Oke'),
+              child: Text('Oke', style:  Theme.of(context).textTheme.subtitle1),
               onPressed: () {
                 _data = "";
                 Navigator.of(context).pop();
