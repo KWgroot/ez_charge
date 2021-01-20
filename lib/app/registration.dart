@@ -122,7 +122,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         : (_success
                         ? 'Successfully registered ' + _userEmail
                         : 'Registration failed'),
-                    style: theme.textTheme.headline6,
+                    style: theme.textTheme.bodyText2,
                   ),
                 ),
               ],

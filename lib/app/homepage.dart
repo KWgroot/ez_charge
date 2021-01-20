@@ -272,25 +272,25 @@ class _QrCodeState extends State<Homepage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Start Charging?', style: theme.textTheme.headline2,),
+          title: Text('Start Charging?', style: theme.textTheme.headline4,),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
-                    'Do you wish to start your charging session at charging station: $chargingStationId?', style: theme.textTheme.headline3),
+                    'Do you wish to start your charging session at charging station: $chargingStationId?', style: theme.textTheme.subtitle2),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              child: Text('No', style: theme.textTheme.headline3),
               onPressed: () {
                 _data = "";
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Yes'),
+              child: Text('Yes', style: theme.textTheme.headline3),
               onPressed: () async {
                 docRef = await startSession();
                 globals.chargingStation = chargingStationId.toString();
@@ -312,17 +312,17 @@ class _QrCodeState extends State<Homepage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Plug your car in!', style:  theme.textTheme.subtitle1),
+          title: Text('Plug your car in!', style:  theme.textTheme.headline4),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Your car is not plugged in the charging pole.', style: theme.textTheme.subtitle1),
+                Text('Your car is not plugged in the charging pole.', style: theme.textTheme.subtitle2),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Oke', style:  theme.textTheme.subtitle1),
+              child: Text('Oke', style: theme.textTheme.headline3),
               onPressed: () {
                 _data = "";
                 Navigator.of(context).pop();

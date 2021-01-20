@@ -32,3 +32,30 @@ class Button extends StatelessWidget {
     );
   }
 }
+
+class TButton extends StatelessWidget {
+
+  final String text;
+  final Function onPressed;
+  final TextStyle tStyle;
+
+  TButton({ @required this.onPressed, @required this.text, @required this.tStyle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 10.0,left: 10.0),
+      child:ButtonTheme(
+          minWidth: double.infinity,
+          height: 40.0,
+          child: TextButton(
+              child: Text(
+                  text,
+                  style: tStyle
+              ),
+              onPressed: onPressed
+          )
+      ),
+    );
+  }
+}

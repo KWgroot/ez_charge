@@ -31,7 +31,7 @@ class Charging extends StatelessWidget {
   }
 
   stopSession (docRef, context) {
-    Widget stopSessionBtn = Button(
+    Widget stopSessionBtn = TButton(
       text: "Stop Session",
       onPressed: () async {
         FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -51,26 +51,29 @@ class Charging extends StatelessWidget {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
       },
-      color: theme.buttonColor,
-      tStyle: theme.textTheme.bodyText1,
+      tStyle: theme.textTheme.headline3,
     );
     //
-    Widget continueBtn = Button(
+    Widget continueBtn = TButton(
       text: "Continue Charging",
       onPressed: () {
         Navigator.pop(context);
       },
-      color: theme.buttonColor,
-      tStyle: theme.textTheme.bodyText1,
+      tStyle: theme.textTheme.headline3,
     );
     //
     AlertDialog alert = AlertDialog(
       title: Text("Weet je zeker dat je de laadsessie wilt stoppen?",
-        style: theme.textTheme.headline2
-      ),
-      content: Text(
-          "Als je de sessie stopt worden alle kosten die je tot nu toe hebt gemaakt in rekening gebracht",
-        style: theme.textTheme.headline3
+          style: theme.textTheme.headline2),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+                "Als je de sessie stopt worden alle kosten die je tot nu toe hebt gemaakt in rekening gebracht",
+                style: theme.textTheme.subtitle2),
+          ],
+        ),
       ),
       actions: [continueBtn, stopSessionBtn],
     );
