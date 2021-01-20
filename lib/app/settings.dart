@@ -97,19 +97,19 @@ class SettingsScreen extends State<Settings> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Do you want to log out?', style: theme.textTheme.bodyText1,),
+                Text('Do you want to log out?', style: theme.textTheme.subtitle2,),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('No', style: theme.textTheme.bodyText1,),
+              child: Text('No', style: theme.textTheme.headline3,),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Yes', style: theme.textTheme.bodyText1,),
+              child: Text('Yes', style: theme.textTheme.headline3,),
               onPressed: () async {
                 await auth.signOut();
                 Navigator.of(context).pop();
@@ -130,19 +130,19 @@ class SettingsScreen extends State<Settings> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Toestemming vereist"),
+            title: Text("Toestemming vereist", style: theme.textTheme.headline4,),
             content:
                 Text("Om in te kunnen loggen met je vingerafdruk of gezicht, "
-                    "heeft deze app eenmalig toestemming nodig.", style: theme.textTheme.bodyText1,),
+                    "heeft deze app eenmalig toestemming nodig.", style: theme.textTheme.subtitle2,),
             actions: [
               TextButton(
-                child: Text("Afwijzen", style: theme.textTheme.bodyText1,),
+                child: Text("Afwijzen", style: theme.textTheme.headline3,),
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text("Akkoord", style: theme.textTheme.bodyText1,),
+                child: Text("Akkoord", style: theme.textTheme.headline3,),
                 onPressed: () async {
                   setState(() {
                     setEnableBiometric(enableBiometric);
