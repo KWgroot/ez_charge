@@ -1,5 +1,8 @@
 import 'package:ez_charge/app/charging_map_services/geolocator_service.dart';
 import 'package:ez_charge/app/charging_map_services/marker_service.dart';
+import 'package:ez_charge/app/design/design.dart';
+import 'package:ez_charge/app/design/design.dart';
+import 'package:ez_charge/app/design/design.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +21,7 @@ class ChargingMap extends StatelessWidget {
     return FutureProvider(
       create: (context) => placesProvider,
       child: Scaffold(
+        backgroundColor: theme.backgroundColor,
         body: (currentPosition != null)
             ? Consumer<List<Place>>(
                 builder: (_, places, __) {
@@ -56,7 +60,7 @@ class ChargingMap extends StatelessWidget {
                                                   .lng),
                                       child: Card(
                                         child: ListTile(
-                                          title: Text(places[index].name),
+                                          title: Text(places[index].name, style: theme.textTheme.subtitle1,),
                                           subtitle: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -67,7 +71,7 @@ class ChargingMap extends StatelessWidget {
                                                     (context, meters, widget) {
                                                   return (meters != null)
                                                       ? Text(
-                                                          '${places[index].vicinity} \u00b7 ${(meters / 1000).round()} km')
+                                                          '${places[index].vicinity} \u00b7 ${(meters / 1000).round()} km', style: theme.textTheme.headline5)
                                                       : Container();
                                                 },
                                               )
@@ -76,7 +80,7 @@ class ChargingMap extends StatelessWidget {
                                           trailing: IconButton(
                                             icon: Icon(Icons.directions),
                                             color:
-                                                Theme.of(context).primaryColor,
+                                                theme.primaryColor,
                                             onPressed: () {
                                               _launchMapsUrl(places[index].geometry.location.lat, places[index].geometry.location.lng);
                                             },

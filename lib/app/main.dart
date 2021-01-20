@@ -31,6 +31,7 @@ void main() async {
   runApp(MaterialApp(
     title: TITLE,
     home: MyApp(),
+    theme: theme,
   ));
 }
 
@@ -56,7 +57,6 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: TITLE,
           home: LoginPage(),
-          theme: theme,
           debugShowCheckedModeBanner: false,
         ));
   }
@@ -98,16 +98,17 @@ class _LoginPageState extends State<LoginPage> {
     return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: AppBar(
-          title: Text('EzCharge ', style: Theme.of(context).textTheme.bodyText1),
+          title: Text('EzCharge ', style: theme.textTheme.bodyText1),
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: <Color>[
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).buttonColor
+                      theme.primaryColor,
+                      theme.buttonColor
                     ]
                 )
             ),
@@ -340,13 +341,13 @@ class _LoginPageState extends State<LoginPage> {
             //Registration Form Text
             Text('Welcome to EzCharge',
                 style:
-                Theme.of(context).textTheme.headline1,
+                theme.textTheme.headline1,
                 textAlign: TextAlign.center
             ),
 
             //Page Description Text
             Text('Fill in the fields below to login.',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: theme.textTheme.bodyText1,
                 textAlign: TextAlign.center),
 
             // Edit text field (Email)
@@ -356,6 +357,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: const InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
               validator: validateEmail,
+              style: theme.textTheme.subtitle2,
             ),
 
             // Edit text field (Password)
@@ -364,6 +366,7 @@ class _LoginPageState extends State<LoginPage> {
               controller: _passwordController,
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
+              style: theme.textTheme.subtitle2,
             ),
 
             // SUBMIT button
@@ -378,7 +381,7 @@ class _LoginPageState extends State<LoginPage> {
               }
               else {
                 loginAttempts();
-              }}, text: 'Login', color: Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
+              }}, text: 'Login', color: theme.buttonColor, tStyle: theme.textTheme.bodyText1),
             Container(
               alignment: Alignment.center,
               //padding: const EdgeInsets.symmetric(horizontal: 36), This just makes the layout worse.
@@ -388,17 +391,17 @@ class _LoginPageState extends State<LoginPage> {
                     : (_success
                     ? ''
                     : 'De ingevoerde gebruikersnaam en/of het wachtwoord is onjuist, probeer het opnieuw.'),
-                style: Theme.of(context).textTheme.bodyText2,
+                style: theme.textTheme.bodyText2,
               ),
             ),
 
             SizedBox(height: 60.0),
             Text('Dont have an account yet? Register here.',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: theme.textTheme.bodyText1,
                 textAlign: TextAlign.center),
 
             SizedBox(height: 20.0),
-            Button(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));}, text: 'Register', color: Theme.of(context).buttonColor, tStyle: Theme.of(context).textTheme.bodyText1),
+            Button(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));}, text: 'Register', color: theme.buttonColor, tStyle: theme.textTheme.bodyText1),
                       ],
         ),
       ),

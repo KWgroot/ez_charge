@@ -4,6 +4,10 @@ import 'package:ez_charge/base/base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'design/btn.dart';
+import 'design/design.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -25,16 +29,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
     return MaterialApp(
       title: 'EZCharge',
       home: Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: new AppBar(
-          title: Text('EzCharge', style: Theme.of(context).textTheme.bodyText1),
+          title: Text('EzCharge', style: theme.textTheme.bodyText1),
           flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: <Color>[
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).buttonColor
+                      theme.primaryColor,
+                      theme.buttonColor
                     ]
                 )
             ),
@@ -49,13 +54,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
               children: <Widget>[
                 //Registration Form Text
                 Text('Register for a new EzCharge account.',
-                    style:
-                    Theme.of(context).textTheme.headline1,
+                    style: theme.textTheme.headline1,
                     textAlign: TextAlign.center),
 
                 //Page Description Text
                 Text('Fill in the fields below to register.',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: theme.textTheme.bodyText1,
                     textAlign: TextAlign.center),
 
                 // Edit text field (Email)
@@ -65,6 +69,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   decoration: const InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
                   validator: validateEmail,
+                  style:  theme.textTheme.subtitle2,
                 ),
 
                 // Edit text field (Password)
@@ -74,6 +79,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   decoration: const InputDecoration(labelText: 'Password'),
                   validator: validatePassword,
                   obscureText: true,
+                  style: theme.textTheme.subtitle2,
                 ),
 
                 SizedBox(height: 20.0),
@@ -83,46 +89,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       labelText: 'Repeat password'),
                   validator: validatePassword,
                   obscureText: true,
+                  style: theme.textTheme.subtitle2
                 ),
 
                 // SUBMIT button
                 SizedBox(height: 20.0),
-                ButtonTheme(
-                    minWidth: double.infinity,
-                    height: 40.0,
-                    child: RaisedButton(
-                        color: Theme.of(context).buttonColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                        ),
-                        child: Text(
-                          'Register',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context){
-                                    return Captcha((String code)=>print("Code returned: "+code));
-                                  }
-                              ),
-                            );
-                            _register();
-                          } else if (!(_passwordController1.text == _passwordController2.text)) {
-                            Fluttertoast.showToast( //This will refer to the coming homepage instead of making a message.
-                                msg: "Your passwords do not match.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.black,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          }
+                Button(onPressed: () async {if (_formKey.currentState.validate() && _passwordController1.text == _passwordController2.text) {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context){
+                          return Captcha((String code)=>print("Code returned: "+code));
                         }
-                    )
-                ),
-
+                    ),
+                  );
+                  _register();
+                } else if (!(_passwordController1.text == _passwordController2.text)) {
+                  Fluttertoast.showToast( //This will refer to the coming homepage instead of making a message.
+                      msg: "Your passwords do not match.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.black,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }}, text:'Register', color:theme.buttonColor, tStyle: theme.textTheme.bodyText1),
                 Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -132,7 +122,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         : (_success
                         ? 'Successfully registered ' + _userEmail
                         : 'Registration failed'),
-                    style: Theme.of(context).textTheme.headline6,
+                    style: theme.textTheme.bodyText2,
                   ),
                 ),
               ],

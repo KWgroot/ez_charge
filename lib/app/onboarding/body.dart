@@ -1,5 +1,8 @@
+import 'package:ez_charge/app/design/btn.dart';
+import 'package:ez_charge/app/design/design.dart';
 import 'package:ez_charge/app/global_variables.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class body extends StatefulWidget{
   @override
@@ -13,19 +16,19 @@ class _body extends State<body> {
   List<Map<String, String>> onboardingData = [
     {
       "text": "Maak een account aan",
-      "image": "assets/images/registreren.jpg"
+      "image": "assets/images/registreren.png"
     },
     {
       "text": "Klik op 'Start session' en scan de QR code",
-      "image": "assets/images/hoofdscherm.jpg"
+      "image": "assets/images/hoofdscherm.png"
     },
     {
       "text": "Start de sessie",
-      "image": "assets/images/startsessie.jpg"
+      "image": "assets/images/startsessie.png"
     },
     {
       "text": "Bekijk facturen",
-      "image": "assets/images/aanmelden.jpg"
+      "image": "assets/images/facturen.png"
     }
   ];
 
@@ -62,24 +65,7 @@ class _body extends State<body> {
                       children: List.generate(onboardingData.length, (index) => buildDot(index: index)),
                     ),
                     Spacer(flex: 7,),
-                    ButtonTheme(
-                        minWidth: double.infinity,
-                        height: 40.0,
-                        child: RaisedButton(
-                            color: Colors.yellow[400],
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)
-                            ),
-                            child: Text(
-                              'Registreer nu',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.0
-                              ),
-                            ),
-                            onPressed: () {Navigator.of(context).pop();}
-                        )
-                    ),
+                    Button(onPressed: () {Navigator.of(context).pop();}, text: 'Registreer nu', color: theme.buttonColor , tStyle: theme.textTheme.bodyText1),
                     Spacer(flex: 4,)
                   ],
                 ),
@@ -125,7 +111,8 @@ class OnboardingContent extends StatelessWidget {
         Text(
           "EzCharge",
           style: TextStyle(
-              fontSize: 50.0
+              fontSize: 50.0,
+              fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily
           )
         ),
         Spacer(
@@ -134,7 +121,8 @@ class OnboardingContent extends StatelessWidget {
         Text(
           text,
           style: TextStyle(
-            color: Colors.black45
+              color: Colors.black45,
+              fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily
           ),
           textAlign: TextAlign.center,
         ),
