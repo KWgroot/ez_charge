@@ -36,7 +36,7 @@ final theme = ThemeData(
             fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily,
             fontSize: 16,
             color: Colors.grey),
-        /// !!! DEZE KAN NOG GEBRUIKT WORDEN !!!
+        //Todo
         headline6: TextStyle(
             fontFamily: GoogleFonts.sairaSemiCondensed().fontFamily,
             fontSize: 16,

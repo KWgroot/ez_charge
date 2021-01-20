@@ -109,7 +109,7 @@ class Charging extends StatelessWidget {
     //
     AlertDialog alert = AlertDialog(
       title: Text("Weet je zeker dat je de laadsessie wilt stoppen?",
-          style: theme.textTheme.headline2),
+          style: theme.textTheme.headline4),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

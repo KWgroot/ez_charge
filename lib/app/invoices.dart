@@ -98,17 +98,17 @@ class invoiceScreen extends State<Invoices> {
                     children: <Widget>[
                       Container(
                         child: Text(date[position],
-                            style: theme.textTheme.subtitle2),
+                            style: theme.textTheme.subtitle1),
                         alignment: Alignment(0.0, 0.0),
                         height: 50,
                       ),
                       Text(
                         number[position].toString(),
-                        style: theme.textTheme.subtitle2,
+                        style: theme.textTheme.subtitle1,
                       ),
                       Text(
                         amount[position].toString(),
-                        style: theme.textTheme.subtitle2,
+                        style: theme.textTheme.subtitle1,
                       ),
 
                       // FlatButton(onPressed: getInformation, child: null)
