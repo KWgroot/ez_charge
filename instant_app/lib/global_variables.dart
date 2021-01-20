@@ -13,5 +13,5 @@ const String TITLE = "EzCharge";
 
 var chargingStation = "";
 
-bool isBiometricEnabled = false;
+bool enabledBiometric = false;
 bool askForPermissionForFirstTime = true;

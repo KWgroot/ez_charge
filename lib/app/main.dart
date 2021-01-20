@@ -18,7 +18,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'app_page.dart';
 import 'global_variables.dart';
 import 'registration.dart';
@@ -61,9 +60,6 @@ class MyApp extends StatelessWidget {
         ));
   }
 }
-//try to get device ID, Internet required!
-//ID in DB? Yes > no onboardingscreen
-//NO? > show onboardingscreen
 
 class LoginPage extends StatefulWidget {
   @override
@@ -80,19 +76,15 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _success;
   var errorCode;
-  bool _canCheckBiometric = false;
   bool isAuthorized = false;
-
-  String _userEmail;
-  String _authorized = "Geen toegang";
-
-  List<BiometricType> _availableBiometricTypes = List<BiometricType>();
 
   @override
   Widget build(BuildContext context) {
     onBoarding();
-    if(!isAuthorized){
+
+    if(!isAuthorized && auth.currentUser != null){
       _authorizeNow();
+      globals.user = auth.currentUser;
     }
 
     return MaterialApp(
@@ -183,7 +175,6 @@ class _LoginPageState extends State<LoginPage> {
 
       setState(() {
         _success = true;
-        _userEmail = user.email;
         globals.user = user;
         Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
       });
@@ -196,26 +187,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _checkBiometric() async {
-    bool canCheckBiometric = false;
-    try{
-      canCheckBiometric = await _localAuthentication.canCheckBiometrics;
-    } on PlatformException catch (error){
-      print(error);
-    }
-
-    if(!mounted){
-      return;
-    }
-
-    setState(() {
-      _canCheckBiometric = canCheckBiometric;
-    });
-  }
-
   Future<void> _authorizeNow() async {
-    final storage = await SharedPreferences.getInstance();
-
     try{
       if(await getEnableBiometric()){
 
@@ -251,14 +223,7 @@ class _LoginPageState extends State<LoginPage> {
 
         setState(() {
           if(isAuthorized){
-            _authorized = "Bevoegd, welkom";
-            //TODO WARNING retrieve email and password from local storage
-            _emailController.text = storage.getString("email");
-            _passwordController.text = storage.getString("password");
-
-            _signInWithEmailAndPassword(true);
-          }else{
-            _authorized = "Geen toegang";
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
           }
         });
       }else{
@@ -270,24 +235,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _getListOfBiometricTypes() async {
-    List<BiometricType> listOfBiometrics;
-
-    try{
-      listOfBiometrics = await _localAuthentication.getAvailableBiometrics();
-
-    } on PlatformException catch (error){
-      print(error);
-    }
-
-    if(!mounted){
-      return;
-    }
-
-    setState(() {
-      _availableBiometricTypes = listOfBiometrics;
-    });
-  }
 
   getDeviceId() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -370,10 +317,6 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 20.0),
             Button(onPressed: () async {if (_formKey.currentState.validate()) {
                 _signInWithEmailAndPassword(false);
-                //TODO WARNING Email and password will be saved as plain text in local storage for logging in using fingerprint or face recognition. Firebase requires users to log in with email and password.
-                final storage = await SharedPreferences.getInstance();
-                storage.setString("email", _emailController.text);
-                storage.setString("password", _passwordController.text);
                 loginAttempts();
               }
               else {

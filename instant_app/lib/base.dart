@@ -63,13 +63,13 @@ Future setPermission(bool enabled) async{
 
 Future<bool> getEnableBiometric() async {
   final storage = await SharedPreferences.getInstance();
-  globals.isBiometricEnabled = storage.getBool("biometric");
+  globals.enabledBiometric = storage.getBool("biometric");
   return storage.getBool("biometric");
 }
 
 Future setEnableBiometric(bool enabled) async{
   final storage = await SharedPreferences.getInstance();
-  globals.isBiometricEnabled = enabled;
+  globals.enabledBiometric = enabled;
   storage.setBool('biometric', enabled);
 }
 
