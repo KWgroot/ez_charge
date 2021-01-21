@@ -29,6 +29,7 @@ class _ChargingState extends State<Charging> {
   String minutesStr = '00';
   String secondsStr = '00';
   double chargingCost = 0.0;
+  String roundedCost = "0.00";
 
 
   Stream<int> stopWatchStream() {
@@ -74,7 +75,7 @@ class _ChargingState extends State<Charging> {
     timerSubscription = timerStream.listen((int newTick) {
       setState(() {
         chargingCost = newTick / 60  * 0.015;
-        chargingCost.toStringAsFixed(2);
+        roundedCost = chargingCost.toStringAsFixed(2);
         hoursStr = ((newTick / (60 * 60)) % 60)
             .floor()
             .toString()
@@ -136,7 +137,7 @@ class _ChargingState extends State<Charging> {
                 Text("Kosten: " ,
                   style: theme.textTheme.bodyText1,
                 ),
-                Text("€$chargingCost",
+                Text("€$roundedCost",
                     style: TextStyle(
                         fontSize: 48,
                         color: Colors.black,
