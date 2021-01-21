@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ez_charge/app/design/btn.dart';
 import 'package:ez_charge/app/design/design.dart';
@@ -10,9 +12,82 @@ import '../app/app_page.dart';
 import 'package:http/http.dart' as http;
 import '../app/global_variables.dart' as globals;
 
-class Charging extends StatelessWidget {
-  String docRef;
+class Charging extends StatefulWidget {
+  final String docRef;
   Charging({this.docRef});
+
+
+  @override
+  _ChargingState createState() => _ChargingState();
+}
+
+class _ChargingState extends State<Charging> {
+  bool flag = true;
+  Stream<int> timerStream;
+  StreamSubscription<int> timerSubscription;
+  String hoursStr = '00';
+  String minutesStr = '00';
+  String secondsStr = '00';
+  double chargingCost = 0.0;
+
+
+  Stream<int> stopWatchStream() {
+    StreamController<int> streamController;
+    Timer timer;
+    Duration timerInterval = Duration(seconds: 1);
+    int counter = 0;
+
+    void stopTimer() {
+      if (timer != null) {
+        timer.cancel();
+        timer = null;
+        counter = 0;
+        streamController.close();
+      }
+    }
+
+    void tick(_) {
+      counter++;
+      streamController.add(counter);
+      if (!flag) {
+        stopTimer();
+      }
+    }
+
+    void startTimer() {
+      timer = Timer.periodic(timerInterval, tick);
+    }
+
+    streamController = StreamController<int>(
+      onListen: startTimer,
+      onCancel: stopTimer,
+      onResume: startTimer,
+      onPause: stopTimer,
+    );
+
+    return streamController.stream;
+  }
+
+  @override
+  void initState() {
+    timerStream = stopWatchStream();
+    timerSubscription = timerStream.listen((int newTick) {
+      setState(() {
+        chargingCost = newTick / 60  * 0.015;
+        chargingCost.toStringAsFixed(2);
+        hoursStr = ((newTick / (60 * 60)) % 60)
+            .floor()
+            .toString()
+            .padLeft(2, '0');
+        minutesStr = ((newTick / 60) % 60)
+            .floor()
+            .toString()
+            .padLeft(2, '0');
+        secondsStr =
+            (newTick % 60).floor().toString().padLeft(2, '0');
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +117,36 @@ class Charging extends StatelessWidget {
               100,
             ),
           ),),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Laadtijd: ",
+                style: theme.textTheme.bodyText1,
+                ),
+                Text("$hoursStr:$minutesStr:$secondsStr",
+                    style: TextStyle(
+                        fontSize: 48,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600)
+                ),
+              ]),
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Kosten: " ,
+                  style: theme.textTheme.bodyText1,
+                ),
+                Text("€$chargingCost",
+                    style: TextStyle(
+                        fontSize: 48,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600)
+                ),
+              ]),
           Button(
           color: theme.buttonColor,
           onPressed: () {
-            stopSession(docRef, context);
+            stopSession(widget.docRef, context);
           },
           text:
           'STOP CHARGING',
@@ -93,6 +194,14 @@ class Charging extends StatelessWidget {
             backgroundColor: Colors.black,
             textColor: Colors.white,
             fontSize: 16.0);
+        /// Stop Stopwatch
+        timerSubscription.cancel();
+        timerStream = null;
+        setState(() {
+          hoursStr = '00';
+          minutesStr = '00';
+          secondsStr = '00';
+        });
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => AppPage()));
       },
