@@ -5,11 +5,7 @@ import 'dart:convert' as convert;
 class PlacesService {
   final key = 'AIzaSyDyEt6EzTovdkjAw8GVAr8_mV-HUTge1uk';
 
-
-
-
   Future<List<Place>> getPlaces(double lat, double lng) async {
-    ///var response = await http.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=$lat,$lng&type=parking&rankby=distance&key=$key');
     var response = await http.get('https://aronschiphof.github.io/Data/example.json');
     var json = convert.jsonDecode(response.body);
     var jsonResults = json['results'] as List;

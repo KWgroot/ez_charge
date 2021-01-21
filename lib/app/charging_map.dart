@@ -1,8 +1,6 @@
 import 'package:ez_charge/app/charging_map_services/geolocator_service.dart';
 import 'package:ez_charge/app/charging_map_services/marker_service.dart';
 import 'package:ez_charge/app/design/design.dart';
-import 'package:ez_charge/app/design/design.dart';
-import 'package:ez_charge/app/design/design.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
