@@ -4,7 +4,9 @@ import 'package:ez_charge/base/base.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:local_auth/local_auth.dart';
 import '../app/global_variables.dart' as globals;
 import 'change_credentials.dart';
 
@@ -15,6 +17,9 @@ class Settings extends StatefulWidget {
 
 class SettingsScreen extends State<Settings> {
   FirebaseAuth auth = FirebaseAuth.instance;
+  final LocalAuthentication _localAuthentication = LocalAuthentication();
+  List<BiometricType> _availableBiometricTypes = List<BiometricType>();
+  bool _canCheckBiometric = false;
   var _data;
 
   Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,6 +33,10 @@ class SettingsScreen extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    double btnWidth = MediaQuery.of(context).size.width / 1.5;
+    _checkBiometric();
+    _getListOfBiometricTypes();
+
     return Scaffold(
       backgroundColor: theme.backgroundColor,
         appBar: new AppBar(
@@ -52,15 +61,23 @@ class SettingsScreen extends State<Settings> {
           SizedBox(height: 20),
           Button(
               onPressed: () async {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeCredentials()));
+                auth.sendPasswordResetEmail(email: globals.user.email);
+                Fluttertoast.showToast(
+                    msg: "We have sent you a password reset email",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
               },
               text: 'Change Password',
-              color: theme.buttonColor,
-              tStyle: theme.textTheme.bodyText1),
+              color: Theme.of(context).buttonColor,
+              tStyle: Theme.of(context).textTheme.bodyText1),
           SwitchListTile(
               title: Text(
                 "Inloggen met vingerafdruk of gezicht",
-                style: theme.textTheme.subtitle1,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               value: globals.enabledBiometric,
               onChanged: (enableBiometric) {
@@ -82,8 +99,8 @@ class SettingsScreen extends State<Settings> {
                 logOut(context);
               },
               text: 'Log out',
-              color: theme.buttonColor,
-              tStyle: theme.textTheme.bodyText1)
+              color: Theme.of(context).buttonColor,
+              tStyle: Theme.of(context).textTheme.bodyText1)
         ]))));
   }
 
@@ -111,7 +128,9 @@ class SettingsScreen extends State<Settings> {
             TextButton(
               child: Text('Yes', style: theme.textTheme.headline3,),
               onPressed: () async {
-                await auth.signOut();
+                if(!globals.isBiometricEnabled){
+                  await auth.signOut();
+                }
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, '/');
@@ -123,7 +142,40 @@ class SettingsScreen extends State<Settings> {
       },
     );
   }
+  Future<void> _getListOfBiometricTypes() async {
+    List<BiometricType> listOfBiometrics;
 
+    try{
+      listOfBiometrics = await _localAuthentication.getAvailableBiometrics();
+
+    } on PlatformException catch (error){
+      print(error);
+    }
+
+    if(!mounted){
+      return;
+    }
+
+    setState(() {
+      _availableBiometricTypes = listOfBiometrics;
+    });
+  }
+  Future<void> _checkBiometric() async {
+    bool canCheckBiometric = false;
+    try{
+      canCheckBiometric = await _localAuthentication.canCheckBiometrics;
+    } on PlatformException catch (error){
+      print(error);
+    }
+
+    if(!mounted){
+      return;
+    }
+
+    setState(() {
+      _canCheckBiometric = canCheckBiometric;
+    });
+  }
   void confirmBiometric(context, enableBiometric) async {
     return showDialog(
         context: context,
@@ -145,8 +197,13 @@ class SettingsScreen extends State<Settings> {
                 child: Text("Akkoord", style: theme.textTheme.headline3,),
                 onPressed: () async {
                   setState(() {
-                    setEnableBiometric(enableBiometric);
-                    setPermission(false);
+                    if(_canCheckBiometric){
+                      setEnableBiometric(enableBiometric);
+                      setPermission(false);
+                    }else{
+                      Fluttertoast.showToast(msg: "Uw toestel beschikt niet over een vingerafdrukscanner of camera", toastLength: Toast.LENGTH_SHORT);
+                    }
+
                   });
 
                   Navigator.of(context).pop();
