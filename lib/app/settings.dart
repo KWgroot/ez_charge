@@ -79,7 +79,7 @@ class SettingsScreen extends State<Settings> {
                 "Inloggen met vingerafdruk of gezicht",
                 style: Theme.of(context).textTheme.subtitle1,
               ),
-              value: globals.enabledBiometric,
+              value: globals.isBiometricEnabled,
               onChanged: (enableBiometric) {
                 //Biometrics is never been used before when
                 //askForPermissionForFirstTime is true.
